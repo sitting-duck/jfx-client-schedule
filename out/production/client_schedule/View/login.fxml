@@ -8,12 +8,11 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-
 <VBox alignment="CENTER_LEFT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="204.0" prefWidth="201.0" spacing="10.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.LoginController">
    <children>
-      <HBox alignment="TOP_RIGHT" prefHeight="100.0" prefWidth="200.0">
+      <HBox alignment="TOP_LEFT" prefHeight="100.0" prefWidth="200.0">
          <children>
-            <Button fx:id="exitButton" accessibleHelp="Exit" accessibleText="Exit" alignment="CENTER_RIGHT" cancelButton="true" minWidth="25.0" mnemonicParsing="false" prefHeight="25.0" text="X" />
+            <Label fx:id="zoneLabel" text="Zone: " />
          </children>
       </HBox>
       <Label fx:id="userErrorLabel" />
@@ -22,7 +21,7 @@
       <TextField fx:id="passwordTextField" promptText="Password" />
       <ButtonBar prefHeight="40.0" prefWidth="200.0">
          <buttons>
-            <Button fx:id="loginButton" accessibleHelp="Log In" accessibleText="Log In" defaultButton="true" mnemonicParsing="false" text="Log In" onAction="#onLoginButton"/>
+            <Button fx:id="loginButton" accessibleHelp="Log In" accessibleText="Log In" defaultButton="true" mnemonicParsing="false" onAction="#onLoginButton" text="Log In" />
          </buttons>
       </ButtonBar>
    </children>

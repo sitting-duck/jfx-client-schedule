@@ -9,7 +9,10 @@ import javafx.scene.control.*;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.ResourceBundle;
+import java.util.TimeZone;
 
 public class LoginController implements Initializable {
 
@@ -18,6 +21,7 @@ public class LoginController implements Initializable {
     public TextField userTextField;
     public Label passwordErrorLabel;
     public TextField passwordTextField;
+    public Label zoneLabel;
     public Button loginButton;
 
     @Override
@@ -25,6 +29,10 @@ public class LoginController implements Initializable {
         userTextField.setPromptText("Username");
         passwordTextField.setPromptText("Password");
         System.out.println("Initialized");
+
+        ZoneId zoneId = TimeZone.getDefault().toZoneId();
+        System.out.println("zoneId = " + zoneId);
+        zoneLabel.setText("Zone: " + zoneId);
     }
 
     public void onExitButton(ActionEvent actionEvent) throws IOException {
