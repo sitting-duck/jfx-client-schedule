@@ -2141,7 +2141,7 @@ Version 6.0.6
     - Fixed Bug #39426 - executeBatch passes most recent PreparedStatement params
       to StatementInterceptor
       
-    - Support use of INFORMATION_SCHEMA.PARAMETERS when "useInformationSchema" is set "true" and the view exists
+    - Support use of INFORMATION_SCHEMA.PARAMETERS when "useInformationSchema" is set "true" and the View exists
       for DatabaseMetaData.getProcedureColumns() and getFunctionColumns().
       
     - When "logSlowQueries" is set to "true", and the driver has made a connection to a server that has suport
