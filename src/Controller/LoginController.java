@@ -11,6 +11,7 @@ import java.net.URL;
 import java.sql.SQLException;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
+import java.util.Locale;
 import java.util.ResourceBundle;
 import java.util.TimeZone;
 
@@ -33,6 +34,16 @@ public class LoginController implements Initializable {
         ZoneId zoneId = TimeZone.getDefault().toZoneId();
         System.out.println("zoneId = " + zoneId);
         zoneLabel.setText("Zone: " + zoneId);
+
+        Locale french = new Locale("fr", "FR");
+        Locale english = new Locale("en", "EN");
+
+        //ResourceBundle rb = ResourceBundle.getBundle("Localization/lang", french);
+        ResourceBundle rb = ResourceBundle.getBundle("Localization/lang", Locale.getDefault());
+
+        if(Locale.getDefault().getLanguage().equals("en") || Locale.getDefault().getLanguage().equals("fr")) {
+            System.out.println(rb.getString("hello") + rb.getString("world"));
+        }
     }
 
     public void onExitButton(ActionEvent actionEvent) throws IOException {
