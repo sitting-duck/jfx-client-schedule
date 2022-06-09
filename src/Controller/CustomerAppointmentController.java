@@ -4,12 +4,10 @@ import DBAccess.DBAppointment;
 import DBAccess.DBCustomer;
 import Model.Appointment;
 import Model.Customer;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 
 import java.io.IOException;
@@ -75,7 +73,33 @@ public class CustomerAppointmentController implements Initializable {
     }
 
     public void onSearchCustomer(ActionEvent actionEvent) throws IOException {
+        String queryText = this.customersSearchField.getText();
+        System.out.println("getCustomerSearchResultsHandler: " + queryText);
 
+        if(queryText.isEmpty()) {
+            this.customerTable.setItems(DBCustomer.getAllCustomers());
+            return;
+        }
+
+        ObservableList<Customer> customers = DBCustomer.lookupCustomer(queryText);
+//        try {
+//            int idNum = Integer.parseInt(queryText);
+//            Customer customer = DBCustomer.lookupCustomer(queryText);
+//            customers.add(customer);
+//        } catch(NumberFormatException exception) {
+//            System.out.println("Non Fatal Error: " + queryText + " cannot be converted to Integer.");
+//        }
+
+        if(customers.size() == 0) {
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Error: no results for " + queryText);
+            alert.setHeaderText("Error: no results for " + queryText);
+            alert.setContentText("Error: no results for " + queryText);
+            alert.showAndWait();
+            return;
+        }
+        this.customerTable.setItems(customers);
+        this.customersSearchField.setText("");
     }
 
     public void onAddCustomer(ActionEvent actionEvent) throws IOException {
