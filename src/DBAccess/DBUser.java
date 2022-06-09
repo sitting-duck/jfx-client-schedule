@@ -1,7 +1,6 @@
 package DBAccess;
 
 import Database.DBConnection;
-import Model.Countries;
 import Model.User;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -47,15 +46,6 @@ public class DBUser {
                 }
             }
             throw new Exception("Error: could not find user with username: " + username);
-
-            //System.out.println("Table contains "+rs.getRow()+" rows");
-            //printResultSet(rs);
-
-            //int id = rs.getInt("User_ID");
-            //String name = rs.getString("User_Name");
-            //String password = rs.getString("Password");
-            //User u = new User(id, name, password);
-            //return u;
         } catch(SQLException throwables) {
             throwables.printStackTrace();
             throw throwables;

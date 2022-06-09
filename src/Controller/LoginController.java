@@ -1,10 +1,16 @@
 package Controller;
 
 import DBAccess.DBUser;
+import Localization.Translate;
 import Model.User;
 import javafx.event.ActionEvent;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
@@ -16,8 +22,6 @@ import java.util.ResourceBundle;
 import java.util.TimeZone;
 
 public class LoginController implements Initializable {
-
-    public Button exitButton;
     public Label userErrorLabel;
     public TextField userTextField;
     public Label passwordErrorLabel;
@@ -38,16 +42,14 @@ public class LoginController implements Initializable {
         Locale french = new Locale("fr", "FR");
         Locale english = new Locale("en", "EN");
 
-        //ResourceBundle rb = ResourceBundle.getBundle("Localization/lang", french);
-        ResourceBundle rb = ResourceBundle.getBundle("Localization/lang", Locale.getDefault());
+        ResourceBundle rb = ResourceBundle.getBundle("Localization/lang", french);
+        //ResourceBundle rb = ResourceBundle.getBundle("Localization/lang", Locale.getDefault());
 
         if(Locale.getDefault().getLanguage().equals("en") || Locale.getDefault().getLanguage().equals("fr")) {
             System.out.println(rb.getString("hello") + rb.getString("world"));
+            String translation = Translate.str("Cannot be empty");
+            System.out.println(translation);
         }
-    }
-
-    public void onExitButton(ActionEvent actionEvent) throws IOException {
-
     }
 
     public void onUsername(ActionEvent actionEvent) throws IOException {
@@ -77,19 +79,24 @@ public class LoginController implements Initializable {
             user = DBUser.getUserByUserName(username);
             user.print();
         } catch (SQLException e) {
-            System.err.println("Error: could not fine user with username: " +username);
-            Alert alert = new Alert(Alert.AlertType.WARNING, "Could not fine user with username: " +username, ButtonType.OK);
+            System.err.println("Error: could not find user with username: " +username);
+            Alert alert = new Alert(Alert.AlertType.WARNING, "Could not find user with username: " +username, ButtonType.OK);
             alert.showAndWait();
             return;
         } catch (Exception e) {
-            System.err.println("Error: could not fine user with username: " +username);
-            Alert alert = new Alert(Alert.AlertType.WARNING, "Could not fine user with username: " +username, ButtonType.OK);
+            System.err.println("Error: could not find user with username: " +username);
+            Alert alert = new Alert(Alert.AlertType.WARNING, "Could not find user with username: " +username, ButtonType.OK);
             alert.showAndWait();
             return;
         }
 
         if(password.compareTo(user.getPassword()) == 0) {
-
+            Parent root = FXMLLoader.load(getClass().getResource("/View/customer-appointment.fxml"));
+            Stage stage = (Stage)((Node)actionEvent.getSource()).getScene().getWindow();
+            Scene scene = new Scene(root, 1000, 400);
+            stage.setTitle("Customer Appointment Manager");
+            stage.setScene(scene);
+            stage.show();
         } else {
             System.err.println("Error: incorrect password for: " +username);
             Alert alert = new Alert(Alert.AlertType.WARNING, "Error: incorrect password for: " +username, ButtonType.OK);
