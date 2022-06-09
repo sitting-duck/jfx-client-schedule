@@ -1,5 +1,5 @@
 
-import DBAccess.DBCountries;
+import DBAccess.DBCountry;
 import Model.Countries;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -21,7 +21,7 @@ public class Controller implements Initializable {
     }
 
     public void showMe(ActionEvent actionEvent) {
-        ObservableList<Countries> countryList = DBCountries.getAllCountries();
+        ObservableList<Countries> countryList = DBCountry.getAllCountries();
         for(Countries C : countryList) {
             System.out.println("Country Id: " + C.getId() + " Name: " + C.getName());
         }
