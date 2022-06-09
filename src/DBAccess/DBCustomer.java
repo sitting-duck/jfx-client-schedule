@@ -18,7 +18,7 @@ public class DBCustomer {
             ResultSet rs = ps.executeQuery();
 
             while(rs.next()) {
-                int customerId = rs.getInt("Customer_Name");
+                int customerId = rs.getInt("Customer_ID");
                 String name = rs.getString("Customer_Name");
                 String address = rs.getString("Address");
                 String postal = rs.getString("Postal_Code");

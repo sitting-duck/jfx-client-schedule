@@ -3,6 +3,7 @@ package Controller;
 import DBAccess.DBAppointment;
 import DBAccess.DBCustomer;
 import Model.Appointment;
+import Model.Customer;
 import javafx.event.ActionEvent;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
@@ -59,8 +60,16 @@ public class CustomerAppointmentController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         try {
+            initCustomerTable();
+        } catch (IOException e) {
+            System.out.println("Error initializing Customer table");
+            throw new RuntimeException(e);
+        }
+
+        try {
             initAppointmentTable();
         } catch (IOException e) {
+            System.out.println("Error initializing Appointment table");
             throw new RuntimeException(e);
         }
     }
@@ -110,19 +119,25 @@ public class CustomerAppointmentController implements Initializable {
 
         this.customerTable.setEditable(true);
 
-        TableColumn customerIDCol = new TableColumn("ID");
-        customerIDCol.setCellValueFactory(new PropertyValueFactory<>("id"));
+        TableColumn idDCol = new TableColumn("ID");
+        idDCol.setCellValueFactory(new PropertyValueFactory<Customer, Integer>("id"));
 
-        TableColumn customerNameCol = new TableColumn("Name");
-        customerNameCol.setCellValueFactory(new PropertyValueFactory<>("name"));
+        TableColumn nameCol = new TableColumn("Name");
+        nameCol.setCellValueFactory(new PropertyValueFactory<Customer, String>("name"));
 
-        TableColumn inventoryLevelCol = new TableColumn("Inventory Level");
-        inventoryLevelCol.setCellValueFactory(new PropertyValueFactory<>("stock"));
+        TableColumn addressCol = new TableColumn("Address");
+        addressCol.setCellValueFactory(new PropertyValueFactory<Customer, String>("address"));
 
-        TableColumn priceCostPerUnitCol = new TableColumn("Price/Cost per Unit");
-        priceCostPerUnitCol.setCellValueFactory(new PropertyValueFactory<>("price"));
+        TableColumn postalCol = new TableColumn("Postal");
+        postalCol.setCellValueFactory(new PropertyValueFactory<Customer, String>("postal"));
 
-        customerTable.getColumns().addAll(customerIDCol, customerNameCol, inventoryLevelCol, priceCostPerUnitCol);
+        TableColumn phoneCol = new TableColumn("Phone");
+        phoneCol.setCellValueFactory(new PropertyValueFactory<Customer, String>("phone"));
+
+        TableColumn divisionIdCol = new TableColumn("Division ID");
+        divisionIdCol.setCellValueFactory(new PropertyValueFactory<Customer, Integer>("divisionId"));
+
+        customerTable.getColumns().addAll(idDCol, nameCol, addressCol, postalCol, phoneCol, divisionIdCol);
 
         customerTable.setItems(DBCustomer.getAllCustomers());
     }
@@ -150,7 +165,6 @@ public class CustomerAppointmentController implements Initializable {
         TableColumn typeCol = new TableColumn("Type");
         typeCol.setCellValueFactory(new PropertyValueFactory<Appointment, String>("type"));
 
-        //todo: date start and end
         TableColumn startCol = new TableColumn("Start");
         startCol.setCellValueFactory(new PropertyValueFactory<Appointment, Date>("start"));
 
