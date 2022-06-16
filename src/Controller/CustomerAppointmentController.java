@@ -6,6 +6,7 @@ import Model.Appointment;
 import Model.Customer;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -21,40 +22,46 @@ public class CustomerAppointmentController implements Initializable {
      * Users enters a string or id number into this text input field and when they press enter the customers table will refresh
      * displaying the set of customers containing either a matching id number or a substring of the search string entered.
      */
-    public TextField customersSearchField;
+    @FXML
+    private TextField customersSearchField;
 
     /**
      * Holds the set of all customers when there is no search query in the customers search text field, and shows the customers that
      * match the search query when there is one. Users can select a customer from this table to Modify or Delete. They can also
      * use the add button to add a customer to this table.
      */
-    public TableView customerTable;
+    @FXML
+    private TableView customerTable;
 
     /**
      * If the user has a customer selected in the customers table then on hitting this Delete button they will see a confirmation
      * asking them if they really want to delete the customer. They can click "Ok" to delete the customer or "Cancel" to exit early
      * without deleting. If no customer is selected the user will see a Warning that says no customer was selected for deletion.
      */
-    public Button deleteCustomerBtn;
+    @FXML
+    private Button deleteCustomerBtn;
 
     /**
      * Users enters a string or id number into this text input field and when they press enter the appointments table will refresh
      * displaying the set of appointments containing either a matching id number or a substring of the search string entered.
      */
-    public TextField appointmentsSearchField;
+    @FXML
+    private TextField appointmentsSearchField;
 
     /**
      * Holds the set of all appointments when there is no search query in the appointments search text field, and shows the appointments that
      * match the search query when there is one. Users can select a appointment from this table to Modify or Delete. They can also
      * use the add button to add a appointment to this table.
      */
-    public TableView appointmentTable;
+    @FXML
+    private TableView appointmentTable;
 
     /**
      * On press the user will see a confirmation asking if they are sure they wish to delete the selected appointment in the
      * appointment table. If there is no appointment selected then the user will see a warning saying that there is no appointment selected.
      */
-    public Button deleteAppointmentBtn;
+    @FXML
+    private Button deleteAppointmentBtn;
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         try {
@@ -81,14 +88,16 @@ public class CustomerAppointmentController implements Initializable {
             return;
         }
 
-        ObservableList<Customer> customers = DBCustomer.lookupCustomer(queryText);
-//        try {
-//            int idNum = Integer.parseInt(queryText);
-//            Customer customer = DBCustomer.lookupCustomer(queryText);
-//            customers.add(customer);
-//        } catch(NumberFormatException exception) {
-//            System.out.println("Non Fatal Error: " + queryText + " cannot be converted to Integer.");
-//        }
+
+        // todo: do we need this? Search by Customer ID?
+        ObservableList<Customer> customers;
+        try {
+            int idNum = Integer.parseInt(queryText);
+            customers = DBCustomer.lookupCustomer(idNum);
+        } catch(NumberFormatException exception) {
+            System.out.println("Non Fatal Error: " + queryText + " cannot be converted to Integer.");
+            customers = DBCustomer.lookupCustomer(queryText);
+        }
 
         if(customers.size() == 0) {
             Alert alert = new Alert(Alert.AlertType.WARNING);

@@ -110,7 +110,6 @@
                         </VBox>
                     </children>
                 </GridPane>
-                <Button fx:id="exitButton" alignment="CENTER_RIGHT" contentDisplay="CENTER" mnemonicParsing="false" onAction="#onExitBtnClicked" text="Exit" GridPane.rowIndex="2" />
                 <Label fx:id="header" text="Customer Appointment Management System" />
             </children>
         </GridPane>

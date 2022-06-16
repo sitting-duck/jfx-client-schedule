@@ -8,7 +8,7 @@ import javafx.collections.ObservableList;
 import java.sql.*;
 import java.util.regex.Pattern;
 
-public class DBCustomer {
+public abstract class DBCustomer {
 
     public static ObservableList<Customer> getAllCustomers() {
         ObservableList<Customer> clist = FXCollections.observableArrayList();
@@ -70,6 +70,37 @@ public class DBCustomer {
             }
         });
         return matchingCustomers;
+    }
+
+    public static ObservableList<Customer> lookupCustomer(int id) {
+        ObservableList<Customer> allCustomers = getAllCustomers();
+        final ObservableList<Customer> matchingCustomers = FXCollections.observableArrayList();
+        allCustomers.stream().filter(customer -> Integer.compare(customer.getId(), id) == 0).forEach(matchingCustomers::add);
+        return matchingCustomers;
+    }
+
+    public static int insertCustomer(Customer customer) throws SQLException {
+        String sql = "INSERT INTO client_schedule.customers (Customer_Name, Address, Postal_Code, Phone, Division_ID) VALUES(?, ?, ?, ?, ?)";
+        PreparedStatement ps = DBConnection.getConnection().prepareStatement(sql);
+        ps.setString(1, customer.getName());
+        ps.setString(2, customer.getAddress());
+        ps.setString(3, customer.getPostal());
+        ps.setString(4, customer.getPhone());
+        ps.setInt(5, customer.getDivisionId());
+        int rowsAffected = ps.executeUpdate();
+        return rowsAffected;
+    }
+
+    public static int insertCustomer(String name, String address, String postalCode, String phone, int divisionId) throws SQLException {
+        String sql = "INSERT INTO client_schedule.customers (Customer_Name, Address, Postal_Code, Phone, Division_ID) VALUES(?, ?, ?, ?, ?)";
+        PreparedStatement ps = DBConnection.getConnection().prepareStatement(sql);
+        ps.setString(1, name);
+        ps.setString(2, address);
+        ps.setString(3, postalCode);
+        ps.setString(4, phone);
+        ps.setInt(5, divisionId);
+        int rowsAffected = ps.executeUpdate();
+        return rowsAffected;
     }
 
 }
