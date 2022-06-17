@@ -115,7 +115,12 @@ public class MainViewController implements Initializable {
     }
 
     public void onAddCustomer(ActionEvent actionEvent) throws IOException {
-
+        Parent root = FXMLLoader.load(getClass().getResource("/View/add-customer.fxml"));
+        Stage stage = (Stage)((Node)actionEvent.getSource()).getScene().getWindow();
+        Scene scene = new Scene(root, 400, 600);
+        stage.setTitle("Add Customer");
+        stage.setScene(scene);
+        stage.show();
     }
 
     public void onModifyCustomer(ActionEvent actionEvent) throws IOException {
