@@ -106,9 +106,10 @@ public class ModifyAppointmentController implements Initializable  {
         descriptionTextField.setText(appointment.getDescription());
         locationTextField.setText(appointment.getLocation());
         typeTextField.setText(appointment.getType());
-        customerIdComboBox.getSelectionModel().select(appointment.getCustomerId());
-        userIdComboBox.getSelectionModel().select(appointment.getUserId());
-        contactIdComboBox.getSelectionModel().select(appointment.getContactId());
+
+        customerIdComboBox.setValue(appointment.getCustomerId());
+        userIdComboBox.setValue(appointment.getUserId());
+        contactIdComboBox.setValue(appointment.getContactId());
     }
 
     public void onOkButton(ActionEvent actionEvent) throws IOException, SQLException {

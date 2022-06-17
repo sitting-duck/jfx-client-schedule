@@ -87,6 +87,7 @@ public class AddAppointmentController implements Initializable  {
         String type = typeTextField.getText();
         Date start = new Date(2022, 6, 16); //todo
         Date end = new Date(2022, 6, 16); // todo
+
         int customerId = (int) customerIdComboBox.getSelectionModel().getSelectedItem();
         int userId = (int) userIdComboBox.getSelectionModel().getSelectedItem();
         int contactId = (int) contactIdComboBox.getSelectionModel().getSelectedItem();
