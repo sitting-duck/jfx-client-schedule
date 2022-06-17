@@ -153,18 +153,36 @@ public class MainViewController implements Initializable {
     }
 
     public void onAddAppointment(ActionEvent actionEvent) throws IOException {
-
+        Parent root = FXMLLoader.load(getClass().getResource("/View/add-appointment.fxml"));
+        Stage stage = (Stage)((Node)actionEvent.getSource()).getScene().getWindow();
+        Scene scene = new Scene(root, 400, 700);
+        stage.setTitle("Add Appointment");
+        stage.setScene(scene);
+        stage.show();
     }
 
     public void onModifyAppointment(ActionEvent actionEvent) throws IOException {
+        Appointment appointment = (Appointment)appointmentTable.getSelectionModel().getSelectedItem();
 
+        if(appointment == null) {
+            System.out.println("Error: no appointment selected");
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("No appointment selected");
+            alert.setHeaderText("No appointment selected");
+            alert.setContentText("No appointment selected. Please select a appointment to modify.");
+            alert.showAndWait();
+        } else {
+            ModifyAppointmentController.setAppointment(appointment);
+            Parent root = FXMLLoader.load(getClass().getResource("/View/modify-appointment.fxml"));
+            Stage stage = (Stage)((Node)actionEvent.getSource()).getScene().getWindow();
+            Scene scene = new Scene(root, 400, 700);
+            stage.setTitle("Modify Appointment");
+            stage.setScene(scene);
+            stage.show();
+        }
     }
 
     public void onDeleteAppointment(ActionEvent actionEvent) throws IOException {
-
-    }
-
-    public void onExitBtnClicked(ActionEvent actionEvent) throws IOException {
 
     }
 

@@ -8,6 +8,7 @@
 <?import javafx.scene.layout.VBox?>
 
 
+<?import javafx.scene.control.ComboBox?>
 <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" spacing="10.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.AddCustomerController">
    <children>
       <Label text="Add Customer" />
@@ -20,7 +21,7 @@
       <Label text="" fx:id="phoneLabel"/>
       <TextField promptText="Phone" fx:id="phoneTextField"/>
       <Label text="" fx:id="divisionIdLabel"/>
-      <TextField promptText="Division ID" fx:id="divisionIdTextField"/>
+      <ComboBox fx:id="divisionIdComboBox" prefWidth="150.0" promptText="Division ID" />
       <ButtonBar prefHeight="40.0" prefWidth="200.0">
          <buttons>
             <Button cancelButton="true" mnemonicParsing="false" text="Cancel" onAction="#onCancelButton"/>

@@ -1,10 +1,10 @@
 package Model;
 
-public class Countries {
+public class Country {
     private int id;
     private String name;
 
-    public Countries(int id, String name) {
+    public Country(int id, String name) {
 
     }
 

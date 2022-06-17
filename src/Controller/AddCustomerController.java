@@ -1,6 +1,8 @@
 package Controller;
 
 import DBAccess.DBCustomer;
+import DBAccess.DBDivision;
+import Model.Division;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -8,6 +10,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.paint.Color;
@@ -48,11 +51,11 @@ public class AddCustomerController  implements Initializable {
     private Label divisionIdLabel;
 
    @FXML
-    private TextField divisionIdTextField;
+    private ComboBox divisionIdComboBox;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-
+        divisionIdComboBox.setItems(DBDivision.getAllDivisions());
     }
 
     public void onOkButton(ActionEvent actionEvent) throws IOException, SQLException {
@@ -61,7 +64,17 @@ public class AddCustomerController  implements Initializable {
         String address = addressTextField.getText();
         String postalCode = postalCodeTextField.getText();
         String phone = phoneTextField.getText();
-        String divisionId = divisionIdTextField.getText();
+        Division division = (Division) divisionIdComboBox.getValue();
+        int divisionId = -1;
+
+        if(division == null) {
+            divisionIdLabel.setTextFill(Color.color(1, 0, 0));
+            divisionIdLabel.setText("Cannot be empty");
+            good = false;
+        } else {
+            divisionIdLabel.setText("");
+            divisionId = division.getId();
+        }
         if(name.compareTo("") == 0) {
             nameLabel.setTextFill(Color.color(1, 0, 0));
             nameLabel.setText("Cannot be empty");
@@ -90,29 +103,17 @@ public class AddCustomerController  implements Initializable {
         } else {
             phoneLabel.setText("");
         }
-        if(divisionId.compareTo("") == 0) {
-            divisionIdLabel.setTextFill(Color.color(1, 0, 0));
-            divisionIdLabel.setText("Cannot be empty");
-            good = false;
-        } else {
-            divisionIdLabel.setText("");
-        }
         if(good == false) {
             System.out.println("Input was not valid, Customer NOT updated in database.");
             return;
         }
-        try {
-            DBCustomer.insertCustomer(name, address, postalCode, phone, Integer.parseInt(divisionId));
-            Parent root = FXMLLoader.load(getClass().getResource("/View/main.fxml"));
-            Stage stage = (Stage)((Node)actionEvent.getSource()).getScene().getWindow();
-            Scene scene = new Scene(root, 1000, 400);
-            stage.setTitle("Customer Appointment Manager");
-            stage.setScene(scene);
-            stage.show();
-        } catch (Exception e) {
-            divisionIdLabel.setTextFill(Color.color(1, 0, 0));
-            divisionIdLabel.setText("Must be integer");
-        }
+        DBCustomer.insertCustomer(name, address, postalCode, phone, divisionId);
+        Parent root = FXMLLoader.load(getClass().getResource("/View/main.fxml"));
+        Stage stage = (Stage)((Node)actionEvent.getSource()).getScene().getWindow();
+        Scene scene = new Scene(root, 1000, 400);
+        stage.setTitle("Customer Appointment Manager");
+        stage.setScene(scene);
+        stage.show();
     }
 
     public void onCancelButton(ActionEvent actionEvent) throws IOException {

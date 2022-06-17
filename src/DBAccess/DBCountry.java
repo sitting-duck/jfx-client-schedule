@@ -1,7 +1,7 @@
 package DBAccess;
 
 import Database.DBConnection;
-import Model.Countries;
+import Model.Country;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
@@ -9,8 +9,8 @@ import java.sql.*;
 
 public abstract class DBCountry {
 
-    public static ObservableList<Countries> getAllCountries() {
-        ObservableList<Countries> clist = FXCollections.observableArrayList();
+    public static ObservableList<Country> getAllCountries() {
+        ObservableList<Country> clist = FXCollections.observableArrayList();
 
         try {
             String sql = "SELECT * from client_schedule.countries";
@@ -20,7 +20,7 @@ public abstract class DBCountry {
             while(rs.next()) {
                 int countryId = rs.getInt("Country_ID");
                 String countryName = rs.getString("Country");
-                Countries C = new Countries(countryId, countryName);
+                Country C = new Country(countryId, countryName);
                 clist.add(C);
             }
         } catch(SQLException throwables) {
