@@ -16,7 +16,6 @@ import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
 import java.time.ZoneId;
-import java.time.ZonedDateTime;
 import java.util.Locale;
 import java.util.ResourceBundle;
 import java.util.TimeZone;
@@ -91,7 +90,7 @@ public class LoginController implements Initializable {
         }
 
         if(password.compareTo(user.getPassword()) == 0) {
-            Parent root = FXMLLoader.load(getClass().getResource("/View/customer-appointment.fxml"));
+            Parent root = FXMLLoader.load(getClass().getResource("/View/main.fxml"));
             Stage stage = (Stage)((Node)actionEvent.getSource()).getScene().getWindow();
             Scene scene = new Scene(root, 1000, 400);
             stage.setTitle("Customer Appointment Manager");

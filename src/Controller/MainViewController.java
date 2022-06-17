@@ -7,16 +7,21 @@ import Model.Customer;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
 import java.sql.Date;
 import java.util.ResourceBundle;
 
-public class CustomerAppointmentController implements Initializable {
+public class MainViewController implements Initializable {
 
     /**
      * Users enters a string or id number into this text input field and when they press enter the customers table will refresh
@@ -88,8 +93,6 @@ public class CustomerAppointmentController implements Initializable {
             return;
         }
 
-
-        // todo: do we need this? Search by Customer ID?
         ObservableList<Customer> customers;
         try {
             int idNum = Integer.parseInt(queryText);
@@ -116,7 +119,24 @@ public class CustomerAppointmentController implements Initializable {
     }
 
     public void onModifyCustomer(ActionEvent actionEvent) throws IOException {
+        Customer customer = (Customer)customerTable.getSelectionModel().getSelectedItem();
 
+        if(customer == null) {
+            System.out.println("Error: no customer selected");
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("No customer selected");
+            alert.setHeaderText("No customer selected");
+            alert.setContentText("No customer selected. Please select a customer to modify.");
+            alert.showAndWait();
+        } else {
+            ModifyCustomerController.setCustomer(customer);
+            Parent root = FXMLLoader.load(getClass().getResource("/View/modify-customer.fxml"));
+            Stage stage = (Stage)((Node)actionEvent.getSource()).getScene().getWindow();
+            Scene scene = new Scene(root, 400, 600);
+            stage.setTitle("Modify Customer");
+            stage.setScene(scene);
+            stage.show();
+        }
     }
 
     public void onDeleteCustomer(ActionEvent actionEvent) throws IOException {

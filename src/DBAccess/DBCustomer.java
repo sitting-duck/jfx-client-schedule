@@ -103,4 +103,17 @@ public abstract class DBCustomer {
         return rowsAffected;
     }
 
+    public static int updateCustomer(int id, String name, String address, String postalCode, String phone, int divisionId) throws SQLException {
+        String sql = "UPDATE client_schedule.customers SET Customer_Name = ?, Address = ?, Postal_Code = ?, Phone = ?, Division_ID = ?  WHERE Customer_ID = ?";
+        PreparedStatement ps = DBConnection.getConnection().prepareStatement(sql);
+        ps.setString(1, name);
+        ps.setString(2, address);
+        ps.setString(3, postalCode);
+        ps.setString(4, phone);
+        ps.setInt(5, divisionId);
+        ps.setInt(6, id);
+        int rowsAffected = ps.executeUpdate();
+        return rowsAffected;
+    }
+
 }

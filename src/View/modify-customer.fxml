@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ButtonBar?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.VBox?>
+
+
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" spacing="10.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.ModifyCustomerController">
+   <children>
+      <Label text="Modify Customer" />
+      <TextField promptText="" fx:id="idTextField"/>
+      <Label text="" fx:id="nameLabel"/>
+      <TextField promptText="Name" fx:id="nameTextField"/>
+      <Label text="" fx:id="addressLabel"/>
+      <TextField promptText="Address" fx:id="addressTextField"/>
+      <Label text="" fx:id="postalCodeLabel"/>
+      <TextField promptText="Postal Code" fx:id="postalCodeTextField"/>
+      <Label text="" fx:id="phoneLabel"/>
+      <TextField promptText="Phone" fx:id="phoneTextField"/>
+      <Label text="" fx:id="divisionIdLabel"/>
+      <TextField promptText="Division ID" fx:id="divisionIdTextField"/>
+      <ButtonBar prefHeight="40.0" prefWidth="200.0">
+         <buttons>
+            <Button cancelButton="true" mnemonicParsing="false" text="Cancel" onAction="#onCancelButton"/>
+            <Button defaultButton="true" mnemonicParsing="false" text="OK" onAction="#onOkButton"/>
+         </buttons>
+      </ButtonBar>
+   </children>
+   <padding>
+      <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+   </padding>
+</VBox>
