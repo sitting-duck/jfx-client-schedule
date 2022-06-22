@@ -2,6 +2,8 @@ package Controller;
 
 import DBAccess.DBAppointment;
 import Model.Appointment;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -17,7 +19,11 @@ import java.io.IOException;
 import java.net.URL;
 import java.sql.Date;
 import java.sql.SQLException;
+import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 public class AddAppointmentController implements Initializable  {
     @FXML
@@ -51,10 +57,28 @@ public class AddAppointmentController implements Initializable  {
     private DatePicker startDatePicker;
 
     @FXML
+    private ComboBox startHourComboBox;
+
+    @FXML
+    private ComboBox startMinuteComboBox;
+
+    @FXML
+    private ComboBox startAMPMComboBox;
+
+    @FXML
     private Label endLabel;
 
     @FXML
     private DatePicker endDatePicker;
+
+    @FXML
+    private ComboBox endHourComboBox;
+
+    @FXML
+    private ComboBox endMinuteComboBox;
+
+    @FXML
+    private ComboBox endAMPMComboBox;
 
     @FXML
     private Label customerIdLabel;
@@ -76,6 +100,46 @@ public class AddAppointmentController implements Initializable  {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        LocalTime start = LocalTime.of(1, 0);
+        LocalTime end = LocalTime.of(12, 0);
+
+        while(start.isBefore(end.plusSeconds(1))) {
+            startHourComboBox.getItems().add(start);
+            start = start.plusHours(1);
+        }
+        startHourComboBox.getSelectionModel().select(LocalTime.of(9, 0));
+
+        ObservableList<Integer> hours = FXCollections.observableList(IntStream.rangeClosed(1, 12).boxed().collect(Collectors.toList()));
+        startHourComboBox.setPromptText("Hour");
+        startHourComboBox.setVisibleRowCount(12);
+        startHourComboBox.setItems(hours);
+        endHourComboBox.setPromptText("Hour");
+        endHourComboBox.setVisibleRowCount(12);
+        endHourComboBox.setItems(hours);
+
+        ArrayList minuteIncrement15 = new ArrayList<Integer>();
+        minuteIncrement15.add(0);
+        minuteIncrement15.add(15);
+        minuteIncrement15.add(30);
+        minuteIncrement15.add(45);
+        ObservableList<Integer> minutes = FXCollections.observableList(minuteIncrement15);
+        startMinuteComboBox.setPromptText("Minute");
+        startMinuteComboBox.setVisibleRowCount(4);
+        startMinuteComboBox.setItems(minutes);
+        endMinuteComboBox.setPromptText("Minute");
+        endMinuteComboBox.setVisibleRowCount(4);
+        endMinuteComboBox.setItems(minutes);
+
+        ArrayList amPMList = new ArrayList<String>();
+        amPMList.add("AM");
+        amPMList.add("PM");
+        ObservableList<String> amPm = FXCollections.observableList(amPMList);
+        startAMPMComboBox.setPromptText("AM/PM");
+        startAMPMComboBox.setVisibleRowCount(2);
+        startAMPMComboBox.setItems(amPm);
+        endAMPMComboBox.setPromptText("AM/PM");
+        endAMPMComboBox.setVisibleRowCount(2);
+        endAMPMComboBox.setItems(amPm);
 
     }
 
