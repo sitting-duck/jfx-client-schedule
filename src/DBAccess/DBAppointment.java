@@ -5,10 +5,8 @@ import Model.Appointment;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
-import java.sql.Date;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
+import java.time.LocalDate;
 
 public abstract class DBAppointment {
 
@@ -26,8 +24,8 @@ public abstract class DBAppointment {
                 String description = rs.getString("Description");
                 String location = rs.getString("Location");
                 String type = rs.getString("Type");
-                Date start = rs.getDate("Start");
-                Date end = rs.getDate("End");
+                Timestamp start = rs.getTimestamp("Start");
+                Timestamp end = rs.getTimestamp("End");
                 int customerId = rs.getInt("Customer_ID");
                 int userId = rs.getInt("User_ID");
                 int contactId = rs.getInt("Contact_ID");
@@ -64,8 +62,8 @@ public abstract class DBAppointment {
         ps.setString(2, appointment.getDescription());
         ps.setString(3, appointment.getLocation());
         ps.setString(4, appointment.getType());
-        ps.setDate(5, appointment.getStart());
-        ps.setDate(6, appointment.getEnd());
+        ps.setTimestamp(5, appointment.getStart());
+        ps.setTimestamp(6, appointment.getEnd());
         ps.setInt(7, appointment.getCustomerId());
         ps.setInt(8, appointment.getUserId());
         ps.setInt(9, appointment.getContactId());
@@ -73,15 +71,15 @@ public abstract class DBAppointment {
         return rowsAffected;
     }
 
-    public static int insertAppointment(String title, String description, String location, String type, Date start, Date end, int customerId, int userId, int contactId) throws SQLException {
-        String sql = "INSERT INTO client_schedule.appointments (Title, Description, Location, Type, Start, End, Customer_ID, User_ID, Contact_ID) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    public static int insertAppointment(String title, String description, String location, String type, Timestamp start, Timestamp end, int customerId, int userId, int contactId) throws SQLException {
+        String sql = "INSERT INTO client_schedule.appointments (Title, Description, Location, Type, Start, End, Customer_ID, User_ID, Contact_ID) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)";
         PreparedStatement ps = DBConnection.getConnection().prepareStatement(sql);
         ps.setString(1, title);
         ps.setString(2, description);
         ps.setString(3, location);
         ps.setString(4, type);
-        ps.setDate(5, start);
-        ps.setDate(6, end);
+        ps.setTimestamp(5, start);
+        ps.setTimestamp(6, end);
         ps.setInt(7, customerId);
         ps.setInt(8, userId);
         ps.setInt(9, contactId);

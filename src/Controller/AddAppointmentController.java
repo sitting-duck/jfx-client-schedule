@@ -8,9 +8,12 @@ import Model.Appointment;
 import Model.Contact;
 import Model.Customer;
 import Model.User;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -18,13 +21,17 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
+import javax.swing.event.ChangeEvent;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.Date;
 import java.sql.SQLException;
+import java.sql.Timestamp;
+import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
@@ -107,6 +114,28 @@ public class AddAppointmentController implements Initializable  {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
+        // Init Date pickers
+        startDatePicker.getEditor().setEditable(false);
+        endDatePicker.getEditor().setEditable(false);
+        startDatePicker.getEditor().setDisable(true);
+        endDatePicker.getEditor().setDisable(true);
+        startDatePicker.getEditor().setOnKeyTyped(new EventHandler<KeyEvent>() {
+
+            @Override
+            public void handle(KeyEvent keyEvent) {
+                System.out.println(keyEvent.getText());
+            }
+        });
+
+        endDatePicker.getEditor().setOnKeyTyped(new EventHandler<KeyEvent>() {
+            @Override
+            public void handle(KeyEvent keyEvent) {
+                System.out.println(keyEvent.getText());
+            }
+        });
+
+
+
         // Populate time pickers
         ObservableList<Integer> hours = FXCollections.observableList(IntStream.rangeClosed(1, 12).boxed().collect(Collectors.toList()));
         startHourComboBox.setPromptText("Hour");
@@ -172,8 +201,8 @@ public class AddAppointmentController implements Initializable  {
         String description = descriptionTextField.getText();
         String location = locationTextField.getText();
         String type = typeTextField.getText();
-        Date start = new Date(2022, 6, 16); //todo
-        Date end = new Date(2022, 6, 16); // todo
+        Timestamp start = null;
+        Timestamp end = null;
 
         int customerId = -1;
         if(customerIdComboBox.getSelectionModel().getSelectedItem() != null) {
@@ -205,8 +234,6 @@ public class AddAppointmentController implements Initializable  {
             good = false;
         }
 
-
-
         if(description.compareTo("") == 0) {
             descriptionLabel.setTextFill(Color.color(1, 0, 0));
             descriptionLabel.setText("Cannot be empty");
@@ -232,9 +259,47 @@ public class AddAppointmentController implements Initializable  {
             startLabel.setText("Cannot be empty");
             good = false;
         }
+        if(startHourComboBox.getValue() == null) {
+            startLabel.setTextFill(Color.color(1, 0, 0));
+            startLabel.setText("Cannot be empty");
+            good = false;
+        }
+        if(startMinuteComboBox.getValue() == null) {
+            startLabel.setTextFill(Color.color(1, 0, 0));
+            startLabel.setText("Cannot be empty");
+            good = false;
+        }
+        if(startAMPMComboBox.getValue() == null) {
+            startLabel.setTextFill(Color.color(1, 0, 0));
+            startLabel.setText("Cannot be empty");
+            good = false;
+        }
+
         if(endDatePicker.getValue() == null) {
             endLabel.setTextFill(Color.color(1, 0, 0));
             endLabel.setText("Cannot be empty");
+            good = false;
+        }
+        if(endHourComboBox.getValue() == null) {
+            endLabel.setTextFill(Color.color(1, 0, 0));
+            endLabel.setText("Cannot be empty");
+            good = false;
+        }
+        if(endMinuteComboBox.getValue() == null) {
+            endLabel.setTextFill(Color.color(1, 0, 0));
+            endLabel.setText("Cannot be empty");
+            good = false;
+        }
+        if(endAMPMComboBox.getValue() == null) {
+            endLabel.setTextFill(Color.color(1, 0, 0));
+            endLabel.setText("Cannot be empty");
+            good = false;
+        }
+
+        try {
+            start = Timestamp.valueOf(startDatePicker.getValue().atStartOfDay());
+            end = Timestamp.valueOf(endDatePicker.getValue().atStartOfDay());
+        } catch(Exception e) {
             good = false;
         }
 
@@ -242,6 +307,7 @@ public class AddAppointmentController implements Initializable  {
             System.out.println("Input was not valid, Appointment NOT updated in database.");
             return;
         }
+
         DBAppointment.insertAppointment(title, description, location, type, start, end, customerId, userId, contactId);
 
         Parent root = FXMLLoader.load(getClass().getResource("/View/main.fxml"));
@@ -259,5 +325,9 @@ public class AddAppointmentController implements Initializable  {
         stage.setTitle("Appointment Appointment Manager");
         stage.setScene(scene);
         stage.show();
+    }
+
+    public void onEditStart(ActionEvent actionEvent) throws IOException {
+        System.out.println("v: " + startDatePicker.getValue());
     }
 }

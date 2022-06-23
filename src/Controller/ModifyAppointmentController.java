@@ -137,8 +137,8 @@ public class ModifyAppointmentController implements Initializable  {
         userIdComboBox.setValue(appointment.getUserId());
         contactIdComboBox.setValue(appointment.getContactId());
 
-        startDatePicker.setValue(appointment.getStart().toLocalDate());
-        endDatePicker.setValue(appointment.getEnd().toLocalDate());
+        //startDatePicker.setValue(appointment.getStart().toLocalDate());
+        //endDatePicker.setValue(appointment.getEnd().toLocalDate());
 
         // Populate time pickers
         ObservableList<Integer> hours = FXCollections.observableList(IntStream.rangeClosed(1, 12).boxed().collect(Collectors.toList()));
