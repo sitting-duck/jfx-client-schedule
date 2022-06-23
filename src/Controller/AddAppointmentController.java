@@ -308,6 +308,10 @@ public class AddAppointmentController implements Initializable  {
             return;
         }
 
+        Appointment newAppointment = new Appointment(0, title, description, location, type, start, end, customerId, userId, contactId);
+        boolean isOverlap = DBAppointment.isCollision(newAppointment);
+        System.out.println("isOverlap: " + isOverlap);
+
         DBAppointment.insertAppointment(title, description, location, type, start, end, customerId, userId, contactId);
 
         Parent root = FXMLLoader.load(getClass().getResource("/View/main.fxml"));

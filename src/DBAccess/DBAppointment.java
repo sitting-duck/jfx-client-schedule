@@ -7,6 +7,7 @@ import javafx.collections.ObservableList;
 
 import java.sql.*;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 public abstract class DBAppointment {
 
@@ -55,6 +56,13 @@ public abstract class DBAppointment {
         return matchingAppointments;
     }
 
+    public static ObservableList<Appointment> lookupAppointmentsForCustomer(int id) {
+        ObservableList<Appointment> allAppointments = getAllAppointments();
+        final ObservableList<Appointment> matchingAppointments = FXCollections.observableArrayList();
+        allAppointments.stream().filter(appointment -> Integer.compare(appointment.getCustomerId(), id) == 0).forEach(matchingAppointments::add);
+        return matchingAppointments;
+    }
+
     public static int insertAppointment(Appointment appointment) throws SQLException {
         String sql = "INSERT INTO client_schedule.appointments (Title, Description, Location, Type, Start, End, Customer_ID, User_ID, Contact_ID) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         PreparedStatement ps = DBConnection.getConnection().prepareStatement(sql);
@@ -69,6 +77,40 @@ public abstract class DBAppointment {
         ps.setInt(9, appointment.getContactId());
         int rowsAffected = ps.executeUpdate();
         return rowsAffected;
+    }
+
+    public static boolean isCollision(Appointment a) {
+        // get Customer ID and check all appointments for customer
+        ObservableList<Appointment> appointments = lookupAppointmentsForCustomer(a.getCustomerId());
+
+        // convert the timestamps to LocalDateTime
+        for (Appointment b: appointments) {
+            LocalDateTime aStart = a.getStart().toLocalDateTime();
+            LocalDateTime aEnd = a.getEnd().toLocalDateTime();
+
+            LocalDateTime bStart = b.getStart().toLocalDateTime();
+            LocalDateTime bEnd = b.getEnd().toLocalDateTime();
+
+            // when a starts before b is over
+            // aStart >= bStart && aStart < bEnd
+            if((aStart.isAfter(bStart) || aStart.isEqual(bStart)) && (aStart.isBefore(bEnd))) {
+                System.out.println("case 1");
+                return true;
+            }
+
+            // aEnd > bStart && aEnd <= bEnd
+            if((aEnd.isAfter(bStart)) && (aEnd.isBefore(bEnd) || aEnd.isEqual(bEnd))) {
+                System.out.println("case 2");
+                return true;
+            }
+
+            // aStart <= bStart && aEnd >= bEnd
+            if((aStart.isBefore(bStart) || aStart.isEqual(bStart)) && (aEnd.isAfter(bEnd) || aEnd.isEqual(bEnd))) {
+                System.out.println("case 3");
+                return true;
+            }
+        }
+        return false;
     }
 
     public static int insertAppointment(String title, String description, String location, String type, Timestamp start, Timestamp end, int customerId, int userId, int contactId) throws SQLException {
