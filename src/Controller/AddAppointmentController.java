@@ -1,7 +1,13 @@
 package Controller;
 
 import DBAccess.DBAppointment;
+import DBAccess.DBContact;
+import DBAccess.DBCustomer;
+import DBAccess.DBUser;
 import Model.Appointment;
+import Model.Contact;
+import Model.Customer;
+import Model.User;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -100,15 +106,8 @@ public class AddAppointmentController implements Initializable  {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        LocalTime start = LocalTime.of(1, 0);
-        LocalTime end = LocalTime.of(12, 0);
 
-        while(start.isBefore(end.plusSeconds(1))) {
-            startHourComboBox.getItems().add(start);
-            start = start.plusHours(1);
-        }
-        startHourComboBox.getSelectionModel().select(LocalTime.of(9, 0));
-
+        // Populate time pickers
         ObservableList<Integer> hours = FXCollections.observableList(IntStream.rangeClosed(1, 12).boxed().collect(Collectors.toList()));
         startHourComboBox.setPromptText("Hour");
         startHourComboBox.setVisibleRowCount(12);
@@ -141,6 +140,30 @@ public class AddAppointmentController implements Initializable  {
         endAMPMComboBox.setVisibleRowCount(2);
         endAMPMComboBox.setItems(amPm);
 
+        // Populate customer ID ComboBox
+        ArrayList customerIdList = new ArrayList<Integer>();
+        for(Customer c: DBCustomer.getAllCustomers()) {
+            customerIdList.add(c.getId());
+        }
+        ObservableList<Integer> customerIds = FXCollections.observableList(customerIdList);
+        customerIdComboBox.setItems(customerIds);
+
+        // Populate User ID ComboBox
+        ArrayList userIdList = new ArrayList<Integer>();
+        for(User u: DBUser.getAllUsers()) {
+            userIdList.add(u.getId());
+        }
+        ObservableList<Integer> userIds = FXCollections.observableList(userIdList);
+        userIdComboBox.setItems(userIds);
+
+        // Populate Contact ID ComboBox
+        ArrayList contactIdList = new ArrayList<Integer>();
+        for(Contact c: DBContact.getAllContacts()) {
+            contactIdList.add(c.getId());
+        }
+        ObservableList<Integer> contactIds = FXCollections.observableList(contactIdList);
+        contactIdComboBox.setItems(contactIds);
+
     }
 
     public void onOkButton(ActionEvent actionEvent) throws IOException, SQLException {
@@ -152,9 +175,37 @@ public class AddAppointmentController implements Initializable  {
         Date start = new Date(2022, 6, 16); //todo
         Date end = new Date(2022, 6, 16); // todo
 
-        int customerId = (int) customerIdComboBox.getSelectionModel().getSelectedItem();
-        int userId = (int) userIdComboBox.getSelectionModel().getSelectedItem();
-        int contactId = (int) contactIdComboBox.getSelectionModel().getSelectedItem();
+        int customerId = -1;
+        if(customerIdComboBox.getSelectionModel().getSelectedItem() != null) {
+            customerId = (int) customerIdComboBox.getSelectionModel().getSelectedItem();
+        }
+        if(customerId == -1) {
+            customerIdLabel.setTextFill(Color.color(1, 0, 0));
+            customerIdLabel.setText("Cannot be empty");
+            good = false;
+        }
+
+        int userId = -1;
+        if(userIdComboBox.getSelectionModel().getSelectedItem() != null) {
+            userId = (int) userIdComboBox.getSelectionModel().getSelectedItem();
+        }
+        if(userId == -1) {
+            userIdLabel.setTextFill(Color.color(1, 0, 0));
+            userIdLabel.setText("Cannot be empty");
+            good = false;
+        }
+
+        int contactId = -1;
+        if(contactIdComboBox.getSelectionModel().getSelectedItem() != null) {
+            contactId = (int) contactIdComboBox.getSelectionModel().getSelectedItem();
+        }
+        if(contactId == -1) {
+            contactIdLabel.setTextFill(Color.color(1, 0, 0));
+            contactIdLabel.setText("Cannot be empty");
+            good = false;
+        }
+
+
 
         if(description.compareTo("") == 0) {
             descriptionLabel.setTextFill(Color.color(1, 0, 0));
@@ -174,6 +225,16 @@ public class AddAppointmentController implements Initializable  {
         if(type.compareTo("") == 0) {
             typeLabel.setTextFill(Color.color(1, 0, 0));
             typeLabel.setText("Cannot be empty");
+            good = false;
+        }
+        if(startDatePicker.getValue() == null) {
+            startLabel.setTextFill(Color.color(1, 0, 0));
+            startLabel.setText("Cannot be empty");
+            good = false;
+        }
+        if(endDatePicker.getValue() == null) {
+            endLabel.setTextFill(Color.color(1, 0, 0));
+            endLabel.setText("Cannot be empty");
             good = false;
         }
 

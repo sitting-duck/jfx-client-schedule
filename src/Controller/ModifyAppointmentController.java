@@ -1,7 +1,15 @@
 package Controller;
 
 import DBAccess.DBAppointment;
+import DBAccess.DBContact;
+import DBAccess.DBCustomer;
+import DBAccess.DBUser;
 import Model.Appointment;
+import Model.Contact;
+import Model.Customer;
+import Model.User;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -9,10 +17,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
@@ -20,7 +25,10 @@ import java.io.IOException;
 import java.net.URL;
 import java.sql.Date;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 public class ModifyAppointmentController implements Initializable  {
 
@@ -56,13 +64,31 @@ public class ModifyAppointmentController implements Initializable  {
     private Label startLabel;
 
     @FXML
-    private TextField startTextField;
+    private DatePicker startDatePicker;
+
+    @FXML
+    private ComboBox startHourComboBox;
+
+    @FXML
+    private ComboBox startMinuteComboBox;
+
+    @FXML
+    private ComboBox startAMPMComboBox;
 
     @FXML
     private Label endLabel;
 
     @FXML
-    private TextField endTextField;
+    private DatePicker endDatePicker;
+
+    @FXML
+    private ComboBox endHourComboBox;
+
+    @FXML
+    private ComboBox endMinuteComboBox;
+
+    @FXML
+    private ComboBox endAMPMComboBox;
 
     @FXML
     private Label customerIdLabel;
@@ -110,6 +136,66 @@ public class ModifyAppointmentController implements Initializable  {
         customerIdComboBox.setValue(appointment.getCustomerId());
         userIdComboBox.setValue(appointment.getUserId());
         contactIdComboBox.setValue(appointment.getContactId());
+
+        startDatePicker.setValue(appointment.getStart().toLocalDate());
+        endDatePicker.setValue(appointment.getEnd().toLocalDate());
+
+        // Populate time pickers
+        ObservableList<Integer> hours = FXCollections.observableList(IntStream.rangeClosed(1, 12).boxed().collect(Collectors.toList()));
+        startHourComboBox.setPromptText("Hour");
+        startHourComboBox.setVisibleRowCount(12);
+        startHourComboBox.setItems(hours);
+        endHourComboBox.setPromptText("Hour");
+        endHourComboBox.setVisibleRowCount(12);
+        endHourComboBox.setItems(hours);
+
+        ArrayList minuteIncrement15 = new ArrayList<Integer>();
+        minuteIncrement15.add(0);
+        minuteIncrement15.add(15);
+        minuteIncrement15.add(30);
+        minuteIncrement15.add(45);
+        ObservableList<Integer> minutes = FXCollections.observableList(minuteIncrement15);
+        startMinuteComboBox.setPromptText("Minute");
+        startMinuteComboBox.setVisibleRowCount(4);
+        startMinuteComboBox.setItems(minutes);
+        endMinuteComboBox.setPromptText("Minute");
+        endMinuteComboBox.setVisibleRowCount(4);
+        endMinuteComboBox.setItems(minutes);
+
+        ArrayList amPMList = new ArrayList<String>();
+        amPMList.add("AM");
+        amPMList.add("PM");
+        ObservableList<String> amPm = FXCollections.observableList(amPMList);
+        startAMPMComboBox.setPromptText("AM/PM");
+        startAMPMComboBox.setVisibleRowCount(2);
+        startAMPMComboBox.setItems(amPm);
+        endAMPMComboBox.setPromptText("AM/PM");
+        endAMPMComboBox.setVisibleRowCount(2);
+        endAMPMComboBox.setItems(amPm);
+
+        // Populate customer ID ComboBox
+        ArrayList customerIdList = new ArrayList<Integer>();
+        for(Customer c: DBCustomer.getAllCustomers()) {
+            customerIdList.add(c.getId());
+        }
+        ObservableList<Integer> customerIds = FXCollections.observableList(customerIdList);
+        customerIdComboBox.setItems(customerIds);
+
+        // Populate User ID ComboBox
+        ArrayList userIdList = new ArrayList<Integer>();
+        for(User u: DBUser.getAllUsers()) {
+            userIdList.add(u.getId());
+        }
+        ObservableList<Integer> userIds = FXCollections.observableList(userIdList);
+        userIdComboBox.setItems(userIds);
+
+        // Populate Contact ID ComboBox
+        ArrayList contactIdList = new ArrayList<Integer>();
+        for(Contact c: DBContact.getAllContacts()) {
+            contactIdList.add(c.getId());
+        }
+        ObservableList<Integer> contactIds = FXCollections.observableList(contactIdList);
+        contactIdComboBox.setItems(contactIds);
     }
 
     public void onOkButton(ActionEvent actionEvent) throws IOException, SQLException {
