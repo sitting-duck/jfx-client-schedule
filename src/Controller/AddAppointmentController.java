@@ -32,6 +32,7 @@ import java.sql.Date;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
@@ -298,7 +299,35 @@ public class AddAppointmentController implements Initializable  {
 
         try {
             start = Timestamp.valueOf(startDatePicker.getValue().atStartOfDay());
+            int startTimeHour = (int)startHourComboBox.getValue();
+            int startTimeMinute = (int)startMinuteComboBox.getValue();
+            String startTimeAmPm = (String)startAMPMComboBox.getValue();
+            LocalDateTime startTime = start.toLocalDateTime();
+            if(startTimeAmPm.equals("AM")) {
+                startTime = startTime.plusHours(startTimeHour);
+            } else if(startTimeAmPm.equals("PM")) {
+                startTime = startTime.plusHours(12+startTimeHour);
+            } else {
+                System.out.println("Error: Invalid value for start am/pm combo box");
+            }
+            startTime = startTime.plusMinutes(startTimeMinute);
+            start = Timestamp.valueOf(startTime);
+
             end = Timestamp.valueOf(endDatePicker.getValue().atStartOfDay());
+            int endTimeHour = (int)endHourComboBox.getValue();
+            int endTimeMinute = (int)endMinuteComboBox.getValue();
+            String endTimeAmPm = (String)endAMPMComboBox.getValue();
+            LocalDateTime endTime = end.toLocalDateTime();
+            if(endTimeAmPm.equals("AM")) {
+                endTime = endTime.plusHours(endTimeHour);
+            } else if(endTimeAmPm.equals("PM")) {
+                endTime = endTime.plusHours(12+endTimeHour);
+            } else {
+                System.out.println("Error: Invalid value for end am/pm combo box");
+            }
+            endTime = endTime.plusMinutes(endTimeMinute);
+            end = Timestamp.valueOf(endTime);
+            
         } catch(Exception e) {
             good = false;
         }

@@ -19,6 +19,7 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.Date;
+import java.sql.SQLException;
 import java.util.ResourceBundle;
 
 public class MainViewController implements Initializable {
@@ -182,8 +183,21 @@ public class MainViewController implements Initializable {
         }
     }
 
-    public void onDeleteAppointment(ActionEvent actionEvent) throws IOException {
+    public void onDeleteAppointment(ActionEvent actionEvent) throws IOException, SQLException {
+        System.out.println("onDeleteAppointment()");
+        Appointment appointment = (Appointment)appointmentTable.getSelectionModel().getSelectedItem();
 
+        if(appointment == null) {
+            System.out.println("Error: no appointment selected");
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("No appointment selected");
+            alert.setHeaderText("No appointment selected");
+            alert.setContentText("No appointment selected. Please select a appointment to delete.");
+            alert.showAndWait();
+        } else {
+            DBAppointment.deleteAppointment(appointment.getId());
+            appointmentTable.setItems(DBAppointment.getAllAppointments());
+        }
     }
 
     /**

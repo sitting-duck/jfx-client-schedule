@@ -144,4 +144,14 @@ public abstract class DBAppointment {
         int rowsAffected = ps.executeUpdate();
         return rowsAffected;
     }
+
+    public static int deleteAppointment(int appointmentId) throws SQLException {
+        String sql = "DELETE FROM client_schedule.appointments WHERE Appointment_ID = ?";
+        PreparedStatement ps = DBConnection.getConnection().prepareStatement(sql);
+        ps.setInt(1, appointmentId);
+        int rowsAffected = ps.executeUpdate();
+        return rowsAffected;
+    }
+
+
 }

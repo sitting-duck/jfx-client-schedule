@@ -102,8 +102,8 @@
                                     <padding><Insets bottom="10.0" left="10.0" right="10.0" top="10.0" /></padding>
                                     <children>
                                         <Button fx:id="addAppointmentBtn" mnemonicParsing="false" onAction="#onAddAppointment" text="Add" translateX="-20" />
-                                        <Button fx:id="modifyProductBtn" mnemonicParsing="false" onAction="#onModifyAppointment" text="Modify" translateX="-10" />
-                                        <Button fx:id="deleteProductBtn" mnemonicParsing="false" onAction="#onDeleteAppointment" text="Delete" translateX="0" />
+                                        <Button fx:id="modifyAppointmentBtn" mnemonicParsing="false" onAction="#onModifyAppointment" text="Modify" translateX="-10" />
+                                        <Button fx:id="deleteAppointmentBtn" mnemonicParsing="false" onAction="#onDeleteAppointment" text="Delete" translateX="0" />
                                     </children>
                                 </HBox>
                             </children>
