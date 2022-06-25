@@ -8,9 +8,6 @@ import Model.Appointment;
 import Model.Contact;
 import Model.Customer;
 import Model.User;
-import Utils.TimeUtils;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -21,27 +18,26 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.*;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.DatePicker;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
-import javax.swing.event.ChangeEvent;
 import java.io.IOException;
 import java.net.URL;
-import java.sql.Date;
 import java.sql.SQLException;
 import java.sql.Timestamp;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-public class AddAppointmentController implements Initializable  {
+public class AddAppointmentControllerOrig implements Initializable  {
     @FXML
     private Label titleLabel;
 
@@ -302,18 +298,135 @@ public class AddAppointmentController implements Initializable  {
 
         try {
             start = Timestamp.valueOf(startDatePicker.getValue().atStartOfDay());
+
+            System.out.println("start start of day: " + start.toString());
+
             int startTimeHour = (int)startHourComboBox.getValue();
             int startTimeMinute = (int)startMinuteComboBox.getValue();
             String startTimeAmPm = (String)startAMPMComboBox.getValue();
-            start = TimeUtils.getTime(start, startTimeHour, startTimeMinute, startTimeAmPm);
             LocalDateTime startTime = start.toLocalDateTime();
+            if(startTimeAmPm.equals("AM")) {
+                if(startTimeHour == 12) {
+                    startTime = startTime.plusHours(0);
+                } else if(startTimeHour == 1) {
+                    startTime = startTime.plusHours(1);
+                } else if(startTimeHour == 2) {
+                    startTime = startTime.plusHours(2);
+                } else if(startTimeHour == 3) {
+                    startTime = startTime.plusHours(3);
+                } else if(startTimeHour == 4) {
+                    startTime = startTime.plusHours(4);
+                } else if(startTimeHour == 5) {
+                    startTime = startTime.plusHours(5);
+                } else if(startTimeHour == 6) {
+                    startTime = startTime.plusHours(6);
+                } else if(startTimeHour == 7) {
+                    startTime = startTime.plusHours(7);
+                } else if(startTimeHour == 8) {
+                    startTime = startTime.plusHours(8);
+                } else if(startTimeHour == 9) {
+                    startTime = startTime.plusHours(9);
+                } else if(startTimeHour == 10) {
+                    startTime = startTime.plusHours(10);
+                } else if(startTimeHour == 11) {
+                    startTime = startTime.plusHours(11);
+                }
+            } else if(startTimeAmPm.equals("PM")) {
+                if(startTimeHour == 12) {
+                    startTime = startTime.plusHours(12);
+                } else if(startTimeHour == 1) {
+                    startTime = startTime.plusHours(13);
+                } else if(startTimeHour == 2) {
+                    startTime = startTime.plusHours(14);
+                } else if(startTimeHour == 3) {
+                    startTime = startTime.plusHours(15);
+                } else if(startTimeHour == 4) {
+                    startTime = startTime.plusHours(16);
+                } else if(startTimeHour == 5) {
+                    startTime = startTime.plusHours(17);
+                } else if(startTimeHour == 6) {
+                    startTime = startTime.plusHours(18);
+                } else if(startTimeHour == 7) {
+                    startTime = startTime.plusHours(19);
+                } else if(startTimeHour == 8) {
+                    startTime = startTime.plusHours(20);
+                } else if(startTimeHour == 9) {
+                    startTime = startTime.plusHours(21);
+                } else if(startTimeHour == 10) {
+                    startTime = startTime.plusHours(22);
+                } else if(startTimeHour == 11) {
+                    startTime = startTime.plusHours(23);
+                }
+            } else {
+                System.out.println("Error: Invalid value for start am/pm combo box");
+            }
+            startTime = startTime.plusMinutes(startTimeMinute);
+            start = Timestamp.valueOf(startTime);
 
             end = Timestamp.valueOf(endDatePicker.getValue().atStartOfDay());
+            System.out.println("end start of day: " + end.toString());
+
             int endTimeHour = (int)endHourComboBox.getValue();
             int endTimeMinute = (int)endMinuteComboBox.getValue();
             String endTimeAmPm = (String)endAMPMComboBox.getValue();
-            end = TimeUtils.getTime(end, endTimeHour, endTimeMinute, endTimeAmPm);
             LocalDateTime endTime = end.toLocalDateTime();
+            if(endTimeAmPm.equals("AM")) {
+                if(endTimeHour == 12) {
+                    endTime = endTime.plusHours(0);
+                } else if(endTimeHour == 1) {
+                    endTime = endTime.plusHours(1);
+                } else if(endTimeHour == 2) {
+                    endTime = endTime.plusHours(2);
+                } else if(endTimeHour == 3) {
+                    endTime = endTime.plusHours(3);
+                } else if(endTimeHour == 4) {
+                    endTime = endTime.plusHours(4);
+                } else if(endTimeHour == 5) {
+                    endTime = endTime.plusHours(5);
+                } else if(endTimeHour == 6) {
+                    endTime = endTime.plusHours(6);
+                } else if(endTimeHour == 7) {
+                    endTime = endTime.plusHours(7);
+                } else if(endTimeHour == 8) {
+                    endTime = endTime.plusHours(8);
+                } else if(endTimeHour == 9) {
+                    endTime = endTime.plusHours(9);
+                } else if(endTimeHour == 10) {
+                    endTime = endTime.plusHours(10);
+                } else if(endTimeHour == 11) {
+                    endTime = endTime.plusHours(11);
+                }
+            } else if(endTimeAmPm.equals("PM")) {
+                if(endTimeHour == 12) {
+                    endTime = endTime.plusHours(12);
+                } else if(endTimeHour == 1) {
+                    endTime = endTime.plusHours(13);
+                } else if(endTimeHour == 2) {
+                    endTime = endTime.plusHours(14);
+                } else if(endTimeHour == 3) {
+                    endTime = endTime.plusHours(15);
+                } else if(endTimeHour == 4) {
+                    endTime = endTime.plusHours(16);
+                } else if(endTimeHour == 5) {
+                    endTime = endTime.plusHours(17);
+                } else if(endTimeHour == 6) {
+                    endTime = endTime.plusHours(18);
+                } else if(endTimeHour == 7) {
+                    endTime = endTime.plusHours(19);
+                } else if(endTimeHour == 8) {
+                    endTime = endTime.plusHours(20);
+                } else if(endTimeHour == 9) {
+                    endTime = endTime.plusHours(21);
+                } else if(endTimeHour == 10) {
+                    endTime = endTime.plusHours(22);
+                } else if(endTimeHour == 11) {
+                    endTime = endTime.plusHours(23);
+                }
+            } else {
+                System.out.println("Error: Invalid value for end am/pm combo box");
+            }
+            endTime = endTime.plusMinutes(endTimeMinute);
+            end = Timestamp.valueOf(endTime);
 
             long minutes = ChronoUnit.MINUTES.between(startTime, endTime);
             long hours = ChronoUnit.HOURS.between(startTime, endTime);
