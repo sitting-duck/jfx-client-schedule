@@ -9,6 +9,7 @@ import Model.Contact;
 import Model.Customer;
 import Model.User;
 import Utils.TimeUtils;
+import Utils.UXUtil;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -129,6 +130,14 @@ public class ModifyAppointmentController implements Initializable  {
             alert.showAndWait();
         }
 
+        // Init UI
+        UXUtil.initAppointmentWidget(startDatePicker, startHourComboBox, startMinuteComboBox, startAMPMComboBox);
+        UXUtil.initAppointmentWidget(endDatePicker, endHourComboBox, endMinuteComboBox, endAMPMComboBox);
+        UXUtil.initCustomerIDComboBox(customerIdComboBox);
+        UXUtil.initUserIDComboBox(userIdComboBox);
+        UXUtil.initContactIDComboBox(contactIdComboBox);
+
+        // Set Values
         // appointment id is auto generated and should not be edited by the user
         idTextField.setText(Integer.toString(appointment.getId()));
         idTextField.setEditable(false);
@@ -143,97 +152,21 @@ public class ModifyAppointmentController implements Initializable  {
         userIdComboBox.setValue(appointment.getUserId());
         contactIdComboBox.setValue(appointment.getContactId());
 
-        // Init Date pickers
-        startDatePicker.getEditor().setEditable(false);
-        endDatePicker.getEditor().setEditable(false);
-        startDatePicker.getEditor().setDisable(true);
-        endDatePicker.getEditor().setDisable(true);
         startDatePicker.setValue(appointment.getStart().toLocalDateTime().toLocalDate());
         endDatePicker.setValue(appointment.getEnd().toLocalDateTime().toLocalDate());
-        startDatePicker.getEditor().setOnKeyTyped(new EventHandler<KeyEvent>() {
-
-            @Override
-            public void handle(KeyEvent keyEvent) {
-                System.out.println(keyEvent.getText());
-            }
-        });
-
-        endDatePicker.getEditor().setOnKeyTyped(new EventHandler<KeyEvent>() {
-            @Override
-            public void handle(KeyEvent keyEvent) {
-                System.out.println(keyEvent.getText());
-            }
-        });
-
-        // Populate time pickers
-        ObservableList<Integer> hours = FXCollections.observableList(IntStream.rangeClosed(1, 12).boxed().collect(Collectors.toList()));
-        startHourComboBox.setPromptText("Hour");
-        startHourComboBox.setVisibleRowCount(12);
-        startHourComboBox.setItems(hours);
         int startHour = appointment.getStart().toLocalDateTime().getHour();
         startHour = TimeUtils.militaryToCivilianHour(startHour);
         startHourComboBox.setValue(startHour);
-        endHourComboBox.setPromptText("Hour");
-        endHourComboBox.setVisibleRowCount(12);
-        endHourComboBox.setItems(hours);
         int endHour = appointment.getEnd().toLocalDateTime().getHour();
         endHour = TimeUtils.militaryToCivilianHour(endHour);
         endHourComboBox.setValue(endHour);
 
-        ArrayList minuteIncrement15 = new ArrayList<Integer>();
-        minuteIncrement15.add(0);
-        minuteIncrement15.add(15);
-        minuteIncrement15.add(30);
-        minuteIncrement15.add(45);
-        ObservableList<Integer> minutes = FXCollections.observableList(minuteIncrement15);
-        startMinuteComboBox.setPromptText("Minute");
-        startMinuteComboBox.setVisibleRowCount(4);
-        startMinuteComboBox.setItems(minutes);
         startMinuteComboBox.setValue(appointment.getStart().toLocalDateTime().getMinute());
-        endMinuteComboBox.setPromptText("Minute");
-        endMinuteComboBox.setVisibleRowCount(4);
-        endMinuteComboBox.setItems(minutes);
         endMinuteComboBox.setValue(appointment.getEnd().toLocalDateTime().getMinute());
-
-        ArrayList amPMList = new ArrayList<String>();
-        amPMList.add("AM");
-        amPMList.add("PM");
-        ObservableList<String> amPm = FXCollections.observableList(amPMList);
-        startAMPMComboBox.setPromptText("AM/PM");
-        startAMPMComboBox.setVisibleRowCount(2);
-        startAMPMComboBox.setItems(amPm);
         startAMPMComboBox.setValue(TimeUtils.getAMPMFromHour(startHour));
-
-        endAMPMComboBox.setPromptText("AM/PM");
-        endAMPMComboBox.setVisibleRowCount(2);
-        endAMPMComboBox.setItems(amPm);
         endAMPMComboBox.setValue(TimeUtils.getAMPMFromHour(endHour));
-
-        // Populate customer ID ComboBox
-        ArrayList customerIdList = new ArrayList<Integer>();
-        for(Customer c: DBCustomer.getAllCustomers()) {
-            customerIdList.add(c.getId());
-        }
-        ObservableList<Integer> customerIds = FXCollections.observableList(customerIdList);
-        customerIdComboBox.setItems(customerIds);
         customerIdComboBox.setValue(appointment.getCustomerId());
-
-        // Populate User ID ComboBox
-        ArrayList userIdList = new ArrayList<Integer>();
-        for(User u: DBUser.getAllUsers()) {
-            userIdList.add(u.getId());
-        }
-        ObservableList<Integer> userIds = FXCollections.observableList(userIdList);
-        userIdComboBox.setItems(userIds);
         userIdComboBox.setValue(appointment.getUserId());
-
-        // Populate Contact ID ComboBox
-        ArrayList contactIdList = new ArrayList<Integer>();
-        for(Contact c: DBContact.getAllContacts()) {
-            contactIdList.add(c.getId());
-        }
-        ObservableList<Integer> contactIds = FXCollections.observableList(contactIdList);
-        contactIdComboBox.setItems(contactIds);
         contactIdComboBox.setValue(appointment.getContactId());
     }
 
@@ -359,6 +292,14 @@ public class ModifyAppointmentController implements Initializable  {
             long hours = ChronoUnit.HOURS.between(startTime, endTime);
 
             System.out.println("Appointment is " + hours + " hours and " + minutes + " minutes.");
+
+            if(minutes == 0) {
+                good = false;
+                startLabel.setTextFill(Color.color(1, 0, 0));
+                startLabel.setText("Appointment cannot be zero length");
+                endLabel.setTextFill(Color.color(1, 0, 0));
+                endLabel.setText("Appointment cannot be zero length");
+            }
 
         } catch(Exception e) {
             good = false;
