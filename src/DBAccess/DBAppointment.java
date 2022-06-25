@@ -85,13 +85,23 @@ public abstract class DBAppointment {
 
         // convert the timestamps to LocalDateTime
         for (Appointment b: appointments) {
+
+            if(a.getId() == b.getId()) {
+                // Appointment cannot collide with itself
+                continue;
+            }
+
             LocalDateTime aStart = a.getStart().toLocalDateTime();
             LocalDateTime aEnd = a.getEnd().toLocalDateTime();
 
             LocalDateTime bStart = b.getStart().toLocalDateTime();
             LocalDateTime bEnd = b.getEnd().toLocalDateTime();
 
-            // when a starts before b is over
+            // aStart - start of meeting a
+            // aEnd   - end of meeting a
+            // bStart - start of meeting b
+            // bEnd   - end of meeting b
+
             // aStart >= bStart && aStart < bEnd
             if((aStart.isAfter(bStart) || aStart.isEqual(bStart)) && (aStart.isBefore(bEnd))) {
                 System.out.println("case 1");
@@ -128,15 +138,15 @@ public abstract class DBAppointment {
         int rowsAffected = ps.executeUpdate();
         return rowsAffected;
     }
-    public static int updateAppointment(int id, String title, String description, String location, String type, Date start, Date end, int customerId, int userId, int contactId) throws SQLException {
+    public static int updateAppointment(int id, String title, String description, String location, String type, Timestamp start, Timestamp end, int customerId, int userId, int contactId) throws SQLException {
         String sql = "UPDATE client_schedule.appointments SET Title = ?, Description = ?, Location = ?, Type = ?, Start = ?, End = ?, Customer_ID = ?, User_ID = ?, Contact_ID = ?  WHERE Appointment_ID = ?";
         PreparedStatement ps = DBConnection.getConnection().prepareStatement(sql);
         ps.setString(1, title);
         ps.setString(2, description);
         ps.setString(3, location);
         ps.setString(4, type);
-        ps.setDate(5, start);
-        ps.setDate(6, end);
+        ps.setTimestamp(5, start);
+        ps.setTimestamp(6, end);
         ps.setInt(7, customerId);
         ps.setInt(8, userId);
         ps.setInt(9, contactId);
@@ -152,6 +162,5 @@ public abstract class DBAppointment {
         int rowsAffected = ps.executeUpdate();
         return rowsAffected;
     }
-
 
 }

@@ -28,7 +28,7 @@
       <Label fx:id="startLabel" text="" />
       <HBox prefWidth="200.0">
          <children>
-            <DatePicker fx:id="startDatePicker" promptText="Start" onAction="#onEditStart" />
+            <DatePicker fx:id="startDatePicker" promptText="Start" />
             <ComboBox fx:id="startHourComboBox" prefWidth="150.0" promptText="Hour" />
             <ComboBox fx:id="startMinuteComboBox" prefWidth="150.0" promptText="Minute" />
             <ComboBox fx:id="startAMPMComboBox" prefWidth="150.0" promptText="AM/PM" />

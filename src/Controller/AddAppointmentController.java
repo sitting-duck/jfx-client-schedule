@@ -9,8 +9,6 @@ import Model.Contact;
 import Model.Customer;
 import Model.User;
 import Utils.TimeUtils;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -25,16 +23,11 @@ import javafx.scene.control.*;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
-
-import javax.swing.event.ChangeEvent;
 import java.io.IOException;
 import java.net.URL;
-import java.sql.Date;
 import java.sql.SQLException;
 import java.sql.Timestamp;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
@@ -136,8 +129,6 @@ public class AddAppointmentController implements Initializable  {
                 System.out.println(keyEvent.getText());
             }
         });
-
-
 
         // Populate time pickers
         ObservableList<Integer> hours = FXCollections.observableList(IntStream.rangeClosed(1, 12).boxed().collect(Collectors.toList()));
@@ -338,7 +329,7 @@ public class AddAppointmentController implements Initializable  {
             Parent root = FXMLLoader.load(getClass().getResource("/View/main.fxml"));
             Stage stage = (Stage)((Node)actionEvent.getSource()).getScene().getWindow();
             Scene scene = new Scene(root, 1000, 400);
-            stage.setTitle("Appointment Appointment Manager");
+            stage.setTitle("Appointment Manager");
             stage.setScene(scene);
             stage.show();
         }
@@ -351,9 +342,5 @@ public class AddAppointmentController implements Initializable  {
         stage.setTitle("Appointment Appointment Manager");
         stage.setScene(scene);
         stage.show();
-    }
-
-    public void onEditStart(ActionEvent actionEvent) throws IOException {
-        System.out.println("v: " + startDatePicker.getValue());
     }
 }

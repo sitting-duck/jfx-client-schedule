@@ -32,4 +32,20 @@ public class TimeUtils {
         day = Timestamp.valueOf(time);
         return day;
     }
+
+    public static int militaryToCivilianHour(int hour) {
+        if(hour > 0 && hour <= 12) {
+            return hour;
+        } else {
+            return hour - 12;
+        }
+    }
+
+    public static String getAMPMFromHour(int hour) {
+        if(hour > 0 && hour <= 12) {
+            return "AM";
+        } else {
+            return "PM";
+        }
+    }
 }

@@ -8,6 +8,8 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.VBox?>
 
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.layout.HBox?>
 <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefWidth="600.0" spacing="10.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.ModifyAppointmentController">
    <children>
       <Label text="Modify Appointment" />
@@ -22,9 +24,23 @@
       <Label fx:id="typeLabel" text="" />
       <TextField fx:id="typeTextField" promptText="Type" />
       <Label fx:id="startLabel" text="" />
-      <TextField fx:id="startTextField" promptText="Start" />
+      <HBox prefWidth="200.0">
+         <children>
+            <DatePicker fx:id="startDatePicker" promptText="Start" />
+            <ComboBox fx:id="startHourComboBox" prefWidth="150.0" promptText="Hour" />
+            <ComboBox fx:id="startMinuteComboBox" prefWidth="150.0" promptText="Minute" />
+            <ComboBox fx:id="startAMPMComboBox" prefWidth="150.0" promptText="AM/PM" />
+         </children>
+      </HBox>
       <Label fx:id="endLabel" text="" />
-      <TextField fx:id="endTextField" promptText="End" />
+      <HBox prefWidth="200.0">
+         <children>
+            <DatePicker fx:id="endDatePicker" promptText="End" />
+            <ComboBox fx:id="endHourComboBox" prefWidth="150.0" promptText="Hour" />
+            <ComboBox fx:id="endMinuteComboBox" prefWidth="150.0" promptText="Minute" />
+            <ComboBox fx:id="endAMPMComboBox" prefWidth="150.0" promptText="AM/PM" />
+         </children>
+      </HBox>
       <Label fx:id="customerIdLabel" text="" />
       <ComboBox fx:id="customerIdComboBox" prefWidth="150.0" promptText="Customer ID" />
       <Label fx:id="userIdLabel" text="" />
