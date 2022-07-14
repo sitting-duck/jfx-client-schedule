@@ -1,6 +1,7 @@
 package DBAccess;
 
 import Database.DBConnection;
+import Model.Appointment;
 import Model.Customer;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -76,6 +77,26 @@ public abstract class DBCustomer {
         final ObservableList<Customer> matchingCustomers = FXCollections.observableArrayList();
         allCustomers.stream().filter(customer -> Integer.compare(customer.getId(), id) == 0).forEach(matchingCustomers::add);
         return matchingCustomers;
+    }
+
+    public static int deleteCustomer(int id) throws SQLException {
+        System.out.println("DBAppointment::deleteCustomer: id: " + id);
+        ObservableList<Customer> customers = lookupCustomer(id);
+        ObservableList<Appointment> appointments = DBAppointment.lookupAppointmentsForCustomer(id);
+
+        int rows = 0;
+        for(Customer customer: customers) {
+            System.out.println("Customer: " + customer.getName());
+            for(Appointment appointment: appointments) {
+                System.out.println("Deleting Appointment: " + appointment.getId() + ": " + appointment.getTitle());
+                rows += DBAppointment.deleteAppointment(appointment.getId());
+            }
+            String sql = "DELETE FROM client_schedule.customers WHERE Customer_ID = ?";
+            PreparedStatement ps = DBConnection.getConnection().prepareStatement(sql);
+            ps.setInt(1, id);
+            rows += ps.executeUpdate();
+        }
+        return rows;
     }
 
     public static int insertCustomer(Customer customer) throws SQLException {

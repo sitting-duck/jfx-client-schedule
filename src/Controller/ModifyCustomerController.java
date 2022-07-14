@@ -1,7 +1,10 @@
 package Controller;
 
 import DBAccess.DBCustomer;
+import DBAccess.DBDivision;
 import Model.Customer;
+import Model.Division;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -10,6 +13,7 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.paint.Color;
@@ -54,7 +58,7 @@ public class ModifyCustomerController implements Initializable {
     private Label divisionIdLabel;
 
     @FXML
-    private TextField divisionIdTextField;
+    private ComboBox divisionIdComboBox;
 
     public static void setCustomer(Customer _customer) {
         customer = _customer;
@@ -70,6 +74,9 @@ public class ModifyCustomerController implements Initializable {
             alert.setContentText("No customer selected. Please select a customer to modify.");
             alert.showAndWait();
         }
+        divisionIdComboBox.setItems(DBDivision.getAllDivisions());
+        ObservableList<Division> divisionList = DBDivision.lookupDivision(customer.getDivisionId());
+        divisionIdComboBox.setValue(divisionList.get(0));
 
         // customer id is auto generated and should not be edited by the user
         idTextField.setText(Integer.toString(customer.getId()));
@@ -80,7 +87,6 @@ public class ModifyCustomerController implements Initializable {
         addressTextField.setText(customer.getAddress());
         postalCodeTextField.setText(customer.getPostal());
         phoneTextField.setText(customer.getPhone());
-        divisionIdTextField.setText(Integer.toString(customer.getDivisionId()));
     }
 
     public void onOkButton(ActionEvent actionEvent) throws IOException, SQLException {
@@ -89,7 +95,17 @@ public class ModifyCustomerController implements Initializable {
         String address = addressTextField.getText();
         String postalCode = postalCodeTextField.getText();
         String phone = phoneTextField.getText();
-        String divisionId = divisionIdTextField.getText();
+        Division division = (Division) divisionIdComboBox.getValue();
+        int divisionId = -1;
+        if(division == null) {
+            divisionIdLabel.setTextFill(Color.color(1, 0, 0));
+            divisionIdLabel.setText("Cannot be empty");
+            good = false;
+        } else {
+            divisionIdLabel.setText("");
+            divisionId = division.getId();
+        }
+
         if(name.compareTo("") == 0) {
             nameLabel.setTextFill(Color.color(1, 0, 0));
             nameLabel.setText("Cannot be empty");
@@ -110,7 +126,7 @@ public class ModifyCustomerController implements Initializable {
             phoneLabel.setText("Cannot be empty");
             good = false;
         }
-        if(divisionId.compareTo("") == 0) {
+        if(divisionId == -1) {
             divisionIdLabel.setTextFill(Color.color(1, 0, 0));
             divisionIdLabel.setText("Cannot be empty");
             good = false;
@@ -119,7 +135,7 @@ public class ModifyCustomerController implements Initializable {
             System.out.println("Input was not valid, Customer NOT updated in database.");
             return;
         }
-        DBCustomer.updateCustomer(customer.getId(), name, address, postalCode, phone, Integer.parseInt(divisionId));
+        DBCustomer.updateCustomer(customer.getId(), name, address, postalCode, phone, divisionId);
 
         Parent root = FXMLLoader.load(getClass().getResource("/View/main.fxml"));
         Stage stage = (Stage)((Node)actionEvent.getSource()).getScene().getWindow();

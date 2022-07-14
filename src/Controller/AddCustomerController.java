@@ -103,6 +103,11 @@ public class AddCustomerController  implements Initializable {
         } else {
             phoneLabel.setText("");
         }
+        if(divisionId == -1) {
+            divisionIdLabel.setTextFill(Color.color(1, 0, 0));
+            divisionIdLabel.setText("Cannot be empty");
+            good = false;
+        }
         if(good == false) {
             System.out.println("Input was not valid, Customer NOT updated in database.");
             return;

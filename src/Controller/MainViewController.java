@@ -145,8 +145,21 @@ public class MainViewController implements Initializable {
         }
     }
 
-    public void onDeleteCustomer(ActionEvent actionEvent) throws IOException {
+    public void onDeleteCustomer(ActionEvent actionEvent) throws IOException, SQLException {
+        System.out.println("onDeleteCustomer()");
+        Customer customer = (Customer)customerTable.getSelectionModel().getSelectedItem();
 
+        if(customer == null) {
+            System.out.println("Error: no customer selected");
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("No customer selected");
+            alert.setHeaderText("No customer selected");
+            alert.setContentText("No customer selected. Please select a customer to delete.");
+            alert.showAndWait();
+        } else {
+            DBCustomer.deleteCustomer(customer.getId());
+            customerTable.setItems(DBCustomer.getAllCustomers());
+        }
     }
 
     public void onSearchAppointment(ActionEvent actionEvent) throws IOException {
