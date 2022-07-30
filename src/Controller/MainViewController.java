@@ -174,6 +174,7 @@ public class MainViewController implements Initializable {
         } else {
             DBCustomer.deleteCustomer(customer.getId());
             customerTable.setItems(DBCustomer.getAllCustomers());
+            appointmentsSearchField.setText("");
         }
     }
 
@@ -302,7 +303,9 @@ public class MainViewController implements Initializable {
                System.out.print("class: " + newSelection.getClass());
            }
            Customer customer = (Customer) customerTable.getSelectionModel().getSelectedItem();
-           appointmentsSearchField.setText(customer.getName());
+           if(customer != null) {
+               appointmentsSearchField.setText(customer.getName());
+           }
 
         });
     }

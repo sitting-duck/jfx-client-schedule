@@ -115,7 +115,7 @@ public class AddCustomerController  implements Initializable {
         DBCustomer.insertCustomer(name, address, postalCode, phone, divisionId);
         Parent root = FXMLLoader.load(getClass().getResource("/View/main.fxml"));
         Stage stage = (Stage)((Node)actionEvent.getSource()).getScene().getWindow();
-        Scene scene = new Scene(root, 1000, 400);
+        Scene scene = new Scene(root, 1400, 400);
         stage.setTitle("Customer Appointment Manager");
         stage.setScene(scene);
         stage.show();
@@ -124,7 +124,7 @@ public class AddCustomerController  implements Initializable {
     public void onCancelButton(ActionEvent actionEvent) throws IOException {
         Parent root = FXMLLoader.load(getClass().getResource("/View/main.fxml"));
         Stage stage = (Stage)((Node)actionEvent.getSource()).getScene().getWindow();
-        Scene scene = new Scene(root, 1000, 400);
+        Scene scene = new Scene(root, 1400, 400);
         stage.setTitle("Customer Appointment Manager");
         stage.setScene(scene);
         stage.show();
