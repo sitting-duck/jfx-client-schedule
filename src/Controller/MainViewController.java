@@ -205,17 +205,17 @@ public class MainViewController implements Initializable {
             System.out.println("Got " + appointments.size() + " matching appointments for customer with customer name: " + queryText);
         }
 
-        if(appointments.size() == 0) {
-            Alert alert = new Alert(Alert.AlertType.WARNING);
-            alert.setTitle("Error: no results for " + queryText);
-            alert.setHeaderText("Error: no results for " + queryText);
-            alert.setContentText("Error: no results for " + queryText);
-            alert.showAndWait();
-            return;
-        }
-
         this.appointmentTable.setItems(appointments);
         //this.appointmentsSearchField.setText("");
+
+        if(appointments.size() == 0) {
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Error: no appointments for " + queryText);
+            alert.setHeaderText("Error: no appointments for " + queryText);
+            alert.setContentText("Error: no appointments for " + queryText);
+            alert.showAndWait();
+            //return;
+        }
     }
 
     public void onAddAppointment(ActionEvent actionEvent) throws IOException {
@@ -297,11 +297,12 @@ public class MainViewController implements Initializable {
         customerTable.setItems(DBCustomer.getAllCustomers());
 
         this.customerTable.getSelectionModel().selectedItemProperty().addListener((observable, oldSelection, newSelection) -> {
-            System.out.println("new select: " + newSelection.toString());
-            System.out.print("class: " + newSelection.getClass());
-
-            Customer customer = (Customer) customerTable.getSelectionModel().getSelectedItem();
-            appointmentsSearchField.setText(customer.getName());
+           if(newSelection != null) {
+               System.out.println("new select: " + newSelection.toString());
+               System.out.print("class: " + newSelection.getClass());
+           }
+           Customer customer = (Customer) customerTable.getSelectionModel().getSelectedItem();
+           appointmentsSearchField.setText(customer.getName());
 
         });
     }
