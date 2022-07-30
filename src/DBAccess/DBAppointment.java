@@ -6,7 +6,6 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 import java.sql.*;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 public abstract class DBAppointment {
@@ -38,7 +37,8 @@ public abstract class DBAppointment {
         }
         return alist;
     }
-    public static ObservableList<Appointment> lookupAppointment(String string) {
+    public static ObservableList<Appointment> lookupAppointmentByTitle(String string) {
+        System.out.println("lookupAppointmentByTitle(): " + string);
         ObservableList<Appointment> allAppointments = getAllAppointments();
         final ObservableList<Appointment> matchingAppointments = FXCollections.observableArrayList();
         allAppointments.forEach((appointment) -> {
@@ -49,7 +49,7 @@ public abstract class DBAppointment {
         return matchingAppointments;
     }
 
-    public static ObservableList<Appointment> lookupAppointment(int id) {
+    public static ObservableList<Appointment> lookupAppointmentByTitle(int id) {
         ObservableList<Appointment> allAppointments = getAllAppointments();
         final ObservableList<Appointment> matchingAppointments = FXCollections.observableArrayList();
         allAppointments.stream().filter(appointment -> Integer.compare(appointment.getId(), id) == 0).forEach(matchingAppointments::add);
@@ -57,9 +57,11 @@ public abstract class DBAppointment {
     }
 
     public static ObservableList<Appointment> lookupAppointmentsForCustomer(int id) {
+        System.out.println("lookupAppointmentsForCustomer(): " + id);
         ObservableList<Appointment> allAppointments = getAllAppointments();
         final ObservableList<Appointment> matchingAppointments = FXCollections.observableArrayList();
         allAppointments.stream().filter(appointment -> Integer.compare(appointment.getCustomerId(), id) == 0).forEach(matchingAppointments::add);
+        System.out.println("Num of matching appointments: " + matchingAppointments.size());
         return matchingAppointments;
     }
 

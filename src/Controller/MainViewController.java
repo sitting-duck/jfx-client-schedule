@@ -83,8 +83,23 @@ public class MainViewController implements Initializable {
             System.out.println("Error initializing Appointment table");
             throw new RuntimeException(e);
         }
-    }
 
+        // when the user clicks a Customer in the customer table, the search field for appointments at the top of the
+        // on the right side column will auto-populate with the name of the customer that has been clicked. The
+        // search field has a listener on it defined below such that when a customer name is entered, all appointments
+        // with a matching customer name will show in the table.
+        appointmentsSearchField.textProperty().addListener((observable, oldValue, newValue) -> {
+            String searchString = appointmentsSearchField.getText();
+            System.out.println("Appointment search field text changed: " + searchString);
+            try {
+                this.searchAppointment(searchString);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        });
+    }
     public void onSearchCustomer(ActionEvent actionEvent) throws IOException {
         String queryText = this.customersSearchField.getText();
         System.out.println("getCustomerSearchResultsHandler: " + queryText);
@@ -162,8 +177,45 @@ public class MainViewController implements Initializable {
         }
     }
 
-    public void onSearchAppointment(ActionEvent actionEvent) throws IOException {
+    public void onSearchAppointment(ActionEvent actionEvent) throws Exception {
+        String queryText = this.appointmentsSearchField.getText();
+        System.out.println("getAppointmentSearchResultsHandler: " + queryText);
+        this.searchAppointment(queryText);
+    }
+    public void searchAppointment(String queryText) throws Exception {
+        System.out.println("searchAppointment(): " + queryText);
 
+        if(queryText.isEmpty()) {
+            this.appointmentTable.setItems(DBAppointment.getAllAppointments());
+            System.out.println("Search appointment query text was empty, exiting.");
+            return;
+        }
+
+        ObservableList<Appointment> appointments;
+        try {
+            int idNum = Integer.parseInt(queryText);
+            appointments = DBAppointment.lookupAppointmentByTitle(idNum);
+        } catch(NumberFormatException exception) {
+            System.out.println("Non Fatal Error: " + queryText + " cannot be converted to Integer.");
+
+            // Search for appointment by customer name
+            int customerId = DBCustomer.getCustomerByName(queryText).getId();
+            appointments = DBAppointment.lookupAppointmentsForCustomer(customerId);
+
+            System.out.println("Got " + appointments.size() + " matching appointments for customer with customer name: " + queryText);
+        }
+
+        if(appointments.size() == 0) {
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Error: no results for " + queryText);
+            alert.setHeaderText("Error: no results for " + queryText);
+            alert.setContentText("Error: no results for " + queryText);
+            alert.showAndWait();
+            return;
+        }
+
+        this.appointmentTable.setItems(appointments);
+        //this.appointmentsSearchField.setText("");
     }
 
     public void onAddAppointment(ActionEvent actionEvent) throws IOException {
@@ -243,6 +295,15 @@ public class MainViewController implements Initializable {
         customerTable.getColumns().addAll(idDCol, nameCol, addressCol, postalCol, phoneCol, divisionIdCol);
 
         customerTable.setItems(DBCustomer.getAllCustomers());
+
+        this.customerTable.getSelectionModel().selectedItemProperty().addListener((observable, oldSelection, newSelection) -> {
+            System.out.println("new select: " + newSelection.toString());
+            System.out.print("class: " + newSelection.getClass());
+
+            Customer customer = (Customer) customerTable.getSelectionModel().getSelectedItem();
+            appointmentsSearchField.setText(customer.getName());
+
+        });
     }
 
     /**

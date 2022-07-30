@@ -45,7 +45,7 @@ public abstract class DBCustomer {
                 if(name.compareTo(customerName) == 0) {
                     int id = rs.getInt("Customer_ID");
                     String address = rs.getString("Address");
-                    String postal = rs.getString("Postal");
+                    String postal = rs.getString("Postal_Code");
                     String phone = rs.getString("Phone");
                     int divisionId = rs.getInt("Division_ID");
                     Customer c = new Customer(id, name, address, postal, phone, divisionId);
