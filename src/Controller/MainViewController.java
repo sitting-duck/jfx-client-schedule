@@ -24,6 +24,8 @@ import java.util.ResourceBundle;
 
 public class MainViewController implements Initializable {
 
+
+
     /**
      * Users enters a string or id number into this text input field and when they press enter the customers table will refresh
      * displaying the set of customers containing either a matching id number or a substring of the search string entered.
@@ -91,12 +93,14 @@ public class MainViewController implements Initializable {
         appointmentsSearchField.textProperty().addListener((observable, oldValue, newValue) -> {
             String searchString = appointmentsSearchField.getText();
             System.out.println("Appointment search field text changed: " + searchString);
+
             try {
                 this.searchAppointment(searchString);
             } catch (IOException e) {
                 throw new RuntimeException(e);
             } catch (Exception e) {
-                throw new RuntimeException(e);
+                //throw new RuntimeException(e);
+                System.out.println("No appointments for customer name: " + searchString);
             }
         });
     }
@@ -183,16 +187,17 @@ public class MainViewController implements Initializable {
         System.out.println("getAppointmentSearchResultsHandler: " + queryText);
         this.searchAppointment(queryText);
     }
-    public void searchAppointment(String queryText) throws Exception {
+    public ObservableList<Appointment> searchAppointment(String queryText) throws Exception {
         System.out.println("searchAppointment(): " + queryText);
+        ObservableList<Appointment> appointments = null;
 
         if(queryText.isEmpty()) {
             this.appointmentTable.setItems(DBAppointment.getAllAppointments());
             System.out.println("Search appointment query text was empty, exiting.");
-            return;
+            return appointments;
         }
 
-        ObservableList<Appointment> appointments;
+
         try {
             int idNum = Integer.parseInt(queryText);
             appointments = DBAppointment.lookupAppointmentByTitle(idNum);
@@ -217,6 +222,8 @@ public class MainViewController implements Initializable {
             alert.showAndWait();
             //return;
         }
+
+        return appointments;
     }
 
     public void onAddAppointment(ActionEvent actionEvent) throws IOException {
