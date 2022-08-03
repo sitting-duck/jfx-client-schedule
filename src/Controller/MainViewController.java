@@ -275,6 +275,12 @@ public class MainViewController implements Initializable {
         } else {
             DBAppointment.deleteAppointment(appointment.getId());
             appointmentTable.setItems(DBAppointment.getAllAppointments());
+
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Appointment deleted successfully");
+            alert.setHeaderText("Appointment deleted successfully");
+            alert.setContentText("Appointment with id: " + appointment.getId() + " and type: " + appointment.getType() + " deleted successfully");
+            alert.showAndWait();
         }
     }
 
