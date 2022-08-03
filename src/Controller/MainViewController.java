@@ -179,6 +179,11 @@ public class MainViewController implements Initializable {
             DBCustomer.deleteCustomer(customer.getId());
             customerTable.setItems(DBCustomer.getAllCustomers());
             appointmentsSearchField.setText("");
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Customer deleted successfully");
+            alert.setHeaderText("Customer deleted successfully");
+            alert.setContentText("Customer deleted successfully");
+            alert.showAndWait();
         }
     }
 
