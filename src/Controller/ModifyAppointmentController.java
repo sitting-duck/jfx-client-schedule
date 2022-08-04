@@ -182,7 +182,7 @@ public class ModifyAppointmentController implements Initializable  {
 
         int customerId = -1;
         if(customerIdComboBox.getSelectionModel().getSelectedItem() != null) {
-            customerId = (int) customerIdComboBox.getSelectionModel().getSelectedItem();
+            customerId = Integer.parseInt(customerIdComboBox.getSelectionModel().getSelectedItem().toString().split(" ")[0].replace(":", ""));
         }
         if(customerId == -1) {
             customerIdLabel.setTextFill(Color.color(1, 0, 0));

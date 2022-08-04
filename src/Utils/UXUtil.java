@@ -11,7 +11,9 @@ import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
+import javafx.scene.control.Label;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.paint.Color;
 
 import java.util.ArrayList;
 import java.util.stream.Collectors;
@@ -66,12 +68,12 @@ public class UXUtil {
     }
 
     public static void initCustomerIDComboBox(ComboBox cb) {
-        ArrayList customerIdList = new ArrayList<Integer>();
+        ArrayList combinedStringList = new ArrayList<String>(); // customer id + customer name in single string
         for(Customer c: DBCustomer.getAllCustomers()) {
-            customerIdList.add(c.getId());
+            combinedStringList.add(c.getId() + ": " + c.getName());
         }
-        ObservableList<Integer> customerIds = FXCollections.observableList(customerIdList);
-        cb.setItems(customerIds);
+        ObservableList<String> combinedStrings = FXCollections.observableList(combinedStringList);
+        cb.setItems(combinedStrings);
     }
 
     public static void initUserIDComboBox(ComboBox cb) {
@@ -90,6 +92,31 @@ public class UXUtil {
         }
         ObservableList<Integer> contactIds = FXCollections.observableList(contactIdList);
         cb.setItems(contactIds);
+    }
+
+    /**
+     * returns false if anything doesn't check out, returns true when it's safe to accept the customer being added or
+     * modified. When the user clicks ok, we get the selection from the customer id combobox. There must be a selection
+     * if we are trying to add to the database. If user just hit cancel, this doesn't matter.
+     *
+     * Takes a reference to the customer id combo box itself and the customer id combobox label as well.
+     * When something is bad, we also set the text for the label as well as return false.
+     * @param cb
+     * @return
+     */
+    public static Boolean getSelectionFromComboBox(ComboBox cb, Label lbl) {
+        int valid = -1;
+        if(cb.getSelectionModel().getSelectedItem() != null) {
+            valid = Integer.parseInt(cb.getSelectionModel().getSelectedItem().toString().split(" ")[0].replace(":", ""));
+        }
+        if(valid == -1) {
+            lbl.setTextFill(Color.color(1, 0, 0));
+            lbl.setText("Cannot be empty");
+            return false;
+        } else {
+            return true;
+        }
+
     }
 
 
