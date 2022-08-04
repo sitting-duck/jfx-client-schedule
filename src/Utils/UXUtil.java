@@ -77,21 +77,21 @@ public class UXUtil {
     }
 
     public static void initUserIDComboBox(ComboBox cb) {
-        ArrayList userIdList = new ArrayList<Integer>();
+        ArrayList combinedStringList = new ArrayList<String>(); // customer id + customer name in single string
         for(User u: DBUser.getAllUsers()) {
-            userIdList.add(u.getId());
+            combinedStringList.add(u.getId() + ": " + u.getName());
         }
-        ObservableList<Integer> userIds = FXCollections.observableList(userIdList);
-        cb.setItems(userIds);
+        ObservableList<Integer> combinedStrings = FXCollections.observableList(combinedStringList);
+        cb.setItems(combinedStrings);
     }
 
     public static void initContactIDComboBox(ComboBox cb) {
-        ArrayList contactIdList = new ArrayList<Integer>();
+        ArrayList combinedStringList = new ArrayList<String>(); // contact id + contact name in single string
         for(Contact c: DBContact.getAllContacts()) {
-            contactIdList.add(c.getId());
+            combinedStringList.add(c.getId() + ": " + c.getName());
         }
-        ObservableList<Integer> contactIds = FXCollections.observableList(contactIdList);
-        cb.setItems(contactIds);
+        ObservableList<String> combinedStrings = FXCollections.observableList(combinedStringList);
+        cb.setItems(combinedStrings);
     }
 
     /**
@@ -104,7 +104,7 @@ public class UXUtil {
      * @param cb
      * @return
      */
-    public static Boolean getSelectionFromComboBox(ComboBox cb, Label lbl) {
+    public static Boolean getSelectionFromComboBox(ComboBox cb, Label lbl, String lblText) {
         int valid = -1;
         if(cb.getSelectionModel().getSelectedItem() != null) {
             valid = Integer.parseInt(cb.getSelectionModel().getSelectedItem().toString().split(" ")[0].replace(":", ""));
@@ -114,6 +114,8 @@ public class UXUtil {
             lbl.setText("Cannot be empty");
             return false;
         } else {
+            lbl.setTextFill(Color.color(0, 0, 0));
+            lbl.setText(lblText);
             return true;
         }
 

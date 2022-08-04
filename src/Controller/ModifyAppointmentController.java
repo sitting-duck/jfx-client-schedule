@@ -121,6 +121,16 @@ public class ModifyAppointmentController implements Initializable  {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        titleLabel.setText("Title");
+        descriptionLabel.setText("Description");
+        locationLabel.setText("Location");
+        typeLabel.setText("Type");
+        startLabel.setText("Start");
+        endLabel.setText("End");
+        customerIdLabel.setText("Customer ID");
+        userIdLabel.setText("User ID");
+        contactIdLabel.setText("Contact ID");
+
         if(appointment == null) {
             System.out.println("Error: no appointment selected");
             Alert alert = new Alert(Alert.AlertType.WARNING);
@@ -180,71 +190,107 @@ public class ModifyAppointmentController implements Initializable  {
         Timestamp start = null;
         Timestamp end = null;
 
-        good = UXUtil.getSelectionFromComboBox(customerIdComboBox, customerIdLabel);
-        good = UXUtil.getSelectionFromComboBox(userIdComboBox, userIdLabel);
-        good = UXUtil.getSelectionFromComboBox(contactIdComboBox, contactIdLabel);
+        good = UXUtil.getSelectionFromComboBox(customerIdComboBox, customerIdLabel, "Customer");
+        good = UXUtil.getSelectionFromComboBox(userIdComboBox, userIdLabel, "User");
+        good = UXUtil.getSelectionFromComboBox(contactIdComboBox, contactIdLabel, "Contact");
 
         if(description.compareTo("") == 0) {
             descriptionLabel.setTextFill(Color.color(1, 0, 0));
-            descriptionLabel.setText("Cannot be empty");
+            descriptionLabel.setText("Description Cannot Be Empty");
             good = false;
+        } else {
+            descriptionLabel.setTextFill(Color.color(0, 0, 0));
+            descriptionLabel.setText("Decsription");
         }
         if(title.compareTo("") == 0) {
             titleLabel.setTextFill(Color.color(1, 0, 0));
-            titleLabel.setText("Cannot be empty");
+            titleLabel.setText("Title Cannot Be Empty");
             good = false;
+        } else {
+            titleLabel.setTextFill(Color.color(0, 0, 0));
+            titleLabel.setText("Title");
         }
         if(location.compareTo("") == 0) {
             locationLabel.setTextFill(Color.color(1, 0, 0));
-            locationLabel.setText("Cannot be empty");
+            locationLabel.setText("Location Cannot Be Empty");
             good = false;
+        } else {
+            locationLabel.setTextFill(Color.color(0, 0, 0));
+            locationLabel.setText("Location");
         }
         if(type.compareTo("") == 0) {
             typeLabel.setTextFill(Color.color(1, 0, 0));
-            typeLabel.setText("Cannot be empty");
+            typeLabel.setText("Type Cannot Be Empty");
             good = false;
+        } else {
+            typeLabel.setTextFill(Color.color(0, 0, 0));
+            typeLabel.setText("Type");
         }
 
         if(startDatePicker.getValue() == null) {
             startLabel.setTextFill(Color.color(1, 0, 0));
-            startLabel.setText("Cannot be empty");
+            startLabel.setText("Start Date Cannot Be Empty");
             good = false;
+        } else {
+            startLabel.setTextFill(Color.color(0, 0, 0));
+            startLabel.setText("Start");
         }
         if(startHourComboBox.getValue() == null) {
             startLabel.setTextFill(Color.color(1, 0, 0));
-            startLabel.setText("Cannot be empty");
+            startLabel.setText("Start Hour Cannot Be Empty");
             good = false;
+        } else {
+            startLabel.setTextFill(Color.color(0, 0, 0));
+            startLabel.setText("Start");
         }
         if(startMinuteComboBox.getValue() == null) {
             startLabel.setTextFill(Color.color(1, 0, 0));
-            startLabel.setText("Cannot be empty");
+            startLabel.setText("Start Minute Cannot Be Empty");
             good = false;
+        } else {
+            startLabel.setTextFill(Color.color(0, 0, 0));
+            startLabel.setText("Start");
         }
         if(startAMPMComboBox.getValue() == null) {
             startLabel.setTextFill(Color.color(1, 0, 0));
-            startLabel.setText("Cannot be empty");
+            startLabel.setText("Start AM/PM Cannot Be Empty");
             good = false;
+        } else {
+            startLabel.setTextFill(Color.color(0, 0, 0));
+            startLabel.setText("Start");
         }
 
         if(endDatePicker.getValue() == null) {
             endLabel.setTextFill(Color.color(1, 0, 0));
-            endLabel.setText("Cannot be empty");
+            endLabel.setText("End Date Cannot Be Empty");
             good = false;
+        } else {
+            endLabel.setTextFill(Color.color(0, 0, 0));
+            endLabel.setText("End");
         }
         if(endHourComboBox.getValue() == null) {
             endLabel.setTextFill(Color.color(1, 0, 0));
-            endLabel.setText("Cannot be empty");
+            endLabel.setText("End Hour Cannot Be Empty");
             good = false;
+        } else {
+            endLabel.setTextFill(Color.color(0, 0, 0));
+            endLabel.setText("End");
         }
         if(endMinuteComboBox.getValue() == null) {
             endLabel.setTextFill(Color.color(1, 0, 0));
-            endLabel.setText("Cannot be empty");
+            endLabel.setText("End Minute Cannot Be Empty");
             good = false;
+        } else {
+            endLabel.setTextFill(Color.color(0, 0, 0));
+            endLabel.setText("End");
         }
         if(endAMPMComboBox.getValue() == null) {
             endLabel.setTextFill(Color.color(1, 0, 0));
-            endLabel.setText("Cannot be empty");
+            endLabel.setText("End AM/PM Cannot Be Empty");
             good = false;
+        } else {
+            endLabel.setTextFill(Color.color(0, 0, 0));
+            endLabel.setText("End");
         }
 
         try {
