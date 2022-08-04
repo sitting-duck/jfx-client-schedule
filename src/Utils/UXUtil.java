@@ -119,5 +119,9 @@ public class UXUtil {
 
     }
 
+    public static int getIdNumberFromComboBox(ComboBox cb) {
+        return Integer.parseInt(cb.getSelectionModel().getSelectedItem().toString().split(" ")[0].replace(":", ""));
+    }
+
 
 }

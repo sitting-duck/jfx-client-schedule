@@ -180,35 +180,9 @@ public class ModifyAppointmentController implements Initializable  {
         Timestamp start = null;
         Timestamp end = null;
 
-        int customerId = -1;
-        if(customerIdComboBox.getSelectionModel().getSelectedItem() != null) {
-            customerId = Integer.parseInt(customerIdComboBox.getSelectionModel().getSelectedItem().toString().split(" ")[0].replace(":", ""));
-        }
-        if(customerId == -1) {
-            customerIdLabel.setTextFill(Color.color(1, 0, 0));
-            customerIdLabel.setText("Cannot be empty");
-            good = false;
-        }
-
-        int userId = -1;
-        if(userIdComboBox.getSelectionModel().getSelectedItem() != null) {
-            userId = (int) userIdComboBox.getSelectionModel().getSelectedItem();
-        }
-        if(userId == -1) {
-            userIdLabel.setTextFill(Color.color(1, 0, 0));
-            userIdLabel.setText("Cannot be empty");
-            good = false;
-        }
-
-        int contactId = -1;
-        if(contactIdComboBox.getSelectionModel().getSelectedItem() != null) {
-            contactId = (int) contactIdComboBox.getSelectionModel().getSelectedItem();
-        }
-        if(contactId == -1) {
-            contactIdLabel.setTextFill(Color.color(1, 0, 0));
-            contactIdLabel.setText("Cannot be empty");
-            good = false;
-        }
+        good = UXUtil.getSelectionFromComboBox(customerIdComboBox, customerIdLabel);
+        good = UXUtil.getSelectionFromComboBox(userIdComboBox, userIdLabel);
+        good = UXUtil.getSelectionFromComboBox(contactIdComboBox, contactIdLabel);
 
         if(description.compareTo("") == 0) {
             descriptionLabel.setTextFill(Color.color(1, 0, 0));
@@ -313,6 +287,9 @@ public class ModifyAppointmentController implements Initializable  {
         boolean isOverlap = DBAppointment.isCollision(appointment);
         System.out.println("isOverlap: " + isOverlap);
         if(isOverlap == false) {
+            int customerId = UXUtil.getIdNumberFromComboBox(customerIdComboBox);
+            int userId = UXUtil.getIdNumberFromComboBox(userIdComboBox);
+            int contactId = UXUtil.getIdNumberFromComboBox(contactIdComboBox);
             DBAppointment.updateAppointment(appointment.getId(), title, description, location, type, start, end, customerId, userId, contactId);
 
             Parent root = FXMLLoader.load(getClass().getResource("/View/main.fxml"));
