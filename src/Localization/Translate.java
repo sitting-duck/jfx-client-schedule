@@ -10,6 +10,7 @@ public class Translate {
         // We detect the language based on timezone, locality etc.
         // setting in the OS and then grab the appropriate bundle
         ResourceBundle rb = ResourceBundle.getBundle("Localization/lang", Locale.getDefault());
+        //Locale french = new Locale("fr", "FR");
         //ResourceBundle rb = ResourceBundle.getBundle("Localization/lang", french);
         ArrayList tokens = new ArrayList<String>();
         StringTokenizer tok = new StringTokenizer(string);

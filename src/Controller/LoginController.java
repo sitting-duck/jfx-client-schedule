@@ -30,13 +30,13 @@ public class LoginController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        userTextField.setPromptText("Username");
-        passwordTextField.setPromptText("Password");
-        System.out.println("Initialized");
+        userTextField.setPromptText(Translate.str("Username"));
+        passwordTextField.setPromptText(Translate.str("Password"));
+        System.out.println(Translate.str("Initialized"));
 
         ZoneId zoneId = TimeZone.getDefault().toZoneId();
         System.out.println("zoneId = " + zoneId);
-        zoneLabel.setText("Zone: " + zoneId);
+        zoneLabel.setText(Translate.str("Zone") + " : " +zoneId);
 
         Locale french = new Locale("fr", "FR");
         Locale english = new Locale("en", "EN");
@@ -64,12 +64,12 @@ public class LoginController implements Initializable {
         String password = passwordTextField.getText();
 
         if(username.length() == 0) {
-            userErrorLabel.setText("Cannot be empty");
+            userErrorLabel.setText(Translate.str("Cannot be empty"));
             return;
         }
 
         if(password.length() == 0) {
-            passwordErrorLabel.setText("Cannot be empty");
+            passwordErrorLabel.setText(Translate.str("Cannot be empty"));
             return;
         }
 
@@ -78,13 +78,13 @@ public class LoginController implements Initializable {
             user = DBUser.getUserByUserName(username);
             user.print();
         } catch (SQLException e) {
-            System.err.println("Error: could not find user with username: " +username);
-            Alert alert = new Alert(Alert.AlertType.WARNING, "Could not find user with username: " +username, ButtonType.OK);
+            System.err.println(Translate.str("Error: could not find user with username: ") +username);
+            Alert alert = new Alert(Alert.AlertType.WARNING, Translate.str("Could not find user with username: ") +username, ButtonType.OK);
             alert.showAndWait();
             return;
         } catch (Exception e) {
-            System.err.println("Error: could not find user with username: " +username);
-            Alert alert = new Alert(Alert.AlertType.WARNING, "Could not find user with username: " +username, ButtonType.OK);
+            System.err.println(Translate.str("Error: could not find user with username: ") +username);
+            Alert alert = new Alert(Alert.AlertType.WARNING, Translate.str("Could not find user with username: ") +username, ButtonType.OK);
             alert.showAndWait();
             return;
         }
@@ -97,11 +97,10 @@ public class LoginController implements Initializable {
             stage.setScene(scene);
             stage.show();
         } else {
-            System.err.println("Error: incorrect password for: " +username);
-            Alert alert = new Alert(Alert.AlertType.WARNING, "Error: incorrect password for: " +username, ButtonType.OK);
+            System.err.println(Translate.str("Error: incorrect password for: ") + username);
+            Alert alert = new Alert(Alert.AlertType.WARNING, Translate.str("Error: incorrect password for: ") + username, ButtonType.OK);
             alert.showAndWait();
             return;
         }
-
     }
 }
