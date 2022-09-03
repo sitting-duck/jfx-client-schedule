@@ -45,6 +45,29 @@ public class UXUtil {
         cb.setItems(hours);
     }
 
+    public static void initMonthComboBox(ComboBox cb) {
+        cb.setPromptText("Month");
+        cb.setVisibleRowCount(12);
+        ObservableList<String> months = FXCollections.observableArrayList();
+        months.add("January");
+        months.add("February");
+        months.add("March");
+        months.add("April");
+        months.add("May");
+        months.add("June");
+        months.add("July");
+        months.add("August");
+        months.add("September");
+        months.add("October");
+        months.add("November");
+        months.add("December");
+        cb.setItems(months);
+    }
+
+    public static boolean isMonth(String string) {
+        return string.equals("January") || string.equals("February") || string.equals("March") || string.equals("April") || string.equals("May") || string.equals("June") || string.equals("July") || string.equals("August") || string.equals("September") || string.equals("October") || string.equals("Novemeber") || string.equals("December");
+    }
+
     public static void initMinuteComboBox(ComboBox cb) {
         ArrayList minuteIncrement15 = new ArrayList<Integer>();
         minuteIncrement15.add(0);

@@ -4,6 +4,8 @@ import DBAccess.DBAppointment;
 import DBAccess.DBCustomer;
 import Model.Appointment;
 import Model.Customer;
+import Utils.UXUtil;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -20,6 +22,8 @@ import java.io.IOException;
 import java.net.URL;
 import java.sql.Date;
 import java.sql.SQLException;
+import java.time.LocalDateTime;
+import java.time.Month;
 import java.util.ResourceBundle;
 
 public class MainViewController implements Initializable {
@@ -70,6 +74,22 @@ public class MainViewController implements Initializable {
      */
     @FXML
     private Button deleteAppointmentBtn;
+
+    @FXML
+    private RadioButton monthRadioButton;
+
+    @FXML
+    private RadioButton weekRadioButton;
+
+    @FXML
+    private RadioButton allTimeRadioButton;
+
+    @FXML
+    private DatePicker appointmentDatePicker;
+
+    @FXML
+    private ComboBox monthComboBox;
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         try {
@@ -93,17 +113,57 @@ public class MainViewController implements Initializable {
         appointmentsSearchField.textProperty().addListener((observable, oldValue, newValue) -> {
             String searchString = appointmentsSearchField.getText();
             System.out.println("Appointment search field text changed: " + searchString);
+            System.out.println("UXUtil.isMonth(searchString): " + UXUtil.isMonth(searchString));
 
-            try {
-                this.searchAppointment(searchString);
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            } catch (Exception e) {
-                //throw new RuntimeException(e);
-                System.out.println("No appointments for customer name: " + searchString);
+            if(UXUtil.isMonth(searchString)) {
+                System.out.println("here");
+                this.searchAppointmentByMonth(searchString);
             }
+
+//            try {
+//
+//                    System.out.println("and not here");
+//                    this.searchAppointment(searchString);
+//
+//            } catch (IOException e) {
+//                throw new RuntimeException(e);
+//            } catch (Exception e) {
+//                //throw new RuntimeException(e);
+//                System.out.println("Exception: No appointments for customer name: " + searchString);
+//            }
         });
+
+        UXUtil.initMonthComboBox(monthComboBox);
     }
+
+    public void onMonthRadioButtonClicked(ActionEvent actionEvent) throws IOException {
+        monthComboBox.setVisible(true);
+
+        //LocalDateTime date = appointmentDatePicker.getValue().atStartOfDay();
+        //Month month = date.getMonth();
+        //System.out.println("Month: " + month.toString());
+
+
+    }
+
+    public void onMonthSelected(ActionEvent actionEvent) throws IOException {
+        String month = monthComboBox.getValue().toString();
+        System.out.println("Month: " + month);
+
+        appointmentsSearchField.setText(month);
+    }
+
+    public void onWeekClicked(ActionEvent actionEvent) throws IOException {
+        monthComboBox.setVisible(false);
+        appointmentDatePicker.show();
+        LocalDateTime date = appointmentDatePicker.getValue().atStartOfDay();
+
+    }
+
+    public void onAllTimeClicked(ActionEvent actionEvent) throws IOException {
+        appointmentDatePicker.show();
+    }
+
     public void onSearchCustomer(ActionEvent actionEvent) throws IOException {
         String queryText = this.customersSearchField.getText();
         System.out.println("getCustomerSearchResultsHandler: " + queryText);
@@ -202,7 +262,6 @@ public class MainViewController implements Initializable {
             return appointments;
         }
 
-
         try {
             int idNum = Integer.parseInt(queryText);
             appointments = DBAppointment.lookupAppointmentByTitle(idNum);
@@ -228,6 +287,41 @@ public class MainViewController implements Initializable {
             //return;
         }
 
+        return appointments;
+    }
+
+    public ObservableList<Appointment> searchAppointmentByMonth(String queryText) {
+        System.out.println("searchAppointmentByMonth(): " + queryText);
+        queryText = queryText.toUpperCase();
+        ObservableList<Appointment> appointments = FXCollections.observableArrayList();
+
+        if(queryText.isEmpty()) {
+            this.appointmentTable.setItems(DBAppointment.getAllAppointments());
+            System.out.println("Search appointment query text was empty, exiting.");
+            return appointments;
+        }
+
+        // Search for appointment by customer month
+        for(Appointment appointment : DBAppointment.getAllAppointments()) {
+            String startMonth = appointment.getStart().toLocalDateTime().getMonth().toString().toUpperCase();
+            String endMonth = appointment.getEnd().toLocalDateTime().getMonth().toString().toUpperCase();
+            System.out.println("name: " + appointment.getTitle() + " startMonth: " + startMonth + " endMonth: " + endMonth + " queryText: " + queryText);
+            if(startMonth.equals(queryText)) {
+                appointments.add(appointment);
+            } else if(endMonth.equals(queryText)) {
+                appointments.add(appointment);
+            }
+        }
+
+        this.appointmentTable.setItems(appointments);
+        if(appointments.size() == 0) {
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Error: no appointments for " + queryText);
+            alert.setHeaderText("Error: no appointments for " + queryText);
+            alert.setContentText("Error: no appointments for " + queryText);
+            alert.showAndWait();
+            //return;
+        }
         return appointments;
     }
 
