@@ -91,11 +91,12 @@
                                     <children>
                                         <Label fx:id="appointmentsLabel" prefHeight="17.0" prefWidth="78.0" text="Appointments" />
                                         <TextField fx:id="appointmentsSearchField" onAction="#onSearchAppointment" prefHeight="25.0" prefWidth="251.0" />
-                                        <RadioButton fx:id="monthRadioButton" mnemonicParsing="false" prefHeight="17.0" prefWidth="69.0" text="Month" onAction="#onMonthRadioButtonClicked" />
-                                        <ComboBox fx:id="monthComboBox" prefWidth="150.0" promptText="Month" visible="false" onAction="#onMonthSelected"/>
-                                        <RadioButton fx:id="weekRadioButton" mnemonicParsing="false" prefHeight="17.0" prefWidth="67.0" text="Week" onAction="#onWeekClicked"/>
-                                        <RadioButton fx:id="allTimeRadioButton" mnemonicParsing="false" text="All Time" onAction="#onAllTimeClicked"/>
-                                        <DatePicker fx:id="appointmentDatePicker" />
+<!--                                        <RadioButton fx:id="monthRadioButton" mnemonicParsing="false" prefHeight="17.0" prefWidth="69.0" text="Month" onAction="#onMonthRadioButtonClicked" />-->
+                                        <ComboBox fx:id="monthComboBox" prefWidth="150.0" promptText="Month" visible="true" onAction="#onMonthSelected"/>
+                                        <ComboBox fx:id="weekComboBox" prefWidth="150.0" promptText="Week" visible="false" onAction="#onWeekSelected"/>
+<!--                                        <RadioButton fx:id="weekRadioButton" mnemonicParsing="false" prefHeight="17.0" prefWidth="67.0" text="Week" onAction="#onWeekClicked"/>-->
+<!--                                        <RadioButton fx:id="allTimeRadioButton" mnemonicParsing="false" text="All Time" onAction="#onAllTimeClicked"/>-->
+                                        <DatePicker fx:id="appointmentDatePicker" onAction="#onDateSelected"/>
                                     </children>
                                 </HBox>
                                 <HBox fx:id="appointmentTableHBox" prefHeight="176.0" prefWidth="678.0">

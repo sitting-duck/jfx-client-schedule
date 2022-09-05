@@ -1,17 +1,9 @@
 package Controller;
 
 import DBAccess.DBAppointment;
-import DBAccess.DBContact;
-import DBAccess.DBCustomer;
-import DBAccess.DBUser;
 import Model.Appointment;
-import Model.Contact;
-import Model.Customer;
-import Model.User;
 import Utils.TimeUtils;
 import Utils.UXUtil;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -28,7 +20,6 @@ import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
-import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 public class AddAppointmentController implements Initializable  {

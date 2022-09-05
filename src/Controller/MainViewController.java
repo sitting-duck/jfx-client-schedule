@@ -22,8 +22,13 @@ import java.io.IOException;
 import java.net.URL;
 import java.sql.Date;
 import java.sql.SQLException;
+import java.time.DayOfWeek;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.Month;
+import java.time.ZoneId;
+import java.time.temporal.WeekFields;
+import java.util.Calendar;
+import java.util.Locale;
 import java.util.ResourceBundle;
 
 public class MainViewController implements Initializable {
@@ -90,6 +95,9 @@ public class MainViewController implements Initializable {
     @FXML
     private ComboBox monthComboBox;
 
+    @FXML
+    private ComboBox weekComboBox;
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         try {
@@ -119,45 +127,88 @@ public class MainViewController implements Initializable {
                 System.out.println("here");
                 this.searchAppointmentByMonth(searchString);
             }
-
-//            try {
-//
-//                    System.out.println("and not here");
-//                    this.searchAppointment(searchString);
-//
-//            } catch (IOException e) {
-//                throw new RuntimeException(e);
-//            } catch (Exception e) {
-//                //throw new RuntimeException(e);
-//                System.out.println("Exception: No appointments for customer name: " + searchString);
-//            }
+            try {
+                System.out.println("and not here");
+                this.searchAppointment(searchString);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            } catch (Exception e) {
+                //throw new RuntimeException(e);
+                System.out.println("Exception: No appointments for customer name: " + searchString);
+            }
         });
 
         UXUtil.initMonthComboBox(monthComboBox);
-    }
-
-    public void onMonthRadioButtonClicked(ActionEvent actionEvent) throws IOException {
-        monthComboBox.setVisible(true);
-
-        //LocalDateTime date = appointmentDatePicker.getValue().atStartOfDay();
-        //Month month = date.getMonth();
-        //System.out.println("Month: " + month.toString());
-
-
+        UXUtil.initWeekComboBox(weekComboBox);
     }
 
     public void onMonthSelected(ActionEvent actionEvent) throws IOException {
         String month = monthComboBox.getValue().toString();
         System.out.println("Month: " + month);
 
-        appointmentsSearchField.setText(month);
+        if(month == "All") {
+            appointmentsSearchField.setText("");
+            weekComboBox.setVisible(false);
+
+        } else {
+            appointmentsSearchField.setText(month);
+            weekComboBox.setVisible(true);
+        }
+
     }
 
-    public void onWeekClicked(ActionEvent actionEvent) throws IOException {
-        monthComboBox.setVisible(false);
-        appointmentDatePicker.show();
-        LocalDateTime date = appointmentDatePicker.getValue().atStartOfDay();
+    public void onWeekSelected(ActionEvent actionEvent) throws IOException {
+        String week = weekComboBox.getValue().toString();
+        System.out.println("Week: " + week);
 
+        appointmentsSearchField.setText(week);
+        Integer monthNum = UXUtil.getMonthAsNumber(monthComboBox.getValue().toString());
+        Integer weekNum = Integer.parseInt(weekComboBox.getValue().toString());
+//        LocalDateTime dateTime = LocalDateTime.of(2022, monthNum, );
+
+        Calendar calendar = Calendar.getInstance(Locale.getDefault());
+        int year = Calendar.getInstance().get(Calendar.YEAR);
+//        int month = Calendar.getInstance().get(Calendar.MONTH);
+        int month = monthNum;
+
+        calendar.set(year, month, 1); // set to first day of selected month
+        int weekYear = calendar.getWeekYear();
+
+        int firstDayOfWeek = calendar.getFirstDayOfWeek();
+
+        System.out.println("weekYear: " + Integer.toString(weekYear));
+        System.out.println("year: " + Integer.toString(year));
+        System.out.println("firstDayOfWeek: " + Integer.toString(firstDayOfWeek));
+
+        //int weekOfYear = calendar.getInstance(Calendar.W)
+        //int dayOfMonthBeginningOfWeek = calendar.getInstance()
+
+        int weekOfYear = calendar.get(Calendar.WEEK_OF_YEAR);
+
+    }
+
+    public void onDateSelected(ActionEvent actionEvent) throws IOException {
+        LocalDate ld =  appointmentDatePicker.getValue();
+        int weekOfYear = ld.get(WeekFields.of(Locale.getDefault()).weekOfWeekBasedYear());
+        Calendar calendar = Calendar.getInstance(Locale.getDefault());
+        ZoneId defaultZoneId = ZoneId.systemDefault();
+        java.util.Date date = Date.from(ld.atStartOfDay(defaultZoneId).toInstant());
+        calendar.setTime(date);
+
+        System.out.println("weekOfYear: " + Integer.toString(weekOfYear));
+        searchAppointmentByWeek(ld);
+
+//        //Now, get the date for the beginning of the week
+//        LocalDate start = ld;
+//        while(start.getDayOfWeek() != DayOfWeek.SUNDAY) {
+//            start = start.minusDays(1);
+//        }
+//
+//        //Now, get the date for the end of the week
+//        LocalDate end = ld;
+//        while(end.getDayOfWeek() != DayOfWeek.SATURDAY) {
+//            end = end.plusDays(1);
+//        }
     }
 
     public void onAllTimeClicked(ActionEvent actionEvent) throws IOException {
@@ -301,7 +352,7 @@ public class MainViewController implements Initializable {
             return appointments;
         }
 
-        // Search for appointment by customer month
+        // Search for appointment by month
         for(Appointment appointment : DBAppointment.getAllAppointments()) {
             String startMonth = appointment.getStart().toLocalDateTime().getMonth().toString().toUpperCase();
             String endMonth = appointment.getEnd().toLocalDateTime().getMonth().toString().toUpperCase();
@@ -319,6 +370,46 @@ public class MainViewController implements Initializable {
             alert.setTitle("Error: no appointments for " + queryText);
             alert.setHeaderText("Error: no appointments for " + queryText);
             alert.setContentText("Error: no appointments for " + queryText);
+            alert.showAndWait();
+            //return;
+        }
+        return appointments;
+    }
+
+    public ObservableList<Appointment> searchAppointmentByWeek(LocalDate ld) {
+        System.out.println("searchAppointmentByWeek(): ");
+        //Now, get the date for the beginning of the week
+        LocalDate startWeek = ld;
+        while(startWeek.getDayOfWeek() != DayOfWeek.SUNDAY) {
+            startWeek = startWeek.minusDays(1);
+        }
+        LocalDateTime startWeekTime = startWeek.atStartOfDay();
+
+        //Now, get the date for the end of the week
+        LocalDate endWeek = ld;
+        while(endWeek.getDayOfWeek() != DayOfWeek.SATURDAY) {
+            endWeek = endWeek.plusDays(1);
+        }
+        LocalDateTime endWeekTime = endWeek.atTime(23, 59);
+
+        ObservableList<Appointment> appointments = FXCollections.observableArrayList();
+
+        // Search for appointment by week
+        for(Appointment appointment : DBAppointment.getAllAppointments()) {
+            LocalDateTime startAppt = appointment.getStart().toLocalDateTime();
+            LocalDateTime endAppt = appointment.getEnd().toLocalDateTime();
+
+            if(startAppt.isAfter(startWeekTime) && endAppt.isBefore(endWeekTime)) {
+                appointments.add(appointment);
+            }
+        }
+
+        this.appointmentTable.setItems(appointments);
+        if(appointments.size() == 0) {
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Error: no appointments for " + ld.toString());
+            alert.setHeaderText("Error: no appointments for " + ld.toString());
+            alert.setContentText("Error: no appointments for " + ld.toString());
             alert.showAndWait();
             //return;
         }

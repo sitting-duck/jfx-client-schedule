@@ -16,6 +16,8 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.paint.Color;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Locale;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -49,6 +51,7 @@ public class UXUtil {
         cb.setPromptText("Month");
         cb.setVisibleRowCount(12);
         ObservableList<String> months = FXCollections.observableArrayList();
+        months.add("All");
         months.add("January");
         months.add("February");
         months.add("March");
@@ -64,8 +67,51 @@ public class UXUtil {
         cb.setItems(months);
     }
 
+    public static void initWeekComboBox(ComboBox cb) {
+        cb.setPromptText("Week");
+        cb.setVisibleRowCount(4);
+        ObservableList<String> weeks = FXCollections.observableArrayList();
+        weeks.add("All");
+        weeks.add("1");
+        weeks.add("2");
+        weeks.add("3");
+        weeks.add("4");
+        cb.setItems(weeks);
+    }
+
     public static boolean isMonth(String string) {
         return string.equals("January") || string.equals("February") || string.equals("March") || string.equals("April") || string.equals("May") || string.equals("June") || string.equals("July") || string.equals("August") || string.equals("September") || string.equals("October") || string.equals("Novemeber") || string.equals("December");
+    }
+
+    public static Integer getMonthAsNumber(String string) {
+        switch(string) {
+            case "January":
+                return 1;
+            case "February":
+                return 2;
+            case "March":
+                return 3;
+            case "April":
+                return 4;
+            case "May":
+                return 5;
+            case "June":
+                return 6;
+            case "July":
+                return 7;
+            case "August":
+                return 8;
+            case "September":
+                return 9;
+            case "October":
+                return 10;
+            case "November":
+                return 11;
+            case "December":
+                return 12;
+            default:
+                return -1;
+        }
     }
 
     public static void initMinuteComboBox(ComboBox cb) {
