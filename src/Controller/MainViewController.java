@@ -124,11 +124,9 @@ public class MainViewController implements Initializable {
             System.out.println("UXUtil.isMonth(searchString): " + UXUtil.isMonth(searchString));
 
             if(UXUtil.isMonth(searchString)) {
-                System.out.println("here");
                 this.searchAppointmentByMonth(searchString);
             }
             try {
-                System.out.println("and not here");
                 this.searchAppointment(searchString);
             } catch (IOException e) {
                 throw new RuntimeException(e);
@@ -138,8 +136,16 @@ public class MainViewController implements Initializable {
             }
         });
 
-        UXUtil.initMonthComboBox(monthComboBox);
-        UXUtil.initWeekComboBox(weekComboBox);
+        //UXUtil.initMonthComboBox(monthComboBox);
+        //Set toggle group so that only one of All Time, Month, or Week radio buttons can be selected
+        ToggleGroup group = new ToggleGroup();
+        monthRadioButton.setToggleGroup(group);
+        weekRadioButton.setToggleGroup(group);
+        allTimeRadioButton.setToggleGroup(group);
+
+        allTimeRadioButton.setSelected(true);
+        appointmentDatePicker.setVisible(false);
+        appointmentDatePicker.setValue(LocalDate.now());
     }
 
     public void onMonthSelected(ActionEvent actionEvent) throws IOException {
@@ -148,57 +154,44 @@ public class MainViewController implements Initializable {
 
         if(month == "All") {
             appointmentsSearchField.setText("");
-            weekComboBox.setVisible(false);
 
         } else {
             appointmentsSearchField.setText(month);
-            weekComboBox.setVisible(true);
         }
-
-    }
-
-    public void onWeekSelected(ActionEvent actionEvent) throws IOException {
-        String week = weekComboBox.getValue().toString();
-        System.out.println("Week: " + week);
-
-        appointmentsSearchField.setText(week);
-        Integer monthNum = UXUtil.getMonthAsNumber(monthComboBox.getValue().toString());
-        Integer weekNum = Integer.parseInt(weekComboBox.getValue().toString());
-
-        Calendar calendar = Calendar.getInstance(Locale.getDefault());
-        int year = Calendar.getInstance().get(Calendar.YEAR);
-//        int month = Calendar.getInstance().get(Calendar.MONTH);
-        int month = monthNum;
-
-        calendar.set(year, month, 1); // set to first day of selected month
-        int weekYear = calendar.getWeekYear();
-
-        int firstDayOfWeek = calendar.getFirstDayOfWeek();
-
-        System.out.println("weekYear: " + Integer.toString(weekYear));
-        System.out.println("year: " + Integer.toString(year));
-        System.out.println("firstDayOfWeek: " + Integer.toString(firstDayOfWeek));
-
-        //int weekOfYear = calendar.getInstance(Calendar.W)
-        //int dayOfMonthBeginningOfWeek = calendar.getInstance()
-
-        int weekOfYear = calendar.get(Calendar.WEEK_OF_YEAR);
-
     }
     public void onDateSelected(ActionEvent actionEvent) throws IOException {
-        LocalDate ld =  appointmentDatePicker.getValue();
-        int weekOfYear = ld.get(WeekFields.of(Locale.getDefault()).weekOfWeekBasedYear());
-        Calendar calendar = Calendar.getInstance(Locale.getDefault());
-        ZoneId defaultZoneId = ZoneId.systemDefault();
-        java.util.Date date = Date.from(ld.atStartOfDay(defaultZoneId).toInstant());
-        calendar.setTime(date);
 
-        System.out.println("weekOfYear: " + Integer.toString(weekOfYear));
-        searchAppointmentByWeek(ld);
+        LocalDate ld =  appointmentDatePicker.getValue();
+        if(weekRadioButton.isSelected()) {
+            int weekOfYear = ld.get(WeekFields.of(Locale.getDefault()).weekOfWeekBasedYear());
+            Calendar calendar = Calendar.getInstance(Locale.getDefault());
+            ZoneId defaultZoneId = ZoneId.systemDefault();
+            java.util.Date date = Date.from(ld.atStartOfDay(defaultZoneId).toInstant());
+            calendar.setTime(date);
+
+            System.out.println("weekOfYear: " + Integer.toString(weekOfYear));
+            searchAppointmentByWeek(ld);
+        } else if(monthRadioButton.isSelected()) {
+            searchAppointmentByMonth(ld.getMonth().toString());
+        }
     }
 
-    public void onAllTimeClicked(ActionEvent actionEvent) throws IOException {
+    public void onAllTimeClicked(ActionEvent actionEvent) throws Exception {
+        appointmentDatePicker.hide();
+        appointmentDatePicker.setVisible(false);
+        onSearchAppointment(actionEvent);
+    }
+
+    public void onWeekClicked(ActionEvent actionEvent) throws IOException {
+        appointmentDatePicker.setVisible(true);
         appointmentDatePicker.show();
+        onDateSelected(actionEvent);
+    }
+
+    public void onMonthClicked(ActionEvent actionEvent) throws IOException {
+        appointmentDatePicker.setVisible(true);
+        appointmentDatePicker.show();
+        onDateSelected(actionEvent);
     }
 
     public void onSearchCustomer(ActionEvent actionEvent) throws IOException {
@@ -296,7 +289,7 @@ public class MainViewController implements Initializable {
         if(queryText.isEmpty()) {
             this.appointmentTable.setItems(DBAppointment.getAllAppointments());
             System.out.println("Search appointment query text was empty, exiting.");
-            return appointments;
+            return DBAppointment.getAllAppointments();
         }
 
         try {

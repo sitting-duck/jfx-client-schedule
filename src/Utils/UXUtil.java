@@ -47,25 +47,25 @@ public class UXUtil {
         cb.setItems(hours);
     }
 
-    public static void initMonthComboBox(ComboBox cb) {
-        cb.setPromptText("Month");
-        cb.setVisibleRowCount(12);
-        ObservableList<String> months = FXCollections.observableArrayList();
-        months.add("All");
-        months.add("January");
-        months.add("February");
-        months.add("March");
-        months.add("April");
-        months.add("May");
-        months.add("June");
-        months.add("July");
-        months.add("August");
-        months.add("September");
-        months.add("October");
-        months.add("November");
-        months.add("December");
-        cb.setItems(months);
-    }
+//    public static void initMonthComboBox(ComboBox cb) {
+//        cb.setPromptText("Month");
+//        cb.setVisibleRowCount(12);
+//        ObservableList<String> months = FXCollections.observableArrayList();
+//        months.add("All");
+//        months.add("January");
+//        months.add("February");
+//        months.add("March");
+//        months.add("April");
+//        months.add("May");
+//        months.add("June");
+//        months.add("July");
+//        months.add("August");
+//        months.add("September");
+//        months.add("October");
+//        months.add("November");
+//        months.add("December");
+//        cb.setItems(months);
+//    }
 
     public static void initWeekComboBox(ComboBox cb) {
         cb.setPromptText("Week");
