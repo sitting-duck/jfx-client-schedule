@@ -164,7 +164,6 @@ public class MainViewController implements Initializable {
         appointmentsSearchField.setText(week);
         Integer monthNum = UXUtil.getMonthAsNumber(monthComboBox.getValue().toString());
         Integer weekNum = Integer.parseInt(weekComboBox.getValue().toString());
-//        LocalDateTime dateTime = LocalDateTime.of(2022, monthNum, );
 
         Calendar calendar = Calendar.getInstance(Locale.getDefault());
         int year = Calendar.getInstance().get(Calendar.YEAR);
@@ -186,7 +185,6 @@ public class MainViewController implements Initializable {
         int weekOfYear = calendar.get(Calendar.WEEK_OF_YEAR);
 
     }
-
     public void onDateSelected(ActionEvent actionEvent) throws IOException {
         LocalDate ld =  appointmentDatePicker.getValue();
         int weekOfYear = ld.get(WeekFields.of(Locale.getDefault()).weekOfWeekBasedYear());
@@ -197,18 +195,6 @@ public class MainViewController implements Initializable {
 
         System.out.println("weekOfYear: " + Integer.toString(weekOfYear));
         searchAppointmentByWeek(ld);
-
-//        //Now, get the date for the beginning of the week
-//        LocalDate start = ld;
-//        while(start.getDayOfWeek() != DayOfWeek.SUNDAY) {
-//            start = start.minusDays(1);
-//        }
-//
-//        //Now, get the date for the end of the week
-//        LocalDate end = ld;
-//        while(end.getDayOfWeek() != DayOfWeek.SATURDAY) {
-//            end = end.plusDays(1);
-//        }
     }
 
     public void onAllTimeClicked(ActionEvent actionEvent) throws IOException {

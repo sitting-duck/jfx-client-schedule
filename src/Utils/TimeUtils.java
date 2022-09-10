@@ -4,13 +4,10 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 
 import java.sql.Timestamp;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 public class TimeUtils {
-
-    public static void thing(DatePicker dp, ComboBox hourCB, ComboBox minuteCB, ComboBox amPMCB) {
-
-    }
 
     public static Timestamp getTime(Timestamp day, int hour, int minute, String amPm) {
         LocalDateTime time = day.toLocalDateTime();
@@ -48,4 +45,10 @@ public class TimeUtils {
             return "PM";
         }
     }
+
+//    public LocalDate getFirstDayOfWeek(int yearNumber, int monthNumber, int weekNumber) {
+//        // create date string for first day of month
+//        String dateString = Integer.toString(yearNumber)+"-"+Integer.toString(monthNumber)+"-01";
+//        LocalDate firstDayOfMonth = LocalDate.parse(dateString);
+//    }
 }
