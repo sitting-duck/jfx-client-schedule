@@ -1,8 +1,11 @@
 package Controller;
 
+import DBAccess.DBCountry;
 import DBAccess.DBCustomer;
 import DBAccess.DBDivision;
+import Model.Country;
 import Model.Division;
+import Utils.UXUtil;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -47,65 +50,81 @@ public class AddCustomerController  implements Initializable {
    @FXML
     private TextField phoneTextField;
 
+    @FXML
+    private Label countryLabel;
+
    @FXML
     private Label divisionIdLabel;
+
+    @FXML
+    private ComboBox countryComboBox;
 
    @FXML
     private ComboBox divisionIdComboBox;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        divisionIdComboBox.setItems(DBDivision.getAllDivisions());
+        UXUtil.initCountryComboBox(countryComboBox);
+        //divisionIdComboBox.setItems(DBDivision.getAllDivisions());
     }
 
+    public void setErrorLabel(Label label) {
+        label.setTextFill(Color.color(1, 0, 0));
+        label.setText("Cannot be empty");
+    }
+    public void onCountrySelected(ActionEvent actionEvent) throws IOException, SQLException {
+        //divisionIdComboBox.setItems(DBDivision.getAllDivisionsWithCountryId((Integer) countryComboBox.getValue()));
+    }
     public void onOkButton(ActionEvent actionEvent) throws IOException, SQLException {
         boolean good = true;
         String name = nameTextField.getText();
         String address = addressTextField.getText();
         String postalCode = postalCodeTextField.getText();
         String phone = phoneTextField.getText();
+
+        Country country = (Country) countryComboBox.getValue();
+        int countryId = -1;
         Division division = (Division) divisionIdComboBox.getValue();
         int divisionId = -1;
 
         if(division == null) {
-            divisionIdLabel.setTextFill(Color.color(1, 0, 0));
-            divisionIdLabel.setText("Cannot be empty");
+            setErrorLabel(divisionIdLabel);
             good = false;
         } else {
             divisionIdLabel.setText("");
             divisionId = division.getId();
         }
         if(name.compareTo("") == 0) {
-            nameLabel.setTextFill(Color.color(1, 0, 0));
-            nameLabel.setText("Cannot be empty");
+            setErrorLabel(nameLabel);
             good = false;
         } else {
             nameLabel.setText("");
         }
         if(address.compareTo("") == 0) {
-            addressLabel.setTextFill(Color.color(1, 0, 0));
-            addressLabel.setText("Cannot be empty");
+            setErrorLabel(addressLabel);
             good = false;
         } else {
             addressLabel.setText("");
         }
         if(postalCode.compareTo("") == 0) {
-            postalCodeLabel.setTextFill(Color.color(1, 0, 0));
-            postalCodeLabel.setText("Cannot be empty");
+            setErrorLabel(postalCodeLabel);
             good = false;
         } else {
             postalCodeLabel.setText("");
         }
         if(phone.compareTo("") == 0) {
-            phoneLabel.setTextFill(Color.color(1, 0, 0));
-            phoneLabel.setText("Cannot be empty");
+            setErrorLabel(phoneLabel);
             good = false;
         } else {
             phoneLabel.setText("");
         }
+        if(countryId == -1) {
+            setErrorLabel(countryLabel);
+            good = false;
+        }
+
         if(divisionId == -1) {
-            divisionIdLabel.setTextFill(Color.color(1, 0, 0));
-            divisionIdLabel.setText("Cannot be empty");
+            setErrorLabel(divisionIdLabel);
             good = false;
         }
         if(good == false) {

@@ -30,6 +30,17 @@ public abstract class DBDivision {
         return dlist;
     }
 
+    public static ObservableList<Division> getAllDivisionsWithCountryId(int countryId) {
+        ObservableList<Division> dlist = getAllDivisions();
+        ObservableList<Division> match =  FXCollections.observableArrayList();
+
+        for(Division division : dlist) {
+            if(division.getCountryId() == countryId) {
+                match.add(division);
+            }
+        }
+        return match;
+    }
     public static Division getDivisionByName(String division) throws Exception, SQLException {
         try {
             String sql = "SELECT * from client_schedule.first_level_divisions where Division = ?";

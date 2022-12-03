@@ -5,7 +5,8 @@ public class Country {
     private String name;
 
     public Country(int id, String name) {
-
+        this.id = id;
+        this.name = name;
     }
 
     public int getId() {
@@ -22,6 +23,10 @@ public class Country {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String toString() {
+        return name;
     }
 
 }

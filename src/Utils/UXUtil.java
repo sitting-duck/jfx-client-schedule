@@ -1,9 +1,11 @@
 package Utils;
 
 import DBAccess.DBContact;
+import DBAccess.DBCountry;
 import DBAccess.DBCustomer;
 import DBAccess.DBUser;
 import Model.Contact;
+import Model.Country;
 import Model.Customer;
 import Model.User;
 import javafx.collections.FXCollections;
@@ -152,6 +154,16 @@ public class UXUtil {
         }
         ObservableList<Integer> combinedStrings = FXCollections.observableList(combinedStringList);
         cb.setItems(combinedStrings);
+    }
+
+    public static void initCountryComboBox(ComboBox cb) {
+        ArrayList countryNameList = new ArrayList<String>();
+        for(Country c: DBCountry.getAllCountries()) {
+            System.out.println("name: " + c.getName());
+            countryNameList.add(c.getName());
+        }
+        ObservableList<String> stringList = FXCollections.observableList(countryNameList);
+        cb.setItems(stringList);
     }
 
     public static void initContactIDComboBox(ComboBox cb) {
