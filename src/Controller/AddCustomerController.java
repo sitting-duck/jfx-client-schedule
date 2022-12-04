@@ -67,19 +67,15 @@ public class AddCustomerController  implements Initializable {
         UXUtil.initCountryComboBox(countryComboBox);
     }
 
-    public void setErrorLabel(Label label) {
-        label.setTextFill(Color.color(1, 0, 0));
-        label.setText("Cannot be empty");
-    }
     public void onCountrySelected(ActionEvent actionEvent) throws IOException, SQLException {
         String countryString = null;
         try {
             countryString = UXUtil.getStringFromComboBox(countryComboBox);
         } catch (Exception e) {
-            setErrorLabel(countryLabel);
+            UXUtil.setErrorLabel(countryLabel);
         }
         divisionIdComboBox.setVisible(true);
-        divisionIdComboBox.setItems(DBDivision.getAllDivisionsWithCountryName((String) countryString));
+        UXUtil.initDivisionIdComboBox(divisionIdComboBox, countryString);
     }
     public void onOkButton(ActionEvent actionEvent) throws IOException, SQLException {
         boolean good = true;
@@ -91,7 +87,7 @@ public class AddCustomerController  implements Initializable {
         try {
             UXUtil.getStringFromComboBox(countryComboBox);
         } catch (Exception e) {
-            setErrorLabel(countryLabel);
+            UXUtil.setErrorLabel(countryLabel);
             good = false;
         }
 
@@ -102,38 +98,38 @@ public class AddCustomerController  implements Initializable {
         }
 
         if(division == null) {
-            setErrorLabel(divisionIdLabel);
+            UXUtil.setErrorLabel(divisionIdLabel);
             good = false;
         } else {
             divisionIdLabel.setText("");
             divisionId = division.getId();
         }
         if(name.compareTo("") == 0) {
-            setErrorLabel(nameLabel);
+            UXUtil.setErrorLabel(nameLabel);
             good = false;
         } else {
             nameLabel.setText("");
         }
         if(address.compareTo("") == 0) {
-            setErrorLabel(addressLabel);
+            UXUtil.setErrorLabel(addressLabel);
             good = false;
         } else {
             addressLabel.setText("");
         }
         if(postalCode.compareTo("") == 0) {
-            setErrorLabel(postalCodeLabel);
+            UXUtil.setErrorLabel(postalCodeLabel);
             good = false;
         } else {
             postalCodeLabel.setText("");
         }
         if(phone.compareTo("") == 0) {
-            setErrorLabel(phoneLabel);
+            UXUtil.setErrorLabel(phoneLabel);
             good = false;
         } else {
             phoneLabel.setText("");
         }
         if(divisionId == -1 && divisionIdComboBox.isVisible()) {
-            setErrorLabel(divisionIdLabel);
+            UXUtil.setErrorLabel(divisionIdLabel);
             good = false;
         }
         if(good == false) {
@@ -161,5 +157,4 @@ public class AddCustomerController  implements Initializable {
         stage.setScene(scene);
         stage.show();
     }
-
 }

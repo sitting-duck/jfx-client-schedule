@@ -1,13 +1,7 @@
 package Utils;
 
-import DBAccess.DBContact;
-import DBAccess.DBCountry;
-import DBAccess.DBCustomer;
-import DBAccess.DBUser;
-import Model.Contact;
-import Model.Country;
-import Model.Customer;
-import Model.User;
+import DBAccess.*;
+import Model.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
@@ -150,8 +144,16 @@ public class UXUtil {
     public static void initCountryComboBox(ComboBox cb) {
         ArrayList combinedStringList = new ArrayList<String>();
         for(Country c: DBCountry.getAllCountries()) {
-            System.out.println("name: " + c.getName());
             combinedStringList.add(c.getId() + ": " + c.getName());
+        }
+        ObservableList<String> stringList = FXCollections.observableList(combinedStringList);
+        cb.setItems(stringList);
+    }
+
+    public static void initDivisionIdComboBox(ComboBox cb, String countryString) {
+        ArrayList combinedStringList = new ArrayList<String>();
+        for(Division d: DBDivision.getAllDivisionsWithCountryName(countryString)) {
+            combinedStringList.add(d.getId() + ": " + d.getDivision());
         }
         ObservableList<String> stringList = FXCollections.observableList(combinedStringList);
         cb.setItems(stringList);
@@ -208,6 +210,11 @@ public class UXUtil {
 
     public static String getStringFromComboBox(ComboBox cb) throws Exception {
         return cb.getSelectionModel().getSelectedItem().toString().split(" ")[1].replace(":", "");
+    }
+
+    public static void setErrorLabel(Label label) {
+        label.setTextFill(Color.color(1, 0, 0));
+        label.setText("Cannot be empty");
     }
 
 }

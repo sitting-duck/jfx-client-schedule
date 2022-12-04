@@ -1,9 +1,12 @@
 package Controller;
 
+import DBAccess.DBCountry;
 import DBAccess.DBCustomer;
 import DBAccess.DBDivision;
+import Model.Country;
 import Model.Customer;
 import Model.Division;
+import Utils.UXUtil;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -55,7 +58,13 @@ public class ModifyCustomerController implements Initializable {
     private TextField phoneTextField;
 
     @FXML
+    private Label countryLabel;
+
+    @FXML
     private Label divisionIdLabel;
+
+    @FXML
+    private ComboBox countryComboBox;
 
     @FXML
     private ComboBox divisionIdComboBox;
@@ -74,9 +83,26 @@ public class ModifyCustomerController implements Initializable {
             alert.setContentText("No customer selected. Please select a customer to modify.");
             alert.showAndWait();
         }
+
+        // ComboBox needs to be populated in case the user wants to select another
         divisionIdComboBox.setItems(DBDivision.getAllDivisions());
         ObservableList<Division> divisionList = DBDivision.lookupDivision(customer.getDivisionId());
-        divisionIdComboBox.setValue(divisionList.get(0));
+
+        // set divisionID combobox to value stored for customer in database
+        int divisionId = customer.getDivisionId();
+        Division division = DBDivision.lookupDivision(divisionId).get(0);
+        String divisionIdString = divisionId + ": " + division.getDivision();
+        divisionIdComboBox.setValue(divisionIdString);
+
+        // combobox for country needs to be populated in case the user wants to select another
+        UXUtil.initCountryComboBox(countryComboBox);
+
+        // set country combobox using division to determine what country
+        int countryId = division.getCountryId();
+        Country country = DBCountry.getAllCountriesWithID(countryId).get(0);
+        UXUtil.initDivisionIdComboBox(divisionIdComboBox, country.getName());
+        String countryString = country.getId() + ": " + country.getName();
+        countryComboBox.setValue(countryString);
 
         // customer id is auto generated and should not be edited by the user
         idTextField.setText(Integer.toString(customer.getId()));
@@ -87,54 +113,78 @@ public class ModifyCustomerController implements Initializable {
         addressTextField.setText(customer.getAddress());
         postalCodeTextField.setText(customer.getPostal());
         phoneTextField.setText(customer.getPhone());
+
     }
 
+    public void onCountrySelected(ActionEvent actionEvent) throws IOException, SQLException {
+        String countryString = null;
+        try {
+            countryString = UXUtil.getStringFromComboBox(countryComboBox);
+        } catch (Exception e) {
+            UXUtil.setErrorLabel(countryLabel);
+        }
+        divisionIdComboBox.setItems(DBDivision.getAllDivisionsWithCountryName((String) countryString));
+    }
     public void onOkButton(ActionEvent actionEvent) throws IOException, SQLException {
         boolean good = true;
         String name = nameTextField.getText();
         String address = addressTextField.getText();
         String postalCode = postalCodeTextField.getText();
         String phone = phoneTextField.getText();
+
+        try {
+            UXUtil.getStringFromComboBox(countryComboBox);
+        } catch (Exception e) {
+            UXUtil.setErrorLabel(countryLabel);
+            good = false;
+        }
+
         Division division = (Division) divisionIdComboBox.getValue();
         int divisionId = -1;
+        if(divisionIdComboBox.isVisible()) {
+            divisionId = UXUtil.getIdNumberFromComboBox(divisionIdComboBox);
+        }
+
         if(division == null) {
-            divisionIdLabel.setTextFill(Color.color(1, 0, 0));
-            divisionIdLabel.setText("Cannot be empty");
+            UXUtil.setErrorLabel(divisionIdLabel);
             good = false;
         } else {
             divisionIdLabel.setText("");
             divisionId = division.getId();
         }
-
         if(name.compareTo("") == 0) {
-            nameLabel.setTextFill(Color.color(1, 0, 0));
-            nameLabel.setText("Cannot be empty");
+            UXUtil.setErrorLabel(nameLabel);
             good = false;
+        } else {
+            nameLabel.setText("");
         }
         if(address.compareTo("") == 0) {
-            addressLabel.setTextFill(Color.color(1, 0, 0));
-            addressLabel.setText("Cannot be empty");
+            UXUtil.setErrorLabel(addressLabel);
             good = false;
+        } else {
+            addressLabel.setText("");
         }
         if(postalCode.compareTo("") == 0) {
-            postalCodeLabel.setTextFill(Color.color(1, 0, 0));
-            postalCodeLabel.setText("Cannot be empty");
+            UXUtil.setErrorLabel(postalCodeLabel);
             good = false;
+        } else {
+            postalCodeLabel.setText("");
         }
         if(phone.compareTo("") == 0) {
-            phoneLabel.setTextFill(Color.color(1, 0, 0));
-            phoneLabel.setText("Cannot be empty");
+            UXUtil.setErrorLabel(phoneLabel);
             good = false;
+        } else {
+            phoneLabel.setText("");
         }
         if(divisionId == -1) {
-            divisionIdLabel.setTextFill(Color.color(1, 0, 0));
-            divisionIdLabel.setText("Cannot be empty");
+            UXUtil.setErrorLabel(divisionIdLabel);
             good = false;
         }
         if(good == false) {
             System.out.println("Input was not valid, Customer NOT updated in database.");
             return;
         }
+
         DBCustomer.updateCustomer(customer.getId(), name, address, postalCode, phone, divisionId);
 
         Parent root = FXMLLoader.load(getClass().getResource("/View/main.fxml"));

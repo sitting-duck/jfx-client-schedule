@@ -50,6 +50,27 @@ public abstract class DBCountry {
         return clist;
     }
 
+    public static ObservableList<Country> getAllCountriesWithID(int id) {
+        ObservableList<Country> clist = FXCollections.observableArrayList();
+
+        try {
+            String sql = "SELECT * from client_schedule.countries WHERE Country_ID = ?";
+            PreparedStatement ps = DBConnection.getConnection().prepareStatement(sql);
+            ps.setInt(1, id);
+            ResultSet rs = ps.executeQuery();
+
+            while(rs.next()) {
+                int countryId = rs.getInt("Country_ID");
+                String countryName = rs.getString("Country");
+                Country C = new Country(countryId, countryName);
+                clist.add(C);
+            }
+        } catch(SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        return clist;
+    }
+
     public static void checkDateConversion() {
         System.out.println("Create date test");
         String sql = "Select Create_Date from countries";

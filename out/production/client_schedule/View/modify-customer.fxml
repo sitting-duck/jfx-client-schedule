@@ -9,6 +9,7 @@
 
 
 <?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.layout.HBox?>
 <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" spacing="10.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.ModifyCustomerController">
    <children>
       <Label text="Modify Customer" />
@@ -21,8 +22,28 @@
       <TextField promptText="Postal Code" fx:id="postalCodeTextField"/>
       <Label text="" fx:id="phoneLabel"/>
       <TextField promptText="Phone" fx:id="phoneTextField"/>
-      <Label text="" fx:id="divisionIdLabel"/>
-      <ComboBox fx:id="divisionIdComboBox" prefWidth="150.0" promptText="Division ID" />
+      <HBox prefHeight="100.0" prefWidth="200.0" spacing="10.0">
+         <children>
+            <VBox prefHeight="200.0" prefWidth="100.0">
+               <children>
+                  <Label fx:id="countryLabel" text="" />
+                  <ComboBox fx:id="countryComboBox" prefWidth="150.0" promptText="Country" onAction="#onCountrySelected" />
+               </children>
+            </VBox>
+            <VBox prefHeight="200.0" prefWidth="100.0">
+               <children>
+                  <Label fx:id="divisionIdLabel" text="" />
+                  <ComboBox fx:id="divisionIdComboBox" prefWidth="150.0" promptText="Division ID"/>
+               </children>
+            </VBox>
+         </children>
+         <opaqueInsets>
+            <Insets />
+         </opaqueInsets>
+         <padding>
+            <Insets bottom="10.0" left="10.0" right="10.0" />
+         </padding>
+      </HBox>
       <ButtonBar prefHeight="40.0" prefWidth="200.0">
          <buttons>
             <Button cancelButton="true" mnemonicParsing="false" text="Cancel" onAction="#onCancelButton"/>
