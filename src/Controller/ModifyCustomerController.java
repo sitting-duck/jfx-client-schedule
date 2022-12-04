@@ -139,18 +139,16 @@ public class ModifyCustomerController implements Initializable {
             good = false;
         }
 
-        Division division = (Division) divisionIdComboBox.getValue();
         int divisionId = -1;
         if(divisionIdComboBox.isVisible()) {
             divisionId = UXUtil.getIdNumberFromComboBox(divisionIdComboBox);
         }
 
-        if(division == null) {
+        if(divisionId == -1) {
             UXUtil.setErrorLabel(divisionIdLabel);
             good = false;
         } else {
             divisionIdLabel.setText("");
-            divisionId = division.getId();
         }
         if(name.compareTo("") == 0) {
             UXUtil.setErrorLabel(nameLabel);

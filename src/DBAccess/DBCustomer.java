@@ -34,6 +34,25 @@ public abstract class DBCustomer {
         return clist;
     }
 
+    public static Boolean customerExists(String customerName) throws Exception, SQLException {
+        int numberOfRows = -1;
+        try {
+            String sql = "SELECT COUNT(*) from client_schedule.customers where Customer_Name = ?";
+            PreparedStatement ps = DBConnection.getConnection().prepareStatement(sql);
+            ps.setString(1, customerName);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                numberOfRows = rs.getInt(1);
+                System.out.println("numberOfRows= " + numberOfRows);
+            } else {
+                System.out.println("error: could not get the record counts");
+            }
+        } catch(SQLException throwables) {
+            throwables.printStackTrace();
+            throw throwables;
+        }
+        return numberOfRows > 0; // true if there are results, false for no results
+    }
     public static Customer getCustomerByName(String customerName) throws Exception, SQLException {
         try {
             String sql = "SELECT * from client_schedule.customers where Customer_Name = ?";

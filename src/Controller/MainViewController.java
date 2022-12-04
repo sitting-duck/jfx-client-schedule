@@ -284,7 +284,6 @@ public class MainViewController implements Initializable {
     }
     public ObservableList<Appointment> searchAppointment(String queryText) throws Exception {
         System.out.println("searchAppointment(): " + queryText);
-        ObservableList<Appointment> appointments = null;
 
         if(queryText.isEmpty()) {
             this.appointmentTable.setItems(DBAppointment.getAllAppointments());
@@ -292,6 +291,7 @@ public class MainViewController implements Initializable {
             return DBAppointment.getAllAppointments();
         }
 
+        ObservableList<Appointment> appointments = null;
         try {
             int idNum = Integer.parseInt(queryText);
             appointments = DBAppointment.lookupAppointmentByTitle(idNum);
@@ -299,9 +299,12 @@ public class MainViewController implements Initializable {
             System.out.println("Non Fatal Error: " + queryText + " cannot be converted to Integer.");
 
             // Search for appointment by customer name
-            int customerId = DBCustomer.getCustomerByName(queryText).getId();
-            appointments = DBAppointment.lookupAppointmentsForCustomer(customerId);
-
+            if(DBCustomer.customerExists(queryText)) {
+                int customerId = DBCustomer.getCustomerByName(queryText).getId();
+                appointments = DBAppointment.lookupAppointmentsForCustomer(customerId);
+            } else { // if no customer by this name we search by appointment title
+                appointments = DBAppointment.lookupAppointmentByTitle(queryText);
+            }
             System.out.println("Got " + appointments.size() + " matching appointments for customer with customer name: " + queryText);
         }
 

@@ -48,7 +48,6 @@ public abstract class DBAppointment {
         });
         return matchingAppointments;
     }
-
     public static ObservableList<Appointment> lookupAppointmentByTitle(int id) {
         ObservableList<Appointment> allAppointments = getAllAppointments();
         final ObservableList<Appointment> matchingAppointments = FXCollections.observableArrayList();
