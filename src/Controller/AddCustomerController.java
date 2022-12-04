@@ -65,7 +65,6 @@ public class AddCustomerController  implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         UXUtil.initCountryComboBox(countryComboBox);
-        //divisionIdComboBox.setItems(DBDivision.getAllDivisions());
     }
 
     public void setErrorLabel(Label label) {
@@ -73,7 +72,14 @@ public class AddCustomerController  implements Initializable {
         label.setText("Cannot be empty");
     }
     public void onCountrySelected(ActionEvent actionEvent) throws IOException, SQLException {
-        //divisionIdComboBox.setItems(DBDivision.getAllDivisionsWithCountryId((Integer) countryComboBox.getValue()));
+        String countryString = null;
+        try {
+            countryString = UXUtil.getStringFromComboBox(countryComboBox);
+        } catch (Exception e) {
+            setErrorLabel(countryLabel);
+        }
+        divisionIdComboBox.setVisible(true);
+        divisionIdComboBox.setItems(DBDivision.getAllDivisionsWithCountryName((String) countryString));
     }
     public void onOkButton(ActionEvent actionEvent) throws IOException, SQLException {
         boolean good = true;
@@ -82,10 +88,18 @@ public class AddCustomerController  implements Initializable {
         String postalCode = postalCodeTextField.getText();
         String phone = phoneTextField.getText();
 
-        Country country = (Country) countryComboBox.getValue();
-        int countryId = -1;
+        try {
+            UXUtil.getStringFromComboBox(countryComboBox);
+        } catch (Exception e) {
+            setErrorLabel(countryLabel);
+            good = false;
+        }
+
         Division division = (Division) divisionIdComboBox.getValue();
         int divisionId = -1;
+        if(divisionIdComboBox.isVisible()) {
+            divisionId = UXUtil.getIdNumberFromComboBox(divisionIdComboBox);
+        }
 
         if(division == null) {
             setErrorLabel(divisionIdLabel);
@@ -118,12 +132,7 @@ public class AddCustomerController  implements Initializable {
         } else {
             phoneLabel.setText("");
         }
-        if(countryId == -1) {
-            setErrorLabel(countryLabel);
-            good = false;
-        }
-
-        if(divisionId == -1) {
+        if(divisionId == -1 && divisionIdComboBox.isVisible()) {
             setErrorLabel(divisionIdLabel);
             good = false;
         }
@@ -131,7 +140,11 @@ public class AddCustomerController  implements Initializable {
             System.out.println("Input was not valid, Customer NOT updated in database.");
             return;
         }
+
+        // insert new customer into database
         DBCustomer.insertCustomer(name, address, postalCode, phone, divisionId);
+
+        // go back to main screen
         Parent root = FXMLLoader.load(getClass().getResource("/View/main.fxml"));
         Stage stage = (Stage)((Node)actionEvent.getSource()).getScene().getWindow();
         Scene scene = new Scene(root, 1400, 400);

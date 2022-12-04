@@ -37,7 +37,7 @@ public class Division {
 
     @Override
     public String toString() {
-        return this.division;
+        return this.id + ": " + this.division;
     }
 
 }

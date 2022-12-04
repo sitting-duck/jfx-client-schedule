@@ -147,6 +147,16 @@ public class UXUtil {
         cb.setItems(combinedStrings);
     }
 
+    public static void initCountryComboBox(ComboBox cb) {
+        ArrayList combinedStringList = new ArrayList<String>();
+        for(Country c: DBCountry.getAllCountries()) {
+            System.out.println("name: " + c.getName());
+            combinedStringList.add(c.getId() + ": " + c.getName());
+        }
+        ObservableList<String> stringList = FXCollections.observableList(combinedStringList);
+        cb.setItems(stringList);
+    }
+
     public static void initUserIDComboBox(ComboBox cb) {
         ArrayList combinedStringList = new ArrayList<String>(); // customer id + customer name in single string
         for(User u: DBUser.getAllUsers()) {
@@ -154,16 +164,6 @@ public class UXUtil {
         }
         ObservableList<Integer> combinedStrings = FXCollections.observableList(combinedStringList);
         cb.setItems(combinedStrings);
-    }
-
-    public static void initCountryComboBox(ComboBox cb) {
-        ArrayList countryNameList = new ArrayList<String>();
-        for(Country c: DBCountry.getAllCountries()) {
-            System.out.println("name: " + c.getName());
-            countryNameList.add(c.getName());
-        }
-        ObservableList<String> stringList = FXCollections.observableList(countryNameList);
-        cb.setItems(stringList);
     }
 
     public static void initContactIDComboBox(ComboBox cb) {
@@ -206,5 +206,8 @@ public class UXUtil {
         return Integer.parseInt(cb.getSelectionModel().getSelectedItem().toString().split(" ")[0].replace(":", ""));
     }
 
+    public static String getStringFromComboBox(ComboBox cb) throws Exception {
+        return cb.getSelectionModel().getSelectedItem().toString().split(" ")[1].replace(":", "");
+    }
 
 }

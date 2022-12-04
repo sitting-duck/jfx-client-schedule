@@ -1,6 +1,7 @@
 package DBAccess;
 
 import Database.DBConnection;
+import Model.Country;
 import Model.Division;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -33,6 +34,22 @@ public abstract class DBDivision {
     public static ObservableList<Division> getAllDivisionsWithCountryId(int countryId) {
         ObservableList<Division> dlist = getAllDivisions();
         ObservableList<Division> match =  FXCollections.observableArrayList();
+
+        for(Division division : dlist) {
+            if(division.getCountryId() == countryId) {
+                match.add(division);
+            }
+        }
+        return match;
+    }
+
+    public static ObservableList<Division> getAllDivisionsWithCountryName(String countryName) {
+        ObservableList<Division> dlist = getAllDivisions();
+        ObservableList<Division> match =  FXCollections.observableArrayList();
+
+
+        Country country = DBCountry.getAllCountriesWithName(countryName).get(0);
+        Integer countryId = country.getId();
 
         for(Division division : dlist) {
             if(division.getCountryId() == countryId) {
