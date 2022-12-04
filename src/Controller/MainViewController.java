@@ -22,10 +22,13 @@ import java.io.IOException;
 import java.net.URL;
 import java.sql.Date;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
+import java.time.format.FormatStyle;
 import java.time.temporal.WeekFields;
 import java.util.Calendar;
 import java.util.Locale;
@@ -317,7 +320,6 @@ public class MainViewController implements Initializable {
             alert.setHeaderText("Error: no appointments for " + queryText);
             alert.setContentText("Error: no appointments for " + queryText);
             alert.showAndWait();
-            //return;
         }
 
         return appointments;
@@ -518,11 +520,39 @@ public class MainViewController implements Initializable {
         TableColumn typeCol = new TableColumn("Type");
         typeCol.setCellValueFactory(new PropertyValueFactory<Appointment, String>("type"));
 
+        //final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd hh:mm");
+        final DateTimeFormatter formatter = DateTimeFormatter.ofLocalizedDateTime(FormatStyle.SHORT);
+
         TableColumn startCol = new TableColumn("Start");
-        startCol.setCellValueFactory(new PropertyValueFactory<Appointment, Date>("start"));
+        startCol.setCellValueFactory(new PropertyValueFactory<Appointment, LocalDateTime>("start"));
+        startCol.setCellFactory(col -> new TableCell<Appointment, Timestamp>() {
+            @Override
+            protected void updateItem(Timestamp item, boolean empty) {
+                super.updateItem(item, empty);
+                if(empty) {
+                    setText(null);
+                } else {
+                    LocalDateTime ldt = item.toLocalDateTime();
+                    setText(String.format(ldt.format(formatter)));
+                }
+
+            }
+        });
 
         TableColumn endCol = new TableColumn("End");
-        endCol.setCellValueFactory(new PropertyValueFactory<Appointment, Date>("end"));
+        endCol.setCellValueFactory(new PropertyValueFactory<Appointment, LocalDateTime>("end"));
+        endCol.setCellFactory(col -> new TableCell<Appointment, Timestamp>() {
+            @Override
+            protected void updateItem(Timestamp item, boolean empty) {
+                super.updateItem(item, empty);
+                if(empty) {
+                    setText(null);
+                } else {
+                    LocalDateTime ldt = item.toLocalDateTime();
+                    setText(String.format(ldt.format(formatter)));
+                }
+            }
+        });
 
         TableColumn customerIdCol = new TableColumn("Customer ID");
         customerIdCol.setCellValueFactory(new PropertyValueFactory<Appointment, Integer>("customerId"));
