@@ -535,7 +535,6 @@ public class MainViewController implements Initializable {
                     LocalDateTime ldt = item.toLocalDateTime();
                     setText(String.format(ldt.format(formatter)));
                 }
-
             }
         });
 

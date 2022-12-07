@@ -1,10 +1,9 @@
 package Utils;
 
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.DatePicker;
-
 import java.sql.Timestamp;
 import java.time.*;
+import java.time.format.DateTimeFormatter;
+import java.time.format.FormatStyle;
 
 public class TimeUtils {
 
@@ -63,16 +62,25 @@ public class TimeUtils {
         ZonedDateTime at8AMEasternTime = start8amAsInstantSameDay.atZone(TIMEZONE_ET);
         ZonedDateTime before10PMEasternTime = end10pmAsInstantSameDay.atZone(TIMEZONE_ET);
 
-        // now check if appointment is during office hours 8am to 10pm EST including weekends
-        boolean after8am_ET = startAsInstant.isAfter(start8amAsInstantSameDay);
-        boolean before10pm_ET = endAsInstant.isBefore(end10pmAsInstantSameDay);
+        boolean after8am_ET = start_zdt_ET.isAfter(at8AMEasternTime) || start_zdt_ET.isEqual(at8AMEasternTime);
+        boolean before10pm_ET = end_zdt_ET.isBefore(before10PMEasternTime) || end_zdt_ET.isEqual(before10PMEasternTime);
 
         return after8am_ET && before10pm_ET;
     }
 
-//    public LocalDate getFirstDayOfWeek(int yearNumber, int monthNumber, int weekNumber) {
-//        // create date string for first day of month
-//        String dateString = Integer.toString(yearNumber)+"-"+Integer.toString(monthNumber)+"-01";
-//        LocalDate firstDayOfMonth = LocalDate.parse(dateString);
-//    }
+    public static String getNowLocalTimeString() {
+        //final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd hh:mm");
+        final DateTimeFormatter formatter = DateTimeFormatter.ofLocalizedDateTime(FormatStyle.SHORT);
+        return "Local: " + java.time.ZonedDateTime.now().format(formatter);
+    }
+
+    public static String getNowEasternTimeString() {
+        //final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd hh:mm");
+        final DateTimeFormatter formatter = DateTimeFormatter.ofLocalizedDateTime(FormatStyle.SHORT);
+
+        ZoneId TIMEZONE_ET = ZoneId.of("America/New_York");
+        ZonedDateTime now_ET = Instant.now().atZone(TIMEZONE_ET);
+        return "Eastern: " + now_ET.format(formatter);
+    }
+
 }

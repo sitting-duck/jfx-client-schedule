@@ -20,7 +20,6 @@ import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.time.*;
 import java.time.temporal.ChronoUnit;
-import java.util.Calendar;
 import java.util.ResourceBundle;
 
 public class AddAppointmentController implements Initializable  {
@@ -47,6 +46,12 @@ public class AddAppointmentController implements Initializable  {
 
     @FXML
     private TextField typeTextField;
+
+    @FXML
+    private Label localTimeLabel;
+
+    @FXML
+    private Label easternTimeLabel;
 
     @FXML
     private Label startLabel;
@@ -114,6 +119,9 @@ public class AddAppointmentController implements Initializable  {
         UXUtil.initCustomerIDComboBox(customerIdComboBox);
         UXUtil.initUserIDComboBox(userIdComboBox);
         UXUtil.initContactIDComboBox(contactIdComboBox);
+
+        localTimeLabel.setText(TimeUtils.getNowLocalTimeString());
+        easternTimeLabel.setText(TimeUtils.getNowEasternTimeString());
     }
 
     public void onOkButton(ActionEvent actionEvent) throws IOException, SQLException {
@@ -282,6 +290,10 @@ public class AddAppointmentController implements Initializable  {
         Appointment newAppointment = new Appointment(0, title, description, location, type, start, end, customerId, userId, contactId);
         boolean isOverlap = DBAppointment.isCollision(newAppointment);
         System.out.println("isOverlap: " + isOverlap);
+
+
+
+
         if(isOverlap == false) {
             DBAppointment.insertAppointment(title, description, location, type, start, end, customerId, userId, contactId);
 

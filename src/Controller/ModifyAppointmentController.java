@@ -10,10 +10,7 @@ import Model.Customer;
 import Model.User;
 import Utils.TimeUtils;
 import Utils.UXUtil;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -21,21 +18,16 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
-import java.sql.Date;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
-import java.util.ArrayList;
 import java.util.ResourceBundle;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 
 public class ModifyAppointmentController implements Initializable  {
 
@@ -66,6 +58,12 @@ public class ModifyAppointmentController implements Initializable  {
 
     @FXML
     private TextField typeTextField;
+
+    @FXML
+    private Label localTimeLabel;
+
+    @FXML
+    private Label easternTimeLabel;
 
     @FXML
     private Label startLabel;
@@ -165,11 +163,11 @@ public class ModifyAppointmentController implements Initializable  {
         startDatePicker.setValue(appointment.getStart().toLocalDateTime().toLocalDate());
         endDatePicker.setValue(appointment.getEnd().toLocalDateTime().toLocalDate());
         int startHour = appointment.getStart().toLocalDateTime().getHour();
-        startHour = TimeUtils.militaryToCivilianHour(startHour);
-        startHourComboBox.setValue(startHour);
+        int startHourCivilian = TimeUtils.militaryToCivilianHour(startHour);
+        startHourComboBox.setValue(startHourCivilian);
         int endHour = appointment.getEnd().toLocalDateTime().getHour();
-        endHour = TimeUtils.militaryToCivilianHour(endHour);
-        endHourComboBox.setValue(endHour);
+        int endHourCivilian = TimeUtils.militaryToCivilianHour(endHour);
+        endHourComboBox.setValue(endHourCivilian);
 
         startMinuteComboBox.setValue(appointment.getStart().toLocalDateTime().getMinute());
         endMinuteComboBox.setValue(appointment.getEnd().toLocalDateTime().getMinute());
@@ -178,6 +176,9 @@ public class ModifyAppointmentController implements Initializable  {
         customerIdComboBox.setValue(appointment.getCustomerId());
         userIdComboBox.setValue(appointment.getUserId());
         contactIdComboBox.setValue(appointment.getContactId());
+
+        localTimeLabel.setText(TimeUtils.getNowLocalTimeString());
+        easternTimeLabel.setText(TimeUtils.getNowEasternTimeString());
     }
 
     public void onOkButton(ActionEvent actionEvent) throws IOException, SQLException {

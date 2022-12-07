@@ -11,7 +11,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefWidth="600.0" spacing="10.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.AddAppointmentController">
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefWidth="600.0" spacing="10.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.AddAppointmentController">
    <children>
       <Label text="Add Appointment">
          <font>
@@ -25,6 +25,12 @@
       <TextField fx:id="locationTextField" promptText="Location" />
       <Label fx:id="typeLabel" text="" />
       <TextField fx:id="typeTextField" promptText="Type" />
+      <HBox prefHeight="0.0" prefWidth="580.0" spacing="100.0">
+         <children>
+            <Label fx:id="localTimeLabel" text="Local: " />
+            <Label fx:id="easternTimeLabel" text="Eastern: " />
+         </children>
+      </HBox>
       <Label fx:id="startLabel" text="" />
       <HBox prefWidth="200.0">
          <children>
