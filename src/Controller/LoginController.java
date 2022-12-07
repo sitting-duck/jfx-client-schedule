@@ -24,7 +24,7 @@ public class LoginController implements Initializable {
     public Label userErrorLabel;
     public TextField userTextField;
     public Label passwordErrorLabel;
-    public TextField passwordTextField;
+    public PasswordField passwordTextField;
     public Label zoneLabel;
     public Button loginButton;
 
@@ -79,12 +79,12 @@ public class LoginController implements Initializable {
             user.print();
         } catch (SQLException e) {
             System.err.println(Translate.str("Error: could not find user with username: ") +username);
-            Alert alert = new Alert(Alert.AlertType.WARNING, Translate.str("Could not find user with username: ") +username, ButtonType.OK);
+            Alert alert = new Alert(Alert.AlertType.WARNING, Translate.str("Could not find user with username ") + ": " +username, ButtonType.OK);
             alert.showAndWait();
             return;
         } catch (Exception e) {
             System.err.println(Translate.str("Error: could not find user with username: ") +username);
-            Alert alert = new Alert(Alert.AlertType.WARNING, Translate.str("Could not find user with username: ") +username, ButtonType.OK);
+            Alert alert = new Alert(Alert.AlertType.WARNING, Translate.str("Could not find user with username ") + ": " +username, ButtonType.OK);
             alert.showAndWait();
             return;
         }
@@ -97,8 +97,9 @@ public class LoginController implements Initializable {
             stage.setScene(scene);
             stage.show();
         } else {
-            System.err.println(Translate.str("Error: incorrect password for: ") + username);
-            Alert alert = new Alert(Alert.AlertType.WARNING, Translate.str("Error: incorrect password for: ") + username, ButtonType.OK);
+            //System.err.println(Translate.str("Error: incorrect password for: ") + username);
+            Alert alert = new Alert(Alert.AlertType.WARNING, Translate.str("Error incorrect password for ") + ": " + username, ButtonType.OK);
+            //Alert alert = new Alert(Alert.AlertType.WARNING, "Error : incorrect password for : " + username, ButtonType.OK);
             alert.showAndWait();
             return;
         }

@@ -13,9 +13,10 @@ public class Translate {
         //Locale french = new Locale("fr", "FR");
         //ResourceBundle rb = ResourceBundle.getBundle("Localization/lang", french);
         ArrayList tokens = new ArrayList<String>();
-        StringTokenizer tok = new StringTokenizer(string);
-        for (int i = 1; tok.hasMoreTokens(); i++) {
-            tokens.add(rb.getString(tok.nextToken()));
+        StringTokenizer tokenizer = new StringTokenizer(string);
+        for (int i = 1; tokenizer.hasMoreTokens(); i++) {
+            String currentToken = tokenizer.nextToken();
+            tokens.add(rb.getString(currentToken));
         }
         return String.join(" ", tokens);
     }
