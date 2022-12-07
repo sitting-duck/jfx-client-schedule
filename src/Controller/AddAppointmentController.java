@@ -18,8 +18,9 @@ import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
 import java.sql.Timestamp;
-import java.time.LocalDateTime;
+import java.time.*;
 import java.time.temporal.ChronoUnit;
+import java.util.Calendar;
 import java.util.ResourceBundle;
 
 public class AddAppointmentController implements Initializable  {
@@ -262,6 +263,16 @@ public class AddAppointmentController implements Initializable  {
 
         if(good == false) {
             System.out.println("Input was not valid, Appointment NOT updated in database.");
+            return;
+        }
+
+        boolean withinOfficeHours = TimeUtils.withinOfficeHours(start, end);
+        if(!withinOfficeHours) {
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Error: office hours");
+            alert.setHeaderText("Error: office hours are 8am-10pm EST");
+            alert.setContentText("Error: offices hours are 8am-10pm ESTError: offices 8am-10pm EST");
+            alert.showAndWait();
             return;
         }
 
