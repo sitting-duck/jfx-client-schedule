@@ -3,6 +3,7 @@ package Controller;
 import DBAccess.DBUser;
 import Localization.Translate;
 import Model.User;
+import Utils.TimeUtils;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -50,15 +51,6 @@ public class LoginController implements Initializable {
             System.out.println(translation);
         }
     }
-
-    public void onUsername(ActionEvent actionEvent) throws IOException {
-
-    }
-
-    public void onPassword(ActionEvent actionEvent) throws IOException {
-
-    }
-
     public void onLoginButton(ActionEvent actionEvent) throws IOException {
         String username = userTextField.getText();
         String password = passwordTextField.getText();
@@ -83,7 +75,7 @@ public class LoginController implements Initializable {
             alert.showAndWait();
             return;
         } catch (Exception e) {
-            System.err.println(Translate.str("Error: could not find user with username: ") +username);
+            System.err.println(Translate.str("Error could not find user with username ") + ": " + username);
             Alert alert = new Alert(Alert.AlertType.WARNING, Translate.str("Could not find user with username ") + ": " +username, ButtonType.OK);
             alert.showAndWait();
             return;
@@ -97,11 +89,15 @@ public class LoginController implements Initializable {
             stage.setScene(scene);
             stage.show();
         } else {
-            //System.err.println(Translate.str("Error: incorrect password for: ") + username);
             Alert alert = new Alert(Alert.AlertType.WARNING, Translate.str("Error incorrect password for ") + ": " + username, ButtonType.OK);
-            //Alert alert = new Alert(Alert.AlertType.WARNING, "Error : incorrect password for : " + username, ButtonType.OK);
             alert.showAndWait();
             return;
         }
+
+        if(TimeUtils.isWithin15Minute()) {
+            //boop
+        }
+
+
     }
 }

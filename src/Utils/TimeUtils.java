@@ -1,5 +1,8 @@
 package Utils;
 
+import DBAccess.DBAppointment;
+import Model.Appointment;
+
 import java.sql.Timestamp;
 import java.time.*;
 import java.time.format.DateTimeFormatter;
@@ -62,7 +65,6 @@ public class TimeUtils {
         Instant endMidnightAsInstantSameDay = endAsLocalDate.atStartOfDay(TIMEZONE_ET).toInstant();
         Instant end10pmAsInstantSameDay = endMidnightAsInstantSameDay.plus(Duration.ofHours(22)); // 12 + 10 hours from midnight is 10pm.
 
-
         ZonedDateTime start_zdt_ET = startAsInstant.atZone(TIMEZONE_ET);
         ZonedDateTime end_zdt_ET = endAsInstant.atZone(TIMEZONE_ET);
         ZonedDateTime at8AMEasternTime = start8amAsInstantSameDay.atZone(TIMEZONE_ET);
@@ -75,18 +77,31 @@ public class TimeUtils {
     }
 
     public static String getNowLocalTimeString() {
-        //final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd hh:mm");
         final DateTimeFormatter formatter = DateTimeFormatter.ofLocalizedDateTime(FormatStyle.SHORT);
         return "Local: " + java.time.ZonedDateTime.now().format(formatter);
     }
 
     public static String getNowEasternTimeString() {
-        //final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd hh:mm");
         final DateTimeFormatter formatter = DateTimeFormatter.ofLocalizedDateTime(FormatStyle.SHORT);
 
         ZoneId TIMEZONE_ET = ZoneId.of("America/New_York");
         ZonedDateTime now_ET = Instant.now().atZone(TIMEZONE_ET);
         return "Eastern: " + now_ET.format(formatter);
     }
+
+    public static boolean isWithin15Minute() {
+        ZoneId localTimeZone = ZoneId.systemDefault();
+        ZonedDateTime now = ZonedDateTime.now(localTimeZone);
+        ZonedDateTime nowPlus15Min = now.plusMinutes(15);
+
+        for( Appointment appointment : DBAppointment.getAllAppointments()) {
+            ZonedDateTime apptTime = appointment.getStart().toLocalDateTime().atZone(localTimeZone);
+            if(apptTime.isAfter(now) && apptTime.isBefore(nowPlus15Min) || apptTime.isEqual(nowPlus15Min)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
 
 }
