@@ -300,6 +300,13 @@ public class AddAppointmentController implements Initializable  {
             stage.setTitle("Appointment Manager");
             stage.setScene(scene);
             stage.show();
+        } else {
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Error: Appointment Overlap");
+            alert.setHeaderText("Error: This appointment overlaps with another");
+            alert.setContentText("Error: This appointment overlaps with another");
+            alert.showAndWait();
+            return;
         }
     }
 
