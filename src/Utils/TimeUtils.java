@@ -7,7 +7,7 @@ import java.time.format.FormatStyle;
 
 public class TimeUtils {
 
-    public static Timestamp getTime(Timestamp day, int hour, int minute, String amPm) {
+    public static Timestamp buildTimeStamp(Timestamp day, int hour, int minute, String amPm) {
         LocalDateTime time = day.toLocalDateTime();
         if(amPm.equals("AM")) {
             if(hour != 12) {
@@ -25,7 +25,13 @@ public class TimeUtils {
 
         time = time.plusMinutes(minute);
         day = Timestamp.valueOf(time);
-        return day;
+
+        LocalDateTime ldt = day.toLocalDateTime();
+        ZonedDateTime ldtZoned = ldt.atZone(ZoneId.systemDefault());
+        ZonedDateTime utcZoned = ldtZoned.withZoneSameInstant(ZoneId.of("UTC"));
+
+        Timestamp utcTimestamp = Timestamp.valueOf(utcZoned.toLocalDateTime());
+        return utcTimestamp;
     }
 
     public static int militaryToCivilianHour(int hour) {

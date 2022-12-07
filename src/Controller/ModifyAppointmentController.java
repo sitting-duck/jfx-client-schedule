@@ -1,13 +1,7 @@
 package Controller;
 
 import DBAccess.DBAppointment;
-import DBAccess.DBContact;
-import DBAccess.DBCustomer;
-import DBAccess.DBUser;
 import Model.Appointment;
-import Model.Contact;
-import Model.Customer;
-import Model.User;
 import Utils.TimeUtils;
 import Utils.UXUtil;
 import javafx.event.ActionEvent;
@@ -299,14 +293,14 @@ public class ModifyAppointmentController implements Initializable  {
             int startTimeHour = (int)startHourComboBox.getValue();
             int startTimeMinute = (int)startMinuteComboBox.getValue();
             String startTimeAmPm = (String)startAMPMComboBox.getValue();
-            start = TimeUtils.getTime(start, startTimeHour, startTimeMinute, startTimeAmPm);
+            start = TimeUtils.buildTimeStamp(start, startTimeHour, startTimeMinute, startTimeAmPm);
             LocalDateTime startTime = start.toLocalDateTime();
 
             end = Timestamp.valueOf(endDatePicker.getValue().atStartOfDay());
             int endTimeHour = (int)endHourComboBox.getValue();
             int endTimeMinute = (int)endMinuteComboBox.getValue();
             String endTimeAmPm = (String)endAMPMComboBox.getValue();
-            end = TimeUtils.getTime(end, endTimeHour, endTimeMinute, endTimeAmPm);
+            end = TimeUtils.buildTimeStamp(end, endTimeHour, endTimeMinute, endTimeAmPm);
             LocalDateTime endTime = end.toLocalDateTime();
 
             long minutes = ChronoUnit.MINUTES.between(startTime, endTime);

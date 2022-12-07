@@ -242,18 +242,18 @@ public class AddAppointmentController implements Initializable  {
             int startTimeHour = (int)startHourComboBox.getValue();
             int startTimeMinute = (int)startMinuteComboBox.getValue();
             String startTimeAmPm = (String)startAMPMComboBox.getValue();
-            start = TimeUtils.getTime(start, startTimeHour, startTimeMinute, startTimeAmPm);
-            LocalDateTime startTime = start.toLocalDateTime();
+            start = TimeUtils.buildTimeStamp(start, startTimeHour, startTimeMinute, startTimeAmPm);
+            LocalDateTime startTime_ldt = start.toLocalDateTime();
 
             end = Timestamp.valueOf(endDatePicker.getValue().atStartOfDay());
             int endTimeHour = (int)endHourComboBox.getValue();
             int endTimeMinute = (int)endMinuteComboBox.getValue();
             String endTimeAmPm = (String)endAMPMComboBox.getValue();
-            end = TimeUtils.getTime(end, endTimeHour, endTimeMinute, endTimeAmPm);
+            end = TimeUtils.buildTimeStamp(end, endTimeHour, endTimeMinute, endTimeAmPm);
             LocalDateTime endTime = end.toLocalDateTime();
 
-            long minutes = ChronoUnit.MINUTES.between(startTime, endTime);
-            long hours = ChronoUnit.HOURS.between(startTime, endTime);
+            long minutes = ChronoUnit.MINUTES.between(startTime_ldt, endTime);
+            long hours = ChronoUnit.HOURS.between(startTime_ldt, endTime);
 
             System.out.println("Appointment is " + hours + " hours and " + minutes + " minutes.");
 
