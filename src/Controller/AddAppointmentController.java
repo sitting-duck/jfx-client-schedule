@@ -238,22 +238,22 @@ public class AddAppointmentController implements Initializable  {
         }
 
         try {
-            start = Timestamp.valueOf(startDatePicker.getValue().atStartOfDay());
+            Timestamp startDay = Timestamp.valueOf(startDatePicker.getValue().atStartOfDay());
             int startTimeHour = (int)startHourComboBox.getValue();
             int startTimeMinute = (int)startMinuteComboBox.getValue();
             String startTimeAmPm = (String)startAMPMComboBox.getValue();
-            start = TimeUtils.buildTimeStamp(start, startTimeHour, startTimeMinute, startTimeAmPm);
+            start = TimeUtils.buildTimeStamp(startDay, startTimeHour, startTimeMinute, startTimeAmPm);
             LocalDateTime startTime_ldt = start.toLocalDateTime();
 
-            end = Timestamp.valueOf(endDatePicker.getValue().atStartOfDay());
+            Timestamp endDay = Timestamp.valueOf(endDatePicker.getValue().atStartOfDay());
             int endTimeHour = (int)endHourComboBox.getValue();
             int endTimeMinute = (int)endMinuteComboBox.getValue();
             String endTimeAmPm = (String)endAMPMComboBox.getValue();
-            end = TimeUtils.buildTimeStamp(end, endTimeHour, endTimeMinute, endTimeAmPm);
-            LocalDateTime endTime = end.toLocalDateTime();
+            end = TimeUtils.buildTimeStamp(endDay, endTimeHour, endTimeMinute, endTimeAmPm);
+            LocalDateTime endTime_ldt = end.toLocalDateTime();
 
-            long minutes = ChronoUnit.MINUTES.between(startTime_ldt, endTime);
-            long hours = ChronoUnit.HOURS.between(startTime_ldt, endTime);
+            long minutes = ChronoUnit.MINUTES.between(startTime_ldt, endTime_ldt);
+            long hours = ChronoUnit.HOURS.between(startTime_ldt, endTime_ldt);
 
             System.out.println("Appointment is " + hours + " hours and " + minutes + " minutes.");
 

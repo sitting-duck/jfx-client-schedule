@@ -30,11 +30,12 @@ public class TimeUtils {
         day = Timestamp.valueOf(time);
 
         LocalDateTime ldt = day.toLocalDateTime();
-        ZonedDateTime ldtZoned = ldt.atZone(ZoneId.systemDefault());
-        ZonedDateTime utcZoned = ldtZoned.withZoneSameInstant(ZoneId.of("UTC"));
+        //ZonedDateTime ldtZoned = ldt.atZone(ZoneId.systemDefault());
+        //ZonedDateTime utcZoned = ldtZoned.withZoneSameInstant(ZoneId.of("UTC"));
 
-        Timestamp utcTimestamp = Timestamp.valueOf(utcZoned.toLocalDateTime());
-        return utcTimestamp;
+        //Timestamp utcTimestamp = Timestamp.valueOf(ldtZoned.toLocalDateTime());
+        Timestamp ldt_ts = Timestamp.valueOf(ldt);
+        return ldt_ts;
     }
 
     public static int militaryToCivilianHour(int hour) {
@@ -89,18 +90,25 @@ public class TimeUtils {
         return "Eastern: " + now_ET.format(formatter);
     }
 
-    public static boolean isWithin15Minute() {
+    public static String isWithin15Minute() {
         ZoneId localTimeZone = ZoneId.systemDefault();
-        ZonedDateTime now = ZonedDateTime.now(localTimeZone);
-        ZonedDateTime nowPlus15Min = now.plusMinutes(15);
+        //ZonedDateTime now = ZonedDateTime.now(localTimeZone);
+        //ZonedDateTime nowPlus15Min = now.plusMinutes(15);
+        LocalDateTime now = LocalDateTime.now();
+        LocalDateTime nowPlus15Min = now.plusMinutes(15);
 
         for( Appointment appointment : DBAppointment.getAllAppointments()) {
-            ZonedDateTime apptTime = appointment.getStart().toLocalDateTime().atZone(localTimeZone);
-            if(apptTime.isAfter(now) && apptTime.isBefore(nowPlus15Min) || apptTime.isEqual(nowPlus15Min)) {
-                return true;
+            LocalDateTime apptTime = appointment.getStart().toLocalDateTime();
+            boolean afterNow = apptTime.isAfter(now);
+            boolean before15MinFromNow = apptTime.isBefore(nowPlus15Min);
+            boolean exactly15MinFromNow = apptTime.isEqual(nowPlus15Min);
+            if(afterNow && (before15MinFromNow || exactly15MinFromNow)) {
+                String dateString = appointment.getStart().toLocalDateTime().toLocalDate().atStartOfDay().toString();
+                String timeString = appointment.getStart().toLocalDateTime().toLocalTime().toString();
+                return "Upcoming Appointment Id: " + appointment.getId() + " title: " + appointment.getTitle() + " date: " + dateString + " time: " + timeString;
             }
         }
-        return false;
+        return "There are no appointments within the next 15 minutes.";
     }
 
 

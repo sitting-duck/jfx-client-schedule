@@ -94,10 +94,11 @@ public class LoginController implements Initializable {
             return;
         }
 
-        if(TimeUtils.isWithin15Minute()) {
-            //boop
-        }
-
-
+        String appointmentIn15MinutesWarning = TimeUtils.isWithin15Minute();
+        Alert alert = new Alert(Alert.AlertType.WARNING);
+        alert.setTitle("Warning: ");
+        alert.setHeaderText(appointmentIn15MinutesWarning);
+        alert.setContentText(appointmentIn15MinutesWarning);
+        alert.showAndWait();
     }
 }

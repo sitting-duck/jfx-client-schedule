@@ -4,6 +4,7 @@ import DBAccess.DBAppointment;
 import DBAccess.DBCustomer;
 import Model.Appointment;
 import Model.Customer;
+import Utils.TimeUtils;
 import Utils.UXUtil;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -23,10 +24,7 @@ import java.net.URL;
 import java.sql.Date;
 import java.sql.SQLException;
 import java.sql.Timestamp;
-import java.time.DayOfWeek;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
+import java.time.*;
 import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
 import java.time.temporal.WeekFields;
@@ -532,8 +530,8 @@ public class MainViewController implements Initializable {
                 if(empty) {
                     setText(null);
                 } else {
-                    LocalDateTime ldt = item.toLocalDateTime();
-                    setText(String.format(ldt.format(formatter)));
+                    ZonedDateTime zdt = item.toLocalDateTime().atZone(ZoneId.systemDefault());
+                    setText(String.format(zdt.format(formatter)));
                 }
             }
         });
@@ -547,8 +545,8 @@ public class MainViewController implements Initializable {
                 if(empty) {
                     setText(null);
                 } else {
-                    LocalDateTime ldt = item.toLocalDateTime();
-                    setText(String.format(ldt.format(formatter)));
+                    ZonedDateTime zdt = item.toLocalDateTime().atZone(ZoneId.systemDefault());
+                    setText(String.format(zdt.format(formatter)));
                 }
             }
         });
