@@ -331,6 +331,16 @@ public class ModifyAppointmentController implements Initializable  {
             return;
         }
 
+        boolean withinOfficeHours = TimeUtils.withinOfficeHours(start, end);
+        if(!withinOfficeHours) {
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Error: office hours");
+            alert.setHeaderText("Error: office hours are 8am-10pm EST");
+            alert.setContentText("Error: offices hours are 8am-10pm ESTError: offices 8am-10pm EST");
+            alert.showAndWait();
+            return;
+        }
+
         boolean isOverlap = DBAppointment.isCollision(appointment);
         System.out.println("isOverlap: " + isOverlap);
         if(isOverlap == false) {

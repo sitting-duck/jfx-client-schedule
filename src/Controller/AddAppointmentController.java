@@ -291,9 +291,6 @@ public class AddAppointmentController implements Initializable  {
         boolean isOverlap = DBAppointment.isCollision(newAppointment);
         System.out.println("isOverlap: " + isOverlap);
 
-
-
-
         if(isOverlap == false) {
             DBAppointment.insertAppointment(title, description, location, type, start, end, customerId, userId, contactId);
 
