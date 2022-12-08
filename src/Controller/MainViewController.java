@@ -99,6 +99,12 @@ public class MainViewController implements Initializable {
     @FXML
     private ComboBox weekComboBox;
 
+    @FXML
+    private Button reportsButtonCustomers;
+
+    @FXML
+    private Button reportsButtonAppointments;
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         try {
@@ -137,7 +143,6 @@ public class MainViewController implements Initializable {
             }
         });
 
-        //UXUtil.initMonthComboBox(monthComboBox);
         //Set toggle group so that only one of All Time, Month, or Week radio buttons can be selected
         ToggleGroup group = new ToggleGroup();
         monthRadioButton.setToggleGroup(group);
@@ -147,6 +152,24 @@ public class MainViewController implements Initializable {
         allTimeRadioButton.setSelected(true);
         appointmentDatePicker.setVisible(false);
         appointmentDatePicker.setValue(LocalDate.now());
+    }
+
+    public void onCustomerReportsButtonClicked(ActionEvent actionEvent) throws IOException {
+        Parent root = FXMLLoader.load(getClass().getResource("/View/customer-report.fxml"));
+        Stage stage = (Stage)((Node)actionEvent.getSource()).getScene().getWindow();
+        Scene scene = new Scene(root, 1400, 400);
+        stage.setTitle("Appointment Manager");
+        stage.setScene(scene);
+        stage.show();
+    }
+
+    public void onAppointmentReportsButtonClicked(ActionEvent actionEvent) throws IOException {
+        Parent root = FXMLLoader.load(getClass().getResource("/View/appt-reports.fxml"));
+        Stage stage = (Stage)((Node)actionEvent.getSource()).getScene().getWindow();
+        Scene scene = new Scene(root, 1400, 400);
+        stage.setTitle("Appointment Manager");
+        stage.setScene(scene);
+        stage.show();
     }
 
     public void onMonthSelected(ActionEvent actionEvent) throws IOException {
