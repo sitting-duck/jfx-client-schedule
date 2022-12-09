@@ -7,6 +7,7 @@ import javafx.collections.ObservableList;
 
 import java.sql.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 
 public abstract class DBAppointment {
 
@@ -162,6 +163,18 @@ public abstract class DBAppointment {
         ps.setInt(1, appointmentId);
         int rowsAffected = ps.executeUpdate();
         return rowsAffected;
+    }
+
+    public static ArrayList<String> getUniqueAppointmentTypes() throws SQLException {
+        String sql = "SELECT DISTINCT Type FROM client_schedule.appointments";
+        PreparedStatement ps = DBConnection.getConnection().prepareStatement(sql);
+        ResultSet rs = ps.executeQuery();
+
+        ArrayList<String> uniqueTypeStrings = new ArrayList<String>();
+        while(rs.next()) {
+            uniqueTypeStrings.add(rs.getString("Type"));
+        }
+        return uniqueTypeStrings;
     }
 
 }

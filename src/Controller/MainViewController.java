@@ -4,7 +4,6 @@ import DBAccess.DBAppointment;
 import DBAccess.DBCustomer;
 import Model.Appointment;
 import Model.Customer;
-import Utils.TimeUtils;
 import Utils.UXUtil;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
