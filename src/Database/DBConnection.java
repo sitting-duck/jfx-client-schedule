@@ -1,5 +1,9 @@
 package Database;
 
+import Localization.Translate;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 

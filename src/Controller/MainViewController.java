@@ -157,7 +157,7 @@ public class MainViewController implements Initializable {
     public void onCustomerReportsButtonClicked(ActionEvent actionEvent) throws IOException {
         Parent root = FXMLLoader.load(getClass().getResource("/View/customer-report.fxml"));
         Stage stage = (Stage)((Node)actionEvent.getSource()).getScene().getWindow();
-        Scene scene = new Scene(root, 1400, 400);
+        Scene scene = new Scene(root, 600, 400);
         stage.setTitle("Appointment Manager");
         stage.setScene(scene);
         stage.show();
@@ -166,7 +166,7 @@ public class MainViewController implements Initializable {
     public void onAppointmentReportsButtonClicked(ActionEvent actionEvent) throws IOException {
         Parent root = FXMLLoader.load(getClass().getResource("/View/appt-reports.fxml"));
         Stage stage = (Stage)((Node)actionEvent.getSource()).getScene().getWindow();
-        Scene scene = new Scene(root, 1400, 400);
+        Scene scene = new Scene(root);
         stage.setTitle("Appointment Manager");
         stage.setScene(scene);
         stage.show();
