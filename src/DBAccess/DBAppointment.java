@@ -165,6 +165,30 @@ public abstract class DBAppointment {
         return rowsAffected;
     }
 
+    public static ArrayList<Appointment> getAllAppointmentsOfType(String type) throws SQLException {
+        String sql = "SELECT * FROM client_schedule.appointments WHERE Type = ?";
+        PreparedStatement ps = DBConnection.getConnection().prepareStatement(sql);
+        ps.setString(1, type);
+        ResultSet rs = ps.executeQuery();
+
+        ArrayList<Appointment> appointments = new ArrayList<Appointment>();
+        while(rs.next()) {
+
+            int id = rs.getInt("Appointment_ID");
+            String title = rs.getString("Title");
+            String description = rs.getString("Description");
+            String location = rs.getString("Location");
+            Timestamp start = rs.getTimestamp("Start");
+            Timestamp end = rs.getTimestamp("End");
+            int customerId = rs.getInt("Customer_ID");
+            int userId = rs.getInt("User_ID");
+            int contactId = rs.getInt("Contact_ID");
+            Appointment a = new Appointment(id, title, description, location, type, start, end, customerId, userId, contactId);
+            appointments.add(a);
+        }
+        return appointments;
+    }
+
     public static ArrayList<String> getUniqueAppointmentTypes() throws SQLException {
         String sql = "SELECT DISTINCT Type FROM client_schedule.appointments";
         PreparedStatement ps = DBConnection.getConnection().prepareStatement(sql);

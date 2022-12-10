@@ -180,7 +180,6 @@ public class UXUtil {
             lbl.setText(lblText);
             return true;
         }
-
     }
 
     public static int getIdNumberFromComboBox(ComboBox cb) {

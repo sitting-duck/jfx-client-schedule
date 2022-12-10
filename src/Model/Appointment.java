@@ -109,4 +109,17 @@ public class Appointment {
         this.contactId = contactId;
     }
 
+    public String toString() {
+        String s = title + ": " + description + "\n";
+        s += "\tid: " + id + "\n";
+        s += "\tlocation: " + location + "\n";
+        s += "\ttype: " + type + "\n";
+        s += "\tstart: " + start.toString() + "\n";
+        s += "\tend: " + end.toString() + "\n";
+        s += "\tcustomer id: " + customerId + "\n";
+        s += "\tuser id: " + userId + "\n";
+        s += "\tcontact id: " + contactId + "\n\n";
+        return s;
+    }
+
 }
