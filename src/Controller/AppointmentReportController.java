@@ -1,7 +1,9 @@
 package Controller;
 
 import DBAccess.DBAppointment;
+import DBAccess.DBContact;
 import Model.Appointment;
+import Model.Contact;
 import Utils.UXUtil;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -28,6 +30,9 @@ public class AppointmentReportController implements Initializable {
     private ComboBox apptMonthComboBox;
 
     @FXML
+    private ComboBox contactComboBox;
+
+    @FXML
     private Label numApptsLabel;
 
     @FXML
@@ -35,6 +40,9 @@ public class AppointmentReportController implements Initializable {
 
     @FXML
     private TextArea reportTextAreaMonth;
+
+    @FXML
+    private TextArea reportTextAreaContact;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -45,6 +53,8 @@ public class AppointmentReportController implements Initializable {
             throw new RuntimeException(e);
         }
         UXUtil.initMonthComboBox(apptMonthComboBox);
+        UXUtil.initContactComboBox(contactComboBox);
+
     }
     public void onTypeSelected(ActionEvent actionEvent) throws IOException, SQLException {
         String type = apptTypeComboBox.getValue().toString();
@@ -68,5 +78,15 @@ public class AppointmentReportController implements Initializable {
             s += a.toString();
         }
         reportTextAreaMonth.setText(s);
+    }
+
+    public void onContactSelected(ActionEvent actionEvent) throws Exception {
+        int contactId = UXUtil.getIdNumberFromComboBox(contactComboBox);
+        ArrayList<Appointment> appointments = DBAppointment.getAllAppointmentsForContact(contactId);
+        String s = "";
+        for(Appointment a : appointments) {
+            s += a.toString();
+        }
+        reportTextAreaContact.setText(s);
     }
 }

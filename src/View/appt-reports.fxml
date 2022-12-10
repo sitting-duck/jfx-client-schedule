@@ -84,7 +84,7 @@
                              <HBox prefHeight="14.0" prefWidth="600.0" spacing="10.0">
                                 <children>
                                    <Label text="Appointment Contact" />
-                                   <ComboBox prefWidth="150.0" promptText="Select Type" />
+                                   <ComboBox fx:id="contactComboBox" onAction="#onContactSelected" prefWidth="150.0" promptText="Select Type" />
                                 </children>
                                 <padding>
                                    <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
@@ -99,7 +99,7 @@
                                    <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                                 </padding>
                              </HBox>
-                             <TextArea prefHeight="344.0" prefWidth="600.0" promptText="Report Text" />
+                             <TextArea fx:id="reportTextAreaContact" prefHeight="344.0" prefWidth="600.0" promptText="Report Text" />
                           </children>
                        </VBox>
                     </children></AnchorPane>

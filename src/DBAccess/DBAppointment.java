@@ -191,6 +191,29 @@ public abstract class DBAppointment {
         return appointments;
     }
 
+    public static ArrayList<Appointment> getAllAppointmentsForContact(int contactId) throws SQLException {
+        String sql = "SELECT * FROM client_schedule.appointments WHERE Contact_ID = ?";
+        PreparedStatement ps = DBConnection.getConnection().prepareStatement(sql);
+        ps.setInt(1, contactId);
+        ResultSet rs = ps.executeQuery();
+
+        ArrayList<Appointment> appointments = new ArrayList<Appointment>();
+        while(rs.next()) {
+
+            int id = rs.getInt("Appointment_ID");
+            String title = rs.getString("Title");
+            String description = rs.getString("Description");
+            String location = rs.getString("Location");
+            Timestamp start = rs.getTimestamp("Start");
+            Timestamp end = rs.getTimestamp("End");
+            int customerId = rs.getInt("Customer_ID");
+            int userId = rs.getInt("User_ID");
+            String type = rs.getString("Type");
+            Appointment a = new Appointment(id, title, description, location, type, start, end, customerId, userId, contactId);
+            appointments.add(a);
+        }
+        return appointments;
+    }
     public static ArrayList<Appointment> getAllAppointmentsInMonth(String month) throws SQLException {
         List<Appointment> alist = getAllAppointments().stream().toList();
         ArrayList<Appointment> inMonth = new ArrayList<Appointment>();

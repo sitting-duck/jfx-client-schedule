@@ -212,4 +212,16 @@ public class UXUtil {
         ObservableList<String> ol = FXCollections.observableArrayList(m);
         cb.setItems(ol);
     }
+
+    public static void initContactComboBox(ComboBox cb) {
+        ObservableList<Contact> contacts = DBContact.getAllContacts();
+
+        ArrayList<String> strings = new ArrayList<String>();
+        String s;
+        for (Contact contact : contacts) {
+            s = contact.getId() + ": " + contact.getName();
+            strings.add(s);
+        }
+        cb.setItems(FXCollections.observableArrayList(strings));
+    }
 }
