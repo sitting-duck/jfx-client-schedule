@@ -194,4 +194,22 @@ public class UXUtil {
         label.setTextFill(Color.color(1, 0, 0));
         label.setText("Cannot be empty");
     }
+
+    public static void initMonthComboBox(ComboBox cb) {
+        ArrayList<String> m = new ArrayList<String>();
+        m.add("January");
+        m.add("February");
+        m.add("March");
+        m.add("April");
+        m.add("May");
+        m.add("June");
+        m.add("July");
+        m.add("August");
+        m.add("September");
+        m.add("October");
+        m.add("November");
+        m.add("December");
+        ObservableList<String> ol = FXCollections.observableArrayList(m);
+        cb.setItems(ol);
+    }
 }

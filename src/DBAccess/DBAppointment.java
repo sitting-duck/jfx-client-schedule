@@ -2,12 +2,14 @@ package DBAccess;
 
 import Database.DBConnection;
 import Model.Appointment;
+import Utils.TimeUtils;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 import java.sql.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.List;
 
 public abstract class DBAppointment {
 
@@ -187,6 +189,18 @@ public abstract class DBAppointment {
             appointments.add(a);
         }
         return appointments;
+    }
+
+    public static ArrayList<Appointment> getAllAppointmentsInMonth(String month) throws SQLException {
+        List<Appointment> alist = getAllAppointments().stream().toList();
+        ArrayList<Appointment> inMonth = new ArrayList<Appointment>();
+
+        for(Appointment a : alist) {
+            if(TimeUtils.inMonth(a.getStart(), month)) {
+                inMonth.add(a);
+            }
+        }
+        return inMonth;
     }
 
     public static ArrayList<String> getUniqueAppointmentTypes() throws SQLException {

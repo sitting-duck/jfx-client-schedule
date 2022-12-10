@@ -10,6 +10,11 @@ import java.time.format.FormatStyle;
 
 public class TimeUtils {
 
+    public static boolean inMonth(Timestamp time, String month) {
+        ZonedDateTime zdt = time.toLocalDateTime().atZone(ZoneId.systemDefault());
+        String monthFromTime = zdt.getMonth().toString();
+        return monthFromTime.equals(month.toUpperCase());
+    }
     public static Timestamp buildTimeStamp(Timestamp day, int hour, int minute, String amPm) {
         LocalDateTime time = day.toLocalDateTime();
         if(amPm.equals("AM")) {
