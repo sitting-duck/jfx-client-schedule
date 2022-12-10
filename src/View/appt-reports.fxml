@@ -33,7 +33,7 @@
                               <HBox prefHeight="5.0" prefWidth="600.0" spacing="10.0">
                                  <children>
                                     <Label text="Total: " />
-                                    <Label fx:id="numApptsLabel" text="Num" />
+                                    <Label fx:id="numApptsLabelType" text="Num" />
                                  </children>
                                  <padding>
                                     <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
@@ -54,7 +54,7 @@
                              <HBox prefHeight="14.0" prefWidth="600.0" spacing="10.0">
                                 <children>
                                    <Label text="Appointment Month" />
-                                   <ComboBox fx:id="apptMonthComboBox" onAction="#onMonthSelected" prefWidth="150.0" promptText="Select Type" />
+                                   <ComboBox fx:id="apptMonthComboBox" onAction="#onMonthSelected" prefWidth="150.0" promptText="Select Month" />
                                 </children>
                                 <padding>
                                    <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
@@ -63,7 +63,7 @@
                              <HBox prefHeight="5.0" prefWidth="600.0" spacing="10.0">
                                 <children>
                                    <Label text="Total: " />
-                                   <Label text="Num" />
+                                   <Label fx:id="numApptsLabelMonth" text="Num" />
                                 </children>
                                 <padding>
                                    <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
@@ -84,7 +84,7 @@
                              <HBox prefHeight="14.0" prefWidth="600.0" spacing="10.0">
                                 <children>
                                    <Label text="Appointment Contact" />
-                                   <ComboBox fx:id="contactComboBox" onAction="#onContactSelected" prefWidth="150.0" promptText="Select Type" />
+                                   <ComboBox fx:id="contactComboBox" onAction="#onContactSelected" prefWidth="150.0" promptText="Select Contact" />
                                 </children>
                                 <padding>
                                    <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
@@ -93,7 +93,7 @@
                              <HBox prefHeight="5.0" prefWidth="600.0" spacing="10.0">
                                 <children>
                                    <Label text="Total: " />
-                                   <Label text="Num" />
+                                   <Label fx:id="numApptsLabelContact" text="Num" />
                                 </children>
                                 <padding>
                                    <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />

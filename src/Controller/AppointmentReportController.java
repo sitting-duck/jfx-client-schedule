@@ -1,9 +1,7 @@
 package Controller;
 
 import DBAccess.DBAppointment;
-import DBAccess.DBContact;
 import Model.Appointment;
-import Model.Contact;
 import Utils.UXUtil;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -13,8 +11,6 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
-
 import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
@@ -33,7 +29,13 @@ public class AppointmentReportController implements Initializable {
     private ComboBox contactComboBox;
 
     @FXML
-    private Label numApptsLabel;
+    private Label numApptsLabelType;
+
+    @FXML
+    private Label numApptsLabelMonth;
+
+    @FXML
+    private Label numApptsLabelContact;
 
     @FXML
     private TextArea reportTextAreaType;
@@ -59,7 +61,7 @@ public class AppointmentReportController implements Initializable {
     public void onTypeSelected(ActionEvent actionEvent) throws IOException, SQLException {
         String type = apptTypeComboBox.getValue().toString();
         ArrayList<Appointment> appointments = DBAppointment.getAllAppointmentsOfType(type);
-        numApptsLabel.setText(Integer.toString(appointments.size()));
+        numApptsLabelType.setText(Integer.toString(appointments.size()));
 
         String s = "";
         for(Appointment a : appointments) {
@@ -71,7 +73,7 @@ public class AppointmentReportController implements Initializable {
     public void onMonthSelected(ActionEvent actionEvent) throws IOException, SQLException {
         String month = apptMonthComboBox.getValue().toString();
         ArrayList<Appointment> appointments = DBAppointment.getAllAppointmentsInMonth(month);
-        numApptsLabel.setText(Integer.toString(appointments.size()));
+        numApptsLabelMonth.setText(Integer.toString(appointments.size()));
 
         String s = "";
         for(Appointment a : appointments) {
@@ -83,6 +85,7 @@ public class AppointmentReportController implements Initializable {
     public void onContactSelected(ActionEvent actionEvent) throws Exception {
         int contactId = UXUtil.getIdNumberFromComboBox(contactComboBox);
         ArrayList<Appointment> appointments = DBAppointment.getAllAppointmentsForContact(contactId);
+        numApptsLabelContact.setText(Integer.toString(appointments.size()));
         String s = "";
         for(Appointment a : appointments) {
             s += a.toString();
