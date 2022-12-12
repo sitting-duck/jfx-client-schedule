@@ -96,14 +96,12 @@ public class TimeUtils {
     }
 
     public static String isWithin15Minute() {
-        ZoneId localTimeZone = ZoneId.systemDefault();
-        //ZonedDateTime now = ZonedDateTime.now(localTimeZone);
-        //ZonedDateTime nowPlus15Min = now.plusMinutes(15);
-        LocalDateTime now = LocalDateTime.now();
-        LocalDateTime nowPlus15Min = now.plusMinutes(15);
+        ZoneId zoneId = ZoneId.systemDefault();
+        ZonedDateTime now = Instant.now().atZone(zoneId);
+        ZonedDateTime nowPlus15Min = now.plusMinutes(15);
 
         for( Appointment appointment : DBAppointment.getAllAppointments()) {
-            LocalDateTime apptTime = appointment.getStart().toLocalDateTime();
+            ZonedDateTime apptTime = appointment.getStart().toLocalDateTime().atZone(zoneId);
             boolean afterNow = apptTime.isAfter(now);
             boolean before15MinFromNow = apptTime.isBefore(nowPlus15Min);
             boolean exactly15MinFromNow = apptTime.isEqual(nowPlus15Min);

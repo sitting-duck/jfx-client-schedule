@@ -13,6 +13,8 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
 
+import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
@@ -46,7 +48,6 @@ public class LoginController implements Initializable {
         //ResourceBundle rb = ResourceBundle.getBundle("Localization/lang", Locale.getDefault());
 
         if(Locale.getDefault().getLanguage().equals("en") || Locale.getDefault().getLanguage().equals("fr")) {
-            System.out.println(rb.getString("hello") + rb.getString("world"));
             String translation = Translate.str("Cannot be empty");
             System.out.println(translation);
         }
@@ -100,5 +101,13 @@ public class LoginController implements Initializable {
         alert.setHeaderText(appointmentIn15MinutesWarning);
         alert.setContentText(appointmentIn15MinutesWarning);
         alert.showAndWait();
+
+        File f = new File("login_activity.txt");
+        if(!f.exists()) {
+
+        }
+        FileWriter myWriter = new FileWriter("login_activity.txt");
+        myWriter.write("login: ");
+        myWriter.close();
     }
 }
