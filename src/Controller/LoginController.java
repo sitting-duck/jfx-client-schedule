@@ -17,6 +17,8 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.sql.SQLException;
 import java.time.ZoneId;
 import java.util.Locale;
@@ -82,7 +84,16 @@ public class LoginController implements Initializable {
             return;
         }
 
-        if(password.compareTo(user.getPassword()) == 0) {
+        boolean login_successful = password.compareTo(user.getPassword()) == 0;
+        File f = new File("login_activity.txt");
+        if(!f.exists()) {
+            Files.createFile(Paths.get("login_activity.txt"));
+        }
+        FileWriter myWriter = new FileWriter("login_activity.txt", true);
+        myWriter.write("login: " + TimeUtils.getNowLocalTimeString() + " login_successful: " + Boolean.toString(login_successful) + "\n");
+        myWriter.close();
+
+        if(login_successful) {
             Parent root = FXMLLoader.load(getClass().getResource("/View/main.fxml"));
             Stage stage = (Stage)((Node)actionEvent.getSource()).getScene().getWindow();
             Scene scene = new Scene(root, 1400, 400);
@@ -101,13 +112,5 @@ public class LoginController implements Initializable {
         alert.setHeaderText(appointmentIn15MinutesWarning);
         alert.setContentText(appointmentIn15MinutesWarning);
         alert.showAndWait();
-
-        File f = new File("login_activity.txt");
-        if(!f.exists()) {
-
-        }
-        FileWriter myWriter = new FileWriter("login_activity.txt");
-        myWriter.write("login: ");
-        myWriter.close();
     }
 }

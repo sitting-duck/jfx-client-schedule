@@ -114,5 +114,4 @@ public class TimeUtils {
         return "There are no appointments within the next 15 minutes.";
     }
 
-
 }
