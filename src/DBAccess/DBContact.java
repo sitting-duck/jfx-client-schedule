@@ -9,6 +9,10 @@ import java.sql.*;
 
 public class DBContact {
 
+    /**
+     * Returns all the Contacts in the database as Contact objects in an ObservableList array.
+     * @return an ObservableList array of all the Contacts in the database as Contact objects.
+     */
     public static ObservableList<Contact> getAllContacts() {
         ObservableList<Contact> ulist = FXCollections.observableArrayList();
 
@@ -30,6 +34,18 @@ public class DBContact {
         return ulist;
     }
 
+    /**
+     * Returns a Contact with a matching name to the String entered. Throws an exception if there is no such contact.
+     * @param name - the search string for Contact name. It needs to match the value in the "Contact_Name" column in the
+     *             database. This is equivalent to the value returned by Contact.getName().*
+     * @return - A single Contact object with a matching name to the search string passed to this function. An exception
+     *           is thrown when no contact is found. If there is more than one Contact found with matching name, the first
+     *           Contact found is returned without regard to if this is desired. If multiple Contacts in the database
+     *           have the same name you may wish to narrow your search even more with other Contact attributes using
+     *           another search function.
+     * @throws Exception
+     * @throws SQLException
+     */
     public static Contact getContactByContactName(String name) throws Exception, SQLException {
         try {
             String sql = "SELECT * from client_schedule.contacts where Contact_Name = ?";
@@ -52,6 +68,12 @@ public class DBContact {
         }
     }
 
+    /**
+     * Prints the ResultSet passed into this function. The function is just for convenient printing and does not edit or
+     * the ResultSet at all.
+     * @param rs - a ResultSet returned from a query of the database.
+     * @throws SQLException
+     */
     private static void printResultSet(ResultSet rs) throws SQLException {
         try {
             while(rs.next()) {

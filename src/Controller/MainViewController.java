@@ -74,36 +74,64 @@ public class MainViewController implements Initializable {
     private TableView appointmentTable;
 
     /**
-     * On press the user will see a confirmation asking if they are sure they wish to delete the selected appointment in the
-     * appointment table. If there is no appointment selected then the user will see a warning saying that there is no appointment selected.
+     * When the month radio button is selected, the appointments table will display all appointments within the current selected month.
+     * When the month radio button is selected, a Date calendar widget will become visible allowing the user to pick a date,
+     * and the month of that date will be the selected month.
      */
-    @FXML
-    private Button deleteAppointmentBtn;
-
     @FXML
     private RadioButton monthRadioButton;
 
+    /**
+     * When the week radio button is selected, the appointments table will display all appointments within the current
+     * selected week.
+     * When the week radio button is selected, a Date calendar widget will become visible allowing the user to pick a date,
+     * and the week of that date will be the selected month.
+     */
     @FXML
     private RadioButton weekRadioButton;
 
+    /**
+     * When the "All Time" radio button is selected, all appointments will show in the appointments table.
+     */
     @FXML
     private RadioButton allTimeRadioButton;
 
+    /**
+     * The appointment date picker becomes visible when the "Month" or "Week" radio button above the Appointments table
+     * are selected. When the "All Time" radio button is selected (also above the Appointments table) the date picker
+     * widget disappears since there is no need to select a date range if all appointments are going to be shown anyway.
+     *
+     * When it is visible, it allows the user to select a date. The user will select a single day. If the Month radio
+     * button is selected, then the Appointments table will refresh with all the appointments within the month of the date
+     * selected in this calendar widget. Likewise, the same applies for the "Week" radio button. The appointments table
+     * will refresh on selection of a date to show all the appointments within the same week of the selected date in the
+     * calendar widget.
+     */
     @FXML
     private DatePicker appointmentDatePicker;
 
+    /**
+     * Leave this here for now until you see if the instructor will allow you to use the calendar widget for month selection.
+     */
     @FXML
     private ComboBox monthComboBox;
 
+    /**
+     * Leave this here for now until you see if the instructor will allow you to use the calendar widget for month selection.
+     */
     @FXML
     private ComboBox weekComboBox;
 
-    @FXML
-    private Button reportsButtonCustomers;
-
-    @FXML
-    private Button reportsButtonAppointments;
-
+    /**
+     *
+     * @param url
+     * @param resourceBundle
+     *
+     * Description: this function is called every time the MainView itself is loaded. The main view is defined in the
+     * main.fxml file. In this function we initialize the Customers table and the appointments table by getting all
+     * Customers and all Appointments from the Database. The default statue of the table is to show all items, and then
+     * the user can enter a search string into the text field above each table to narrow the results if they desire.
+     */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         try {
@@ -153,6 +181,12 @@ public class MainViewController implements Initializable {
         appointmentDatePicker.setValue(LocalDate.now());
     }
 
+    /**
+     * When the customer reports button is clicked a new view will appear that allows the user to select a customer and
+     * see in a text format a report that shows all the appointments in the database for that customer.
+     * @param actionEvent
+     * @throws IOException
+     */
     public void onCustomerReportsButtonClicked(ActionEvent actionEvent) throws IOException {
         Parent root = FXMLLoader.load(getClass().getResource("/View/customer-report.fxml"));
         Stage stage = (Stage)((Node)actionEvent.getSource()).getScene().getWindow();
@@ -162,6 +196,11 @@ public class MainViewController implements Initializable {
         stage.show();
     }
 
+    /**
+     * Called when the user clicks the "Reports" button underneath the appointments table
+     * @param actionEvent
+     * @throws IOException
+     */
     public void onAppointmentReportsButtonClicked(ActionEvent actionEvent) throws IOException {
         Parent root = FXMLLoader.load(getClass().getResource("/View/appt-reports.fxml"));
         Stage stage = (Stage)((Node)actionEvent.getSource()).getScene().getWindow();
@@ -171,6 +210,11 @@ public class MainViewController implements Initializable {
         stage.show();
     }
 
+    /**
+     * Never called, leave this here for now.
+     * @param actionEvent
+     * @throws IOException
+     */
     public void onMonthSelected(ActionEvent actionEvent) throws IOException {
         String month = monthComboBox.getValue().toString();
         System.out.println("Month: " + month);
@@ -182,6 +226,12 @@ public class MainViewController implements Initializable {
             appointmentsSearchField.setText(month);
         }
     }
+
+    /**
+     * Called when a user selects a date from the Calendar widget.
+     * @param actionEvent
+     * @throws IOException
+     */
     public void onDateSelected(ActionEvent actionEvent) throws IOException {
 
         LocalDate ld =  appointmentDatePicker.getValue();
@@ -199,24 +249,61 @@ public class MainViewController implements Initializable {
         }
     }
 
+    /**
+     * Called when the user clicks the radio button labelled "All Time" above the Appointments table. The point of this
+     * radio button is to allow the user to filter the Appointments table by time. This particular radio button is in a
+     * set of 3 radio buttons, "All Time", "Month" and "Week". When "All Time" is selected the Appointments table will
+     * refresh and display all the Appointments available in the database regardless of date. If "Month" is selected, the
+     * table will only show Appointments within a chosen month, and likewise if the "Week" radio button is selected, a
+     * chosen weeks worth of Appointments will be shown in the Appointments table.
+     * @param actionEvent
+     * @throws Exception
+     */
     public void onAllTimeClicked(ActionEvent actionEvent) throws Exception {
         appointmentDatePicker.hide();
         appointmentDatePicker.setVisible(false);
         onSearchAppointment(actionEvent);
     }
 
+    /**
+     * Called when the user clicks the radio button labelled "Week" above the Appointments table. The point of this
+     * radio button is to allow the user to filter the Appointments table by time. This particular radio button is in a
+     * set of 3 radio buttons, "All Time", "Month" and "Week". When "All Time" is selected the Appointments table will
+     * refresh and display all the Appointments available in the database regardless of date. If "Month" is selected, the
+     * table will only show Appointments within a chosen month, and likewise if the "Week" radio button is selected, a
+     * chosen weeks worth of Appointments will be shown in the Appointments table.
+     * @param actionEvent
+     * @throws Exception
+     */
     public void onWeekClicked(ActionEvent actionEvent) throws IOException {
         appointmentDatePicker.setVisible(true);
         appointmentDatePicker.show();
         onDateSelected(actionEvent);
     }
 
+    /**
+     * Called when the user clicks the radio button labelled "Month" above the Appointments table. The point of this
+     * radio button is to allow the user to filter the Appointments table by time. This particular radio button is in a
+     * set of 3 radio buttons, "All Time", "Month" and "Week". When "All Time" is selected the Appointments table will
+     * refresh and display all the Appointments available in the database regardless of date. If "Month" is selected, the
+     * table will only show Appointments within a chosen month, and likewise if the "Week" radio button is selected, a
+     * chosen weeks worth of Appointments will be shown in the Appointments table.
+     * @param actionEvent
+     * @throws Exception
+     */
     public void onMonthClicked(ActionEvent actionEvent) throws IOException {
         appointmentDatePicker.setVisible(true);
         appointmentDatePicker.show();
         onDateSelected(actionEvent);
     }
 
+    /**
+     * This function is called when the user enters a search string into the text field above the Customers table.
+     * Every time a character is entered into that text field the Customers table will refresh displaying the set of
+     * Customers that either have a matching Customer Name or Customer id.
+     * @param actionEvent
+     * @throws IOException
+     */
     public void onSearchCustomer(ActionEvent actionEvent) throws IOException {
         String queryText = this.customersSearchField.getText();
         System.out.println("getCustomerSearchResultsHandler: " + queryText);
@@ -247,6 +334,12 @@ public class MainViewController implements Initializable {
         this.customersSearchField.setText("");
     }
 
+    /**
+     * This function is called after the user clicks the "Add" button underneath the Customers table and open a view
+     * where the user can add all necessary information to create their new Customer to add to the database.
+     * @param actionEvent
+     * @throws IOException
+     */
     public void onAddCustomer(ActionEvent actionEvent) throws IOException {
         Parent root = FXMLLoader.load(getClass().getResource("/View/add-customer.fxml"));
         Stage stage = (Stage)((Node)actionEvent.getSource()).getScene().getWindow();
@@ -256,6 +349,13 @@ public class MainViewController implements Initializable {
         stage.show();
     }
 
+    /**
+     * Called after the user clicks the "Modify" button underneath the Customers table. If a Customer is selected it will
+     * open a new view where the user can edit the selected Customer. If no Customer is selected the app will display a
+     * warning dialog indicating that the user needs to select a Customer to modify.
+     * @param actionEvent
+     * @throws IOException
+     */
     public void onModifyCustomer(ActionEvent actionEvent) throws IOException {
         Customer customer = (Customer)customerTable.getSelectionModel().getSelectedItem();
 
@@ -277,6 +377,15 @@ public class MainViewController implements Initializable {
         }
     }
 
+    /**
+     * Called after the user clicks the Delete button underneath the Customers table. If there is no Customer selected
+     * the app will display a warning. If a Customer is selected the app will delete all the Appointments for that Customer
+     * in the database and then delete the Customer object itself in the MySQL database and then display a dialog box
+     * informing the user as to what has been deleted.
+     * @param actionEvent
+     * @throws IOException
+     * @throws SQLException
+     */
     public void onDeleteCustomer(ActionEvent actionEvent) throws IOException, SQLException {
         System.out.println("onDeleteCustomer()");
         Customer customer = (Customer)customerTable.getSelectionModel().getSelectedItem();
@@ -300,6 +409,13 @@ public class MainViewController implements Initializable {
         }
     }
 
+    /**
+     * This function is called when the user enters a search string into the text field above the Appointments table.
+     * Every time a character is entered the Appointments table will update with the set of Appointments with names
+     * containing the search string or with a matching ID number.
+     * @param actionEvent
+     * @throws Exception
+     */
     public void onSearchAppointment(ActionEvent actionEvent) throws Exception {
         String queryText = this.appointmentsSearchField.getText();
         System.out.println("getAppointmentSearchResultsHandler: " + queryText);
@@ -345,6 +461,12 @@ public class MainViewController implements Initializable {
         return appointments;
     }
 
+    /**
+     * Called when the user selects a date from the Calendar widget and the "Month" radio button is selected. Causes the
+     * Appointments table to refresh and show the set of Appointments within the specified month.
+     * @param queryText
+     * @return
+     */
     public ObservableList<Appointment> searchAppointmentByMonth(String queryText) {
         System.out.println("searchAppointmentByMonth(): " + queryText);
         queryText = queryText.toUpperCase();
@@ -420,6 +542,12 @@ public class MainViewController implements Initializable {
         return appointments;
     }
 
+    /**
+     * Called after the user clicks the "Add" button underneath the Appointments table. It opens a new view where the
+     * user can enter all the information needed to create a new Appointment.
+     * @param actionEvent
+     * @throws IOException
+     */
     public void onAddAppointment(ActionEvent actionEvent) throws IOException {
         Parent root = FXMLLoader.load(getClass().getResource("/View/add-appointment.fxml"));
         Stage stage = (Stage)((Node)actionEvent.getSource()).getScene().getWindow();
@@ -429,6 +557,11 @@ public class MainViewController implements Initializable {
         stage.show();
     }
 
+    /**
+     * Called when the user clicks the "Modify" button under the Appointments table.
+     * @param actionEvent
+     * @throws IOException
+     */
     public void onModifyAppointment(ActionEvent actionEvent) throws IOException {
         Appointment appointment = (Appointment)appointmentTable.getSelectionModel().getSelectedItem();
 
@@ -449,9 +582,12 @@ public class MainViewController implements Initializable {
             stage.show();
         }
     }
-
+    /**
+     * On pressing the Delete button under the appointments table the user will see a confirmation asking if they are sure they wish to delete
+     * the selected appointment in the appointment table. If there is no appointment selected then the user will see a warning saying that
+     * there is no appointment selected.
+     */
     public void onDeleteAppointment(ActionEvent actionEvent) throws IOException, SQLException {
-        System.out.println("onDeleteAppointment()");
         Appointment appointment = (Appointment)appointmentTable.getSelectionModel().getSelectedItem();
 
         if(appointment == null) {
@@ -474,7 +610,7 @@ public class MainViewController implements Initializable {
     }
 
     /**
-     * Initializes the Customer table with all Customers from database
+     * Initializes the Customer table with all Customers from database.
      * @throws IOException
      */
     public void initCustomerTable() throws IOException {
