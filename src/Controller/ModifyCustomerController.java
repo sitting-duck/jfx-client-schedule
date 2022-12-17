@@ -32,13 +32,13 @@ public class ModifyCustomerController implements Initializable {
     /**
      * This Customer object is passed in from the main view and it is the Customer the user selected in the table
      * before clicking the Modify button. In this modify view, the user will be editing and modifying exactly this
-     * Customer passed in, and if they click the OK button, the Customer will be entered into the Database with the new
-     * data.
+     * Customer passed in, and if they click the OK button and all checks pass, the Customer will be entered into the
+     * Database with the new data.
      */
     private static Customer customer = null;
 
     /**
-     * A non-ditable text field that shows the 'Customer_ID' value from the database for this Customer. All Customers
+     * A non-editable text field that shows the 'Customer_ID' value from the database for this Customer. All Customers
      * have a unique id created for them when they are added to the database.
      */
     @FXML

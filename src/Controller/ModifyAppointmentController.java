@@ -23,94 +23,240 @@ import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.ResourceBundle;
 
+/**
+ * This ModifyAppointmentController Class is linked to the modify-appointment.fxml file which controls the view users will use
+ * to edit a form for modifying an appointment from the database. The form includes text fields, combo boxes and calendar
+ * widgets for picking the date and time of the appointment. When creating appointments the logic for checking the database
+ * for appointment collisions and many other checks all happen within this class.
+ */
 public class ModifyAppointmentController implements Initializable  {
 
+    /**
+     * This Appointment object is passed in the from the main view and it is the Appointment the user selected in the
+     * Appointments table right before clicking the Modify button under the Appointments table in the main view. In this
+     * modify view, the user will be editing and modifying exactly this Appointment passed in, and if they click the OK
+     * button and all checks pass, the Appointment will be entered into the datasbase with the new data.
+     */
     private static Appointment appointment = null;
 
+    /**
+     * A non-editable text field that shows the 'Appointment_ID' value from the database for this Appointment. All
+     * Appointments have a unique id created for them when they are added to the database.
+     */
     @FXML
     private TextField idTextField;
+
+    /**
+     * The label for the text field where the user enters the Title of the Appointment. eg. "Planning Meeting"
+     */
     @FXML
     private Label titleLabel;
 
+    /**
+     * The text field where the user enters the Title of the Appointment eg. "Planning Meeting"
+     */
     @FXML
     private TextField titleTextField;
 
+    /**
+     * The label for the text field where the user will enter the description for the Appointment. eg. "We will do
+     * planning at this meeting for the Holiday Event"
+     */
     @FXML
     private Label descriptionLabel;
 
+    /**
+     * The text field where the user will enter the description for the Appointment. eg. "We will do
+     * planning at this meeting for the Holiday Event"
+     */
     @FXML
     private TextField descriptionTextField;
 
+    /**
+     * The label for the text field where the user will enter the description for the Appointment. eg. "Room 241"
+     */
     @FXML
     private Label locationLabel;
 
+    /**
+     * The text field where the user will enter the description for the Appointment. eg. "Room 241"
+     */
     @FXML
     private TextField locationTextField;
 
+    /**
+     * The label for the text field where the user will enter the type for the appointment.
+     */
     @FXML
     private Label typeLabel;
 
+    /**
+     * The text field where the user will enter the type for the appointment. eg. "Interview", "Meeting", "Dinner" etc.
+     */
     @FXML
     private TextField typeTextField;
 
+    /**
+     * Shows the current time in the time zone the user is in. The user will see Eastern time as
+     * well to the right of this label, and this serves to remind the user that the appointment being made will be
+     * tested to see if it fits within the offices hours of 8am-10pm in the Eastern Time zone. Since most people don't
+     * memorize the time zone differences in their head, these labels will serve as a reminder to help them set good
+     * appointment times.
+     */
     @FXML
     private Label localTimeLabel;
 
+    /**
+     * Shows the current time in Eastern time. The user will see their own local time as
+     * well to the left of this label, and this serves to remind the user that the appointment being made will be
+     * tested to see if it fits within the offices hours of 8am-10pm in the Eastern Time zone. Since most people don't
+     * memorize the time zone differences in their head, these labels will serve as a reminder to help them set good
+     * appointment times.
+     */
     @FXML
     private Label easternTimeLabel;
 
+    /**
+     * A label next to the calendar widget the user will use to the set the start time for the appointment they are
+     * creating. It is simply labelled "start" and should prompt the user to start thinking about when their appointment
+     * should start.
+     */
     @FXML
     private Label startLabel;
 
+    /**
+     * A calendar widget that allows the user select the day, month, and year ie. the date that they want their
+     * appointment to start on.
+     */
     @FXML
     private DatePicker startDatePicker;
 
+    /**
+     * A ComboBox that allows the user to select the hour they want their appointment to start on.
+     */
     @FXML
     private ComboBox startHourComboBox;
 
+    /**
+     * A ComboBox that allows the user to select which minute they want their appointment to start on. The options are
+     * [0, 15, 30, 45] for convenience. The minimum appointment duration is 15 minutes. It is assumed no users are going
+     * to want to create an appointment that is 1 minute long for example.
+     */
     @FXML
     private ComboBox startMinuteComboBox;
 
+    /**
+     * A ComboBox that allows the user to select "AM" or "PM" for the Appointment start time of the appointment they are
+     * creating. A selection of Hour of 12 with selection "AM" would result in an appointment that starts at midnight,
+     * A selection of Hour of 12 with selection "PM" would result in an appointment that starts at noon.
+     */
     @FXML
     private ComboBox startAMPMComboBox;
 
+    /**
+     * A label next to the calendar widget the user will use to the set the end time for the appointment they are
+     * creating. It is simply labelled "end" and should prompt the user to start thinking about when their appointment
+     * should end.
+     */
     @FXML
     private Label endLabel;
 
+    /**
+     * A calendar widget that allows the user select the day, month, and year ie. the date that they want their
+     * appointment to end on.
+     */
     @FXML
     private DatePicker endDatePicker;
 
+    /**
+     * A ComboBox that allows the user to select the hour they want their appointment to end on.
+     */
     @FXML
     private ComboBox endHourComboBox;
 
+    /**
+     * A ComboBox that allows the user to select which minute they want their appointment to end on. The options are
+     * [0, 15, 30, 45] for convenience. The minimum appointment duration is 15 minutes. It is assumed no users are going
+     * to want to create an appointment that is 1 minute long for example.
+     */
     @FXML
     private ComboBox endMinuteComboBox;
 
+    /**
+     * A ComboBox that allows the user to select "AM" or "PM" for the Appointment end time of the appointment they are
+     * creating. A selection of Hour of 12 with selection "AM" would result in an appointment that ends at midnight,
+     * A selection of Hour of 12 with selection "PM" would result in an appointment that ends at noon.
+     */
     @FXML
     private ComboBox endAMPMComboBox;
 
+    /**
+     * All label indicating that the ComboBox below it will be used to the select the Customer by ID that will be present
+     * at the Appointment being created.
+     */
     @FXML
     private Label customerIdLabel;
 
+    /**
+     * A ComboBox used to the select the Customer that will be present at the appointment being created.
+     */
     @FXML
     private ComboBox customerIdComboBox;
 
+    /**
+     * A label indicating that the ComboBox below it will be used to select the User associated with the Appointment
+     * being created by user id.
+     */
     @FXML
     private Label userIdLabel;
 
+    /**
+     * A ComboBox the user will use to select the User associated with the Appointment by user id. This ComboBox is
+     * populated with the set of all users available in the database. The ComboBox displays in each row first the user
+     * id and then the string for the User_Name. eg. "1: Sally"
+     */
     @FXML
     private ComboBox userIdComboBox;
 
+    /**
+     * A label indicating that the ComboBox below it will be used to the select the Contact associated with the
+     * Appointment being created by the Contact Id.
+     */
     @FXML
     private Label contactIdLabel;
 
+    /**
+     * A ComboBox that the user will use to select the Contact that will be associated with the Appointment being
+     * created.
+     */
     @FXML
     private ComboBox contactIdComboBox;
 
+    /**
+     * Called when the modify-appointment.fxml view is loaded. It is meant to pass the selected Appointment from the
+     * Appointment table in the main view (main.fxml) to thie modify-customer.fxml view. All the data members of this
+     * Appointment class are extracted during the execution of the initialize() function and used to set various text
+     * fields and combo boxes that the user can interact with in order to edit the appointment selected before they
+     * clicked the "Modify" button under the Appointment table in main view. 
+     * @param _appointment - An appointment object created from the Appointment selected in the appointment table at the
+     *                     time that the user clicked the "Modify"button under the Appointments table in main view. 
+     *                     
+     *                     The idea here is that the user first selects the appointment they would like to modify, 
+     *                     clicks the "Modify" button, and that appointment is passed using this function to set the 
+     *                     views for the various tools the user will use to modify. 
+     */
     public static void setAppointment(Appointment _appointment) {
         appointment = _appointment;
     }
 
+    /**
+     * Called when the modify-appointment.fxml file for the Add Customer view is loaded. This function initializes any GUI
+     * elements necessary and pulls items from the database if needed.
+     * @param url - not used, however it is essential to pass this in because this class extends the Initializable class
+     *      *            and so we must follow the structure of that interface exactly.
+     * @param resourceBundle - not used, however it is essential to pass this in because this class extends the Initializable class
+     *      *            and so we must follow the structure of that interface exactly.
+     */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         titleLabel.setText("Title");
@@ -175,6 +321,18 @@ public class ModifyAppointmentController implements Initializable  {
         easternTimeLabel.setText(TimeUtils.getNowEasternTimeString());
     }
 
+    /**
+     * This function runs when the user clicks the OK button in the modify-appointment.fxml view to indicate that they are done
+     * editing the appointment, and they would like it added to the database now. This function runs many checks on the
+     * data entered by the user into various fields and will display an appropriate warning if needed. For example, the
+     * database is checked to make sure that the appointment the user is trying to create does not overlap with any other
+     * appointments already created in the database. This is called Collision Detection. The function will not insert into
+     * the database any appointments or edits that create collisions and will show red text above any text fields and combo boxes
+     * that need to be corrected by the user.
+     * @param actionEvent
+     * @throws IOException
+     * @throws SQLException
+     */
     public void onOkButton(ActionEvent actionEvent) throws IOException, SQLException {
         boolean good = true;
         String title = titleTextField.getText();
@@ -353,6 +511,13 @@ public class ModifyAppointmentController implements Initializable  {
 
     }
 
+
+    /**
+     * This function runs when the user selects the cancel button in the modify-appointment.fxml view. This function will return
+     * the user to the main view in main.fxml and no appointments or appointment edits will be added to the database.
+     * @param actionEvent
+     * @throws IOException
+     */
     public void onCancelButton(ActionEvent actionEvent) throws IOException {
         Parent root = FXMLLoader.load(getClass().getResource("/View/main.fxml"));
         Stage stage = (Stage)((Node)actionEvent.getSource()).getScene().getWindow();
