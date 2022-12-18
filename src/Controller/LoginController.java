@@ -128,9 +128,10 @@ public class LoginController implements Initializable {
         // password is a match, we log that success in login_activity.txt
         boolean login_successful = password.compareTo(user.getPassword()) == 0;
         File f = new File(loginActivityFile);
-        if(!f.exists()) {
+        if(!f.exists()) { // if file does not exist we create one
             Files.createFile(Paths.get(loginActivityFile));
         }
+        // append new login timestamp and whether the login was successful to the log file
         FileWriter myWriter = new FileWriter(loginActivityFile, true);
         myWriter.write("login: " + TimeUtils.getNowLocalTimeString() + " login_successful: " + Boolean.toString(login_successful) + "\n");
         myWriter.close();

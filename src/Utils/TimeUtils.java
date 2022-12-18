@@ -8,6 +8,9 @@ import java.time.*;
 import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
 
+/**
+ * A utility class for performing various tasks with dates, times, and timezones.
+ */
 public class TimeUtils {
 
     /**
@@ -123,14 +126,20 @@ public class TimeUtils {
     }
 
     /**
-     *
-     * @return
+     * Get the current time in the local time of the users computer. Application will check the current time zone using
+     * the operating system of the users machine.
+     * @return - the current time in a human-readable String format.
      */
     public static String getNowLocalTimeString() {
         final DateTimeFormatter formatter = DateTimeFormatter.ofLocalizedDateTime(FormatStyle.SHORT);
         return "Local: " + java.time.ZonedDateTime.now().format(formatter);
     }
 
+    /**
+     * Get the current time converted to the Eastern time zone. The office appointments are scheduled at is
+     * located in the Eastern time zone and all appointments must be made within 8am-10pm offices hours Eastern Time.
+     * @return - Eastern time stamp for the current time at function call in a human-readable String format.
+     */
     public static String getNowEasternTimeString() {
         final DateTimeFormatter formatter = DateTimeFormatter.ofLocalizedDateTime(FormatStyle.SHORT);
 
@@ -139,6 +148,11 @@ public class TimeUtils {
         return "Eastern: " + now_ET.format(formatter);
     }
 
+    /**
+     * Checks if the database contains any appointments within the next 15 minutes of the current moment.
+     * @return - A string containing the next appointment and its timestamp if it starts within the next 15 minutes, or
+     * else a string saying that no appointments were found starting within the next 15 minutes.
+     */
     public static String isWithin15Minute() {
         ZoneId zoneId = ZoneId.systemDefault();
         ZonedDateTime now = Instant.now().atZone(zoneId);
@@ -157,5 +171,4 @@ public class TimeUtils {
         }
         return "There are no appointments within the next 15 minutes.";
     }
-
 }
