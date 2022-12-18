@@ -7,8 +7,16 @@ import javafx.collections.ObservableList;
 
 import java.sql.*;
 
+/**
+ * A class containing several convenient functions for fetching Countries from the database.
+ */
 public abstract class DBCountry {
 
+    /**
+     * Returns the set of all countries in the database as an ObservableList. ObservableList are handy for attaching
+     * to GUI items such as ComboBoxes and TableViews.
+     * @return - An ObservableList of Countries.
+     */
     public static ObservableList<Country> getAllCountries() {
         ObservableList<Country> clist = FXCollections.observableArrayList();
 
@@ -29,6 +37,13 @@ public abstract class DBCountry {
         return clist;
     }
 
+    /**
+     * Returns the set of all appointments with matching type. String must match exactly.
+     * @param name - String for Country name eg. "Scotland", "Canada" etc.
+     * @return - ArrayList<Appointment> - an array list of appointments with matching name string.
+     * @throws SQLException - throws exception if bad values such as null values are passed in. Will not throw an exception
+     * if no appointments are found however, will just return an empty list.
+     */
     public static ObservableList<Country> getAllCountriesWithName(String name) {
         ObservableList<Country> clist = FXCollections.observableArrayList();
 
@@ -50,6 +65,12 @@ public abstract class DBCountry {
         return clist;
     }
 
+    /**
+     * Returns the set of all Countries in the database with matching appointment id. Since Country ids are unique
+     * this should only ever return one value.
+     * @param id - Country id
+     * @return - ObservableList of Country objects. Will only ever return 1 country since Country ids are unique.
+     */
     public static ObservableList<Country> getAllCountriesWithID(int id) {
         ObservableList<Country> clist = FXCollections.observableArrayList();
 
@@ -69,20 +90,5 @@ public abstract class DBCountry {
             throwables.printStackTrace();
         }
         return clist;
-    }
-
-    public static void checkDateConversion() {
-        System.out.println("Create date test");
-        String sql = "Select Create_Date from countries";
-        try {
-            PreparedStatement ps = DBConnection.getConnection().prepareStatement(sql);
-            ResultSet rs = ps.executeQuery();
-            while(rs.next()) {
-                Timestamp ts = rs.getTimestamp("Create_Date");
-                System.out.println("CD: " + ts.toLocalDateTime().toString());
-            }
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-        }
     }
 }

@@ -7,8 +7,16 @@ import javafx.collections.ObservableList;
 
 import java.sql.*;
 
+/**
+ * A class containing several convenient functions for fetching and inserting Users to and from the database.
+ */
 public class DBUser {
 
+    /**
+     * Returns the set of all Users in the database as an ObservableList. ObservableList are handy for attaching
+     * to GUI items such as ComboBoxes and TableViews.
+     * @return - An ObservableList of Users.
+     */
     public static ObservableList<User> getAllUsers() {
         ObservableList<User> ulist = FXCollections.observableArrayList();
 
@@ -30,7 +38,14 @@ public class DBUser {
         return ulist;
     }
 
-    public static User getUserByUserName(String username) throws Exception, SQLException {
+    /**
+     * Returns the Customer in Database with matching String username. Throws exception if this User cannot be found.
+     * Developer can use userExists() function in this class to check existence first.
+     * @param username - string: the User name string.
+     * @return - matching User object
+     * @throws Exception - throws exception if User match cannot be found.
+     */
+    public static User getUserByUserName(String username) throws Exception {
         try {
             String sql = "SELECT * from client_schedule.users where User_Name = ?";
             PreparedStatement ps = DBConnection.getConnection().prepareStatement(sql);
@@ -52,6 +67,11 @@ public class DBUser {
         }
     }
 
+    /**
+     * Convenience function for printing a ResultSet returned from the database.
+     * @param rs - ResultSet to be printed
+     * @throws SQLException - exception thrown if column name cannot be found
+     */
     private static void printResultSet(ResultSet rs) throws SQLException {
         try {
             while(rs.next()) {

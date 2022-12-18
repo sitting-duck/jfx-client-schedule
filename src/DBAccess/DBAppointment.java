@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * A class containing several convenient function for fetching appointments from the database.
+ * A class containing several convenient functions for fetching and inserting appointments to and from the database.
  */
 public abstract class DBAppointment {
 
@@ -67,9 +67,10 @@ public abstract class DBAppointment {
     }
 
     /**
-     *
-     * @param id
-     * @return
+     * Returns the set of all appointments in the database with matching appointment id. Since Appointment ids are unique
+     * this should only ever return one value.
+     * @param id - Appointment id
+     * @return - ObservableList of Appointment objects. Will only ever return 1 appointment since appointment ids are unique.
      */
     public static ObservableList<Appointment> lookupAppointmentById(int id) {
         ObservableList<Appointment> allAppointments = getAllAppointments();
@@ -78,6 +79,13 @@ public abstract class DBAppointment {
         return matchingAppointments;
     }
 
+    /**
+     * Returns the set of all appointments in the database with matching Customer id. Since Customers can have as many
+     * appointments as they want, this can return zero or more appointments.
+     * @param id - Customer id
+     * @return - ObservableList of Appointment objects. Since Customers can have as many appointments as they want, this
+     * can return zero or more appointments.
+     */
     public static ObservableList<Appointment> lookupAppointmentsForCustomerWithID(int id) {
         ObservableList<Appointment> allAppointments = getAllAppointments();
         final ObservableList<Appointment> matchingAppointments = FXCollections.observableArrayList();
