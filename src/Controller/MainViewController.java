@@ -433,16 +433,16 @@ public class MainViewController implements Initializable {
         ObservableList<Appointment> appointments = null;
         try {
             int idNum = Integer.parseInt(queryText);
-            appointments = DBAppointment.lookupAppointmentByTitle(idNum);
+            appointments = DBAppointment.lookupAppointmentById(idNum);
         } catch(NumberFormatException exception) {
             System.out.println("Non Fatal Error: " + queryText + " cannot be converted to Integer.");
 
             // Search for appointment by customer name
             if(DBCustomer.customerExists(queryText)) {
                 int customerId = DBCustomer.getCustomerByName(queryText).getId();
-                appointments = DBAppointment.lookupAppointmentsForCustomer(customerId);
+                appointments = DBAppointment.lookupAppointmentsForCustomerWithID(customerId);
             } else { // if no customer by this name we search by appointment title
-                appointments = DBAppointment.lookupAppointmentByTitle(queryText);
+                appointments = DBAppointment.lookupAppointmentById(queryText);
             }
             System.out.println("Got " + appointments.size() + " matching appointments for customer with customer name: " + queryText);
         }

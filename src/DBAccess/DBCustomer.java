@@ -101,7 +101,7 @@ public abstract class DBCustomer {
     public static int deleteCustomer(int id) throws SQLException {
         System.out.println("DBAppointment::deleteCustomer: id: " + id);
         ObservableList<Customer> customers = lookupCustomer(id);
-        ObservableList<Appointment> appointments = DBAppointment.lookupAppointmentsForCustomer(id);
+        ObservableList<Appointment> appointments = DBAppointment.lookupAppointmentsForCustomerWithID(id);
 
         int rows = 0;
         for(Customer customer: customers) {

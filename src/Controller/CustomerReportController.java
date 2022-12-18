@@ -11,10 +11,7 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 
-import java.io.IOException;
 import java.net.URL;
-import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 /**
@@ -68,7 +65,7 @@ public class CustomerReportController  implements Initializable {
      */
     public void onCustomerSelected(ActionEvent actionEvent) {
         int customerId = UXUtil.getIdNumberFromComboBox(customerComboBox);
-        ObservableList<Appointment> appointments = DBAppointment.lookupAppointmentsForCustomer(customerId);
+        ObservableList<Appointment> appointments = DBAppointment.lookupAppointmentsForCustomerWithID(customerId);
         customerApptNumLabel.setText(Integer.toString(appointments.size()));
 
         String s = "";

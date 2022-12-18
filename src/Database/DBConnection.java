@@ -7,6 +7,9 @@ import javafx.scene.control.ButtonType;
 import java.sql.Connection;
 import java.sql.DriverManager;
 
+/**
+ * This class opens and closes the connection to the database.
+ */
 public class DBConnection {
     private static final String protocol = "jdbc";
     private static final String vendor = ":mysql:";
@@ -18,6 +21,9 @@ public class DBConnection {
     private static String password = "Passw0rd!"; // Password
     public static Connection connection;  // Connection Interface
 
+    /**
+     * Connects to the database so we can use it.
+     */
     public static void openConnection()
     {
         try {
@@ -33,6 +39,9 @@ public class DBConnection {
         }
     }
 
+    /**
+     * Closes the connection to the database when we exit the program.
+     */
     public static void closeConnection() {
         try {
             connection.close();
@@ -44,6 +53,10 @@ public class DBConnection {
         }
     }
 
+    /**
+     * Returns the Connection object
+     * @return Connection connection - the connection object for the MySQL Database.
+     */
     public static Connection getConnection() {
         return connection;
     }
