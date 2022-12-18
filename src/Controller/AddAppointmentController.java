@@ -401,6 +401,14 @@ public class AddAppointmentController implements Initializable  {
                 endLabel.setText("Appointment cannot be zero length");
             }
 
+            if(start.toLocalDateTime().isAfter(end.toLocalDateTime())) {
+                startLabel.setTextFill(Color.color(1, 0, 0));
+                startLabel.setText("Start date/time must come BEFORE end date/time");
+                endLabel.setTextFill(Color.color(1, 0, 0));
+                endLabel.setText("End date/time must come AFTER start date/time");
+                good = false;
+            }
+
         } catch(Exception e) {
             good = false;
         }
