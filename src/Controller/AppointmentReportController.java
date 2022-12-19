@@ -2,6 +2,7 @@ package Controller;
 
 import DBAccess.DBAppointment;
 import Model.Appointment;
+import Utils.SceneLoader;
 import Utils.UXUtil;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -11,6 +12,8 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
+
+import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -161,5 +164,9 @@ public class AppointmentReportController implements Initializable {
             s += a.toString();
         }
         reportTextAreaContact.setText(s);
+    }
+
+    public void onHomeButtonClicked(ActionEvent actionEvent) throws IOException {
+        SceneLoader.goToMainView(actionEvent);
     }
 }
