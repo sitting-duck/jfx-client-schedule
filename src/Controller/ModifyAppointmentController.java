@@ -2,6 +2,7 @@ package Controller;
 
 import DBAccess.DBAppointment;
 import Model.Appointment;
+import Utils.AlertUtil;
 import Utils.SceneLoader;
 import Utils.TimeUtils;
 import Utils.UXUtil;
@@ -70,12 +71,7 @@ public class ModifyAppointmentController extends AppointmentController  {
         super.initialize(url, resourceBundle);
 
         if(appointment == null) {
-            System.out.println("Error: no appointment selected");
-            Alert alert = new Alert(Alert.AlertType.WARNING);
-            alert.setTitle("No appointment selected");
-            alert.setHeaderText("No appointment selected");
-            alert.setContentText("No appointment selected. Please select a appointment to modify.");
-            alert.showAndWait();
+            AlertUtil.appointmentSelectWarningModify();
         }
 
         // Set Values
@@ -176,11 +172,7 @@ public class ModifyAppointmentController extends AppointmentController  {
 
         boolean withinOfficeHours = TimeUtils.withinOfficeHours(start, end);
         if(!withinOfficeHours) {
-            Alert alert = new Alert(Alert.AlertType.WARNING);
-            alert.setTitle("Error: office hours");
-            alert.setHeaderText("Error: office hours are 8am-10pm EST");
-            alert.setContentText("Error: offices hours are 8am-10pm ESTError: offices 8am-10pm EST");
-            alert.showAndWait();
+            AlertUtil.officeHoursWarning();
             return good;
         }
 

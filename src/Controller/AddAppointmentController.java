@@ -2,12 +2,12 @@ package Controller;
 
 import DBAccess.DBAppointment;
 import Model.Appointment;
+import Utils.AlertUtil;
 import Utils.SceneLoader;
 import Utils.TimeUtils;
 import Utils.UXUtil;
 import javafx.event.ActionEvent;
 import javafx.fxml.Initializable;
-import javafx.scene.control.*;
 import javafx.scene.paint.Color;
 import java.io.IOException;
 import java.net.URL;
@@ -108,11 +108,7 @@ public class AddAppointmentController extends AppointmentController implements I
 
         boolean withinOfficeHours = TimeUtils.withinOfficeHours(start, end);
         if(!withinOfficeHours) {
-            Alert alert = new Alert(Alert.AlertType.WARNING);
-            alert.setTitle("Error: office hours");
-            alert.setHeaderText("Error: office hours are 8am-10pm EST");
-            alert.setContentText("Error: offices hours are 8am-10pm ESTError: offices 8am-10pm EST");
-            alert.showAndWait();
+            AlertUtil.officeHoursWarning();
             return good;
         }
 
@@ -128,11 +124,7 @@ public class AddAppointmentController extends AppointmentController implements I
 
             SceneLoader.goToMainView(actionEvent);
         } else {
-            Alert alert = new Alert(Alert.AlertType.WARNING);
-            alert.setTitle("Error: Appointment Overlap");
-            alert.setHeaderText("Error: This appointment overlaps with another");
-            alert.setContentText("Error: This appointment overlaps with another");
-            alert.showAndWait();
+            AlertUtil.appointmentOverlapWarning();
             return good;
         }
 

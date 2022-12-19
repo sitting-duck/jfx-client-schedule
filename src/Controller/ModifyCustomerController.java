@@ -6,13 +6,13 @@ import DBAccess.DBDivision;
 import Model.Country;
 import Model.Customer;
 import Model.Division;
+import Utils.AlertUtil;
 import Utils.SceneLoader;
 import Utils.UXUtil;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Alert;
 import javafx.scene.control.TextField;
 import java.io.IOException;
 import java.net.URL;
@@ -54,12 +54,7 @@ public class ModifyCustomerController extends CustomerController implements Init
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         if(customer == null) {
-            System.out.println("Error: no customer selected");
-            Alert alert = new Alert(Alert.AlertType.WARNING);
-            alert.setTitle("No customer selected");
-            alert.setHeaderText("No customer selected");
-            alert.setContentText("No customer selected. Please select a customer to modify.");
-            alert.showAndWait();
+            AlertUtil.customerSelectWarningModify();
         }
 
         // ComboBox needs to be populated in case the user wants to select another

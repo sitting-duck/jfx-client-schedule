@@ -4,6 +4,7 @@ import DBAccess.DBAppointment;
 import DBAccess.DBCustomer;
 import Model.Appointment;
 import Model.Customer;
+import Utils.AlertUtil;
 import Utils.SceneLoader;
 import Utils.UXUtil;
 import javafx.collections.FXCollections;
@@ -275,11 +276,8 @@ public class MainViewController implements Initializable {
         }
 
         if(customers.size() == 0) {
-            Alert alert = new Alert(Alert.AlertType.WARNING);
-            alert.setTitle("Error: no results for " + queryText);
-            alert.setHeaderText("Error: no results for " + queryText);
-            alert.setContentText("Error: no results for " + queryText);
-            alert.showAndWait();
+            String warning = "Error: no results for " + queryText;
+            AlertUtil.warning(warning, warning, warning);
             return;
         }
         this.customerTable.setItems(customers);
@@ -307,12 +305,7 @@ public class MainViewController implements Initializable {
         Customer customer = (Customer)customerTable.getSelectionModel().getSelectedItem();
 
         if(customer == null) {
-            System.out.println("Error: no customer selected");
-            Alert alert = new Alert(Alert.AlertType.WARNING);
-            alert.setTitle("No customer selected");
-            alert.setHeaderText("No customer selected");
-            alert.setContentText("No customer selected. Please select a customer to modify.");
-            alert.showAndWait();
+            AlertUtil.customerSelectWarningModify();
         } else {
             ModifyCustomerController.setCustomer(customer);
             SceneLoader.goToModifyCustomerView(actionEvent);
@@ -333,21 +326,13 @@ public class MainViewController implements Initializable {
         Customer customer = (Customer)customerTable.getSelectionModel().getSelectedItem();
 
         if(customer == null) {
-            System.out.println("Error: no customer selected");
-            Alert alert = new Alert(Alert.AlertType.WARNING);
-            alert.setTitle("No customer selected");
-            alert.setHeaderText("No customer selected");
-            alert.setContentText("No customer selected. Please select a customer to delete.");
-            alert.showAndWait();
+            AlertUtil.customerSelectWarningDelete();
         } else {
             DBCustomer.deleteCustomer(customer.getId());
             customerTable.setItems(DBCustomer.getAllCustomers());
             appointmentsSearchField.setText("");
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("Customer deleted successfully");
-            alert.setHeaderText("Customer deleted successfully");
-            alert.setContentText("Customer deleted successfully");
-            alert.showAndWait();
+            String success = "Customer deleted successfully";
+            AlertUtil.warning(success, success, success);
         }
     }
 
@@ -360,15 +345,12 @@ public class MainViewController implements Initializable {
      */
     public void onSearchAppointment(ActionEvent actionEvent) throws Exception {
         String queryText = this.appointmentsSearchField.getText();
-        System.out.println("getAppointmentSearchResultsHandler: " + queryText);
         this.searchAppointment(queryText);
     }
     public ObservableList<Appointment> searchAppointment(String queryText) throws Exception {
-        System.out.println("searchAppointment(): " + queryText);
 
         if(queryText.isEmpty()) {
             this.appointmentTable.setItems(DBAppointment.getAllAppointments());
-            System.out.println("Search appointment query text was empty, exiting.");
             return DBAppointment.getAllAppointments();
         }
 
@@ -377,7 +359,6 @@ public class MainViewController implements Initializable {
             int idNum = Integer.parseInt(queryText);
             appointments = DBAppointment.lookupAppointmentById(idNum);
         } catch(NumberFormatException exception) {
-            System.out.println("Non Fatal Error: " + queryText + " cannot be converted to Integer.");
 
             // Search for appointment by customer name
             if(DBCustomer.customerExists(queryText)) {
@@ -392,11 +373,8 @@ public class MainViewController implements Initializable {
         this.appointmentTable.setItems(appointments);
 
         if(appointments.size() == 0) {
-            Alert alert = new Alert(Alert.AlertType.WARNING);
-            alert.setTitle("Error: no appointments for " + queryText);
-            alert.setHeaderText("Error: no appointments for " + queryText);
-            alert.setContentText("Error: no appointments for " + queryText);
-            alert.showAndWait();
+            String warning = "Error: no appointments for " + queryText;
+            AlertUtil.warning(warning, warning, warning);
         }
 
         return appointments;
@@ -433,12 +411,8 @@ public class MainViewController implements Initializable {
 
         this.appointmentTable.setItems(appointments);
         if(appointments.size() == 0) {
-            Alert alert = new Alert(Alert.AlertType.WARNING);
-            alert.setTitle("Error: no appointments for " + queryText);
-            alert.setHeaderText("Error: no appointments for " + queryText);
-            alert.setContentText("Error: no appointments for " + queryText);
-            alert.showAndWait();
-            //return;
+            String warning = "Error: no appointments for " + queryText;
+            AlertUtil.warning(warning, warning, warning);
         }
         return appointments;
     }
@@ -473,12 +447,8 @@ public class MainViewController implements Initializable {
 
         this.appointmentTable.setItems(appointments);
         if(appointments.size() == 0) {
-            Alert alert = new Alert(Alert.AlertType.WARNING);
-            alert.setTitle("Error: no appointments for " + ld.toString());
-            alert.setHeaderText("Error: no appointments for " + ld.toString());
-            alert.setContentText("Error: no appointments for " + ld.toString());
-            alert.showAndWait();
-            //return;
+            String warning = "Error: no appointments for " + ld.toString();
+            AlertUtil.warning(warning, warning, warning);
         }
         return appointments;
     }
@@ -502,12 +472,7 @@ public class MainViewController implements Initializable {
         Appointment appointment = (Appointment)appointmentTable.getSelectionModel().getSelectedItem();
 
         if(appointment == null) {
-            System.out.println("Error: no appointment selected");
-            Alert alert = new Alert(Alert.AlertType.WARNING);
-            alert.setTitle("No appointment selected");
-            alert.setHeaderText("No appointment selected");
-            alert.setContentText("No appointment selected. Please select a appointment to modify.");
-            alert.showAndWait();
+            AlertUtil.appointmentSelectWarningModify();
         } else {
             ModifyAppointmentController.setAppointment(appointment);
             SceneLoader.goToModifyAppointmentView(actionEvent);
@@ -522,21 +487,14 @@ public class MainViewController implements Initializable {
         Appointment appointment = (Appointment)appointmentTable.getSelectionModel().getSelectedItem();
 
         if(appointment == null) {
-            System.out.println("Error: no appointment selected");
-            Alert alert = new Alert(Alert.AlertType.WARNING);
-            alert.setTitle("No appointment selected");
-            alert.setHeaderText("No appointment selected");
-            alert.setContentText("No appointment selected. Please select a appointment to delete.");
-            alert.showAndWait();
+            AlertUtil.appointmentSelectWarningDelete();
         } else {
             DBAppointment.deleteAppointment(appointment.getId());
             appointmentTable.setItems(DBAppointment.getAllAppointments());
 
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("Appointment deleted successfully");
-            alert.setHeaderText("Appointment deleted successfully");
-            alert.setContentText("Appointment with id: " + appointment.getId() + " and type: " + appointment.getType() + " deleted successfully");
-            alert.showAndWait();
+            String success = "Appointment deleted successfully";
+            String content = "Appointment with id: " + appointment.getId() + " and type: " + appointment.getType() + " deleted successfully";
+            AlertUtil.warning(success, success, content);
         }
     }
 

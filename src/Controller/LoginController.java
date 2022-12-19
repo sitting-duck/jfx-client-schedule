@@ -3,6 +3,7 @@ package Controller;
 import DBAccess.DBUser;
 import Localization.Translate;
 import Model.User;
+import Utils.AlertUtil;
 import Utils.SceneLoader;
 import Utils.TimeUtils;
 import javafx.event.ActionEvent;
@@ -140,11 +141,7 @@ public class LoginController implements Initializable {
             return;
         }
 
-        String appointmentIn15MinutesWarning = TimeUtils.isWithin15Minute();
-        Alert alert = new Alert(Alert.AlertType.WARNING);
-        alert.setTitle("Warning: ");
-        alert.setHeaderText(appointmentIn15MinutesWarning);
-        alert.setContentText(appointmentIn15MinutesWarning);
-        alert.showAndWait();
+        String warning = TimeUtils.isWithin15Minute();
+        AlertUtil.warning(warning, warning, warning);
     }
 }
