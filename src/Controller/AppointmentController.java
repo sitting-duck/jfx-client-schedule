@@ -354,8 +354,8 @@ public class AppointmentController implements Initializable {
     /**
      * This function runs when the user selects the cancel button in the modify-appointment.fxml view. This function will return
      * the user to the main view in main.fxml and no appointments or appointment edits will be added to the database.
-     * @param actionEvent
-     * @throws IOException
+     * @param actionEvent - not used
+     * @throws IOException - throws an exception if main.fxml cannot be found or loaded
      */
     public void onCancelButton(ActionEvent actionEvent) throws IOException {
         SceneLoader.goToMainView(actionEvent);

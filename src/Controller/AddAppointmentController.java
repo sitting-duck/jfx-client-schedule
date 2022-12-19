@@ -2,6 +2,7 @@ package Controller;
 
 import DBAccess.DBAppointment;
 import Model.Appointment;
+import Utils.SceneLoader;
 import Utils.TimeUtils;
 import Utils.UXUtil;
 import javafx.event.ActionEvent;
@@ -130,12 +131,7 @@ public class AddAppointmentController extends AppointmentController implements I
         if(isOverlap == false) {
             DBAppointment.insertAppointment(title, description, location, type, start, end, customerId, userId, contactId);
 
-            Parent root = FXMLLoader.load(getClass().getResource("/View/main.fxml"));
-            Stage stage = (Stage)((Node)actionEvent.getSource()).getScene().getWindow();
-            Scene scene = new Scene(root, 1400, 400);
-            stage.setTitle("Appointment Manager");
-            stage.setScene(scene);
-            stage.show();
+            SceneLoader.goToMainView(actionEvent);
         } else {
             Alert alert = new Alert(Alert.AlertType.WARNING);
             alert.setTitle("Error: Appointment Overlap");

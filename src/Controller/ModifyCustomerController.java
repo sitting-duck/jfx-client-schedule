@@ -109,13 +109,7 @@ public class ModifyCustomerController extends CustomerController implements Init
      * @param actionEvent
      */
     public void onCountrySelected(ActionEvent actionEvent) throws IOException, SQLException {
-        String countryString = null;
-        try {
-            countryString = UXUtil.getStringFromComboBox(countryComboBox);
-        } catch (Exception e) {
-            UXUtil.setErrorLabel(countryLabel);
-        }
-        divisionIdComboBox.setItems(DBDivision.getAllDivisionsWithCountryName((String) countryString));
+        super.onCountrySelected(actionEvent);
     }
 
     /**
@@ -145,20 +139,4 @@ public class ModifyCustomerController extends CustomerController implements Init
         SceneLoader.goToMainView(actionEvent);
         return good;
     }
-
-    /**
-     * Called after the user clicks the Cancel button. On click it closes the Add Customer view and returns to the main
-     * application view with the Customers and the Appointments tables.
-     * @param actionEvent - not used.
-     * @throws IOException - throws an exception if main.fxml cannot be found or loaded
-     */
-    public void onCancelButton(ActionEvent actionEvent) throws IOException {
-        Parent root = FXMLLoader.load(getClass().getResource("/View/main.fxml"));
-        Stage stage = (Stage)((Node)actionEvent.getSource()).getScene().getWindow();
-        Scene scene = new Scene(root, 1400, 400);
-        stage.setTitle("Customer Appointment Manager");
-        stage.setScene(scene);
-        stage.show();
-    }
-
 }

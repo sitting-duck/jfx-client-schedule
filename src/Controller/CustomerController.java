@@ -1,6 +1,7 @@
 package Controller;
 
 import Model.Division;
+import Utils.SceneLoader;
 import Utils.UXUtil;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -88,6 +89,22 @@ public class CustomerController {
     protected ComboBox divisionIdComboBox;
 
     /**
+     * Called when the user selects a country from the Country ComboBox. This will reset the provinces or states in the
+     * Province Division combo box such that they are all within the selected country.
+     * @param actionEvent
+     */
+    public void onCountrySelected(ActionEvent actionEvent) throws IOException, SQLException {
+        String countryString = null;
+        try {
+            countryString = UXUtil.getStringFromComboBox(countryComboBox);
+        } catch (Exception e) {
+            UXUtil.setErrorLabel(countryLabel);
+        }
+        divisionIdComboBox.setVisible(true);
+        UXUtil.initDivisionIdComboBox(divisionIdComboBox, countryString);
+    }
+
+    /**
      * Called after the user clicks the Ok. On click the function checks all the fields in Add Customer view to make
      * sure that they are valid and that they are not empty.
      * @param actionEvent
@@ -150,6 +167,16 @@ public class CustomerController {
             System.out.println("Input was not valid, Customer NOT updated in database.");
         }
         return good;
+    }
+
+    /**
+     * Called after the user clicks the Cancel button. On click it closes the Add/Modify Customer view and returns to the main
+     * application view with the Customers and the Appointments tables.
+     * @param actionEvent - not used.
+     * @throws IOException - throws an exception if main.fxml cannot be found or loaded
+     */
+    public void onCancelButton(ActionEvent actionEvent) throws IOException {
+        SceneLoader.goToMainView(actionEvent);
     }
 
 }
