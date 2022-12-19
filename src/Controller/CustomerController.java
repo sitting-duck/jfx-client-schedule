@@ -1,6 +1,5 @@
 package Controller;
 
-import Model.Division;
 import Utils.SceneLoader;
 import Utils.UXUtil;
 import javafx.event.ActionEvent;

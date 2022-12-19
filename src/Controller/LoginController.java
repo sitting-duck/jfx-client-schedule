@@ -3,16 +3,11 @@ package Controller;
 import DBAccess.DBUser;
 import Localization.Translate;
 import Model.User;
+import Utils.SceneLoader;
 import Utils.TimeUtils;
 import javafx.event.ActionEvent;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Node;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.stage.Stage;
-
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -21,7 +16,6 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.sql.SQLException;
 import java.time.ZoneId;
-import java.util.Locale;
 import java.util.ResourceBundle;
 import java.util.TimeZone;
 
@@ -139,12 +133,7 @@ public class LoginController implements Initializable {
         // Assuming login was successful, we check the database to see if any appointments are going to start within the
         // next 15 minutes
         if(login_successful) {
-            Parent root = FXMLLoader.load(getClass().getResource("/View/main.fxml"));
-            Stage stage = (Stage)((Node)actionEvent.getSource()).getScene().getWindow();
-            Scene scene = new Scene(root, 1400, 400);
-            stage.setTitle("Customer Appointment Manager");
-            stage.setScene(scene);
-            stage.show();
+            SceneLoader.goToMainView(actionEvent);
         } else {
             Alert alert = new Alert(Alert.AlertType.WARNING, Translate.str("Error incorrect password for ") + ": " + username, ButtonType.OK);
             alert.showAndWait();

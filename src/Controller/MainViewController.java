@@ -4,20 +4,15 @@ import DBAccess.DBAppointment;
 import DBAccess.DBCustomer;
 import Model.Appointment;
 import Model.Customer;
+import Utils.SceneLoader;
 import Utils.UXUtil;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Node;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.stage.Stage;
-
 import java.io.IOException;
 import java.net.URL;
 import java.sql.Date;
@@ -31,9 +26,13 @@ import java.util.Calendar;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
+/**
+ * Holds the main view. In the main view on the left column is the table of all Customers from the database and below
+ * that table is a set of buttons for manipulating Customers from that table. In the right column is the table of all
+ * Appointments from the database and below that table is a set of buttons for manipulating Appointments from that
+ * table.
+ */
 public class MainViewController implements Initializable {
-
-
 
     /**
      * Users enters a string or id number into this text input field and when they press enter the customers table will refresh
@@ -49,14 +48,6 @@ public class MainViewController implements Initializable {
      */
     @FXML
     private TableView customerTable;
-
-    /**
-     * If the user has a customer selected in the customers table then on hitting this Delete button they will see a confirmation
-     * asking them if they really want to delete the customer. They can click "Ok" to delete the customer or "Cancel" to exit early
-     * without deleting. If no customer is selected the user will see a Warning that says no customer was selected for deletion.
-     */
-    @FXML
-    private Button deleteCustomerBtn;
 
     /**
      * Users enters a string or id number into this text input field and when they press enter the appointments table will refresh
@@ -109,18 +100,6 @@ public class MainViewController implements Initializable {
      */
     @FXML
     private DatePicker appointmentDatePicker;
-
-    /**
-     * Leave this here for now until you see if the instructor will allow you to use the calendar widget for month selection.
-     */
-    @FXML
-    private ComboBox monthComboBox;
-
-    /**
-     * Leave this here for now until you see if the instructor will allow you to use the calendar widget for month selection.
-     */
-    @FXML
-    private ComboBox weekComboBox;
 
     /**
      *
@@ -188,12 +167,7 @@ public class MainViewController implements Initializable {
      * @throws IOException
      */
     public void onCustomerReportsButtonClicked(ActionEvent actionEvent) throws IOException {
-        Parent root = FXMLLoader.load(getClass().getResource("/View/customer-report.fxml"));
-        Stage stage = (Stage)((Node)actionEvent.getSource()).getScene().getWindow();
-        Scene scene = new Scene(root, 600, 400);
-        stage.setTitle("Appointment Manager");
-        stage.setScene(scene);
-        stage.show();
+        SceneLoader.goToCustomerReportsView(actionEvent);
     }
 
     /**
@@ -202,29 +176,7 @@ public class MainViewController implements Initializable {
      * @throws IOException
      */
     public void onAppointmentReportsButtonClicked(ActionEvent actionEvent) throws IOException {
-        Parent root = FXMLLoader.load(getClass().getResource("/View/appt-reports.fxml"));
-        Stage stage = (Stage)((Node)actionEvent.getSource()).getScene().getWindow();
-        Scene scene = new Scene(root);
-        stage.setTitle("Appointment Manager");
-        stage.setScene(scene);
-        stage.show();
-    }
-
-    /**
-     * Never called, leave this here for now.
-     * @param actionEvent
-     * @throws IOException
-     */
-    public void onMonthSelected(ActionEvent actionEvent) throws IOException {
-        String month = monthComboBox.getValue().toString();
-        System.out.println("Month: " + month);
-
-        if(month == "All") {
-            appointmentsSearchField.setText("");
-
-        } else {
-            appointmentsSearchField.setText(month);
-        }
+        SceneLoader.goToAppointmentReportsView(actionEvent);
     }
 
     /**
@@ -341,12 +293,7 @@ public class MainViewController implements Initializable {
      * @throws IOException
      */
     public void onAddCustomer(ActionEvent actionEvent) throws IOException {
-        Parent root = FXMLLoader.load(getClass().getResource("/View/add-customer.fxml"));
-        Stage stage = (Stage)((Node)actionEvent.getSource()).getScene().getWindow();
-        Scene scene = new Scene(root, 400, 600);
-        stage.setTitle("Add Customer");
-        stage.setScene(scene);
-        stage.show();
+        SceneLoader.goToAddCustomerView(actionEvent);
     }
 
     /**
@@ -368,12 +315,7 @@ public class MainViewController implements Initializable {
             alert.showAndWait();
         } else {
             ModifyCustomerController.setCustomer(customer);
-            Parent root = FXMLLoader.load(getClass().getResource("/View/modify-customer.fxml"));
-            Stage stage = (Stage)((Node)actionEvent.getSource()).getScene().getWindow();
-            Scene scene = new Scene(root, 400, 600);
-            stage.setTitle("Modify Customer");
-            stage.setScene(scene);
-            stage.show();
+            SceneLoader.goToModifyCustomerView(actionEvent);
         }
     }
 
@@ -448,7 +390,6 @@ public class MainViewController implements Initializable {
         }
 
         this.appointmentTable.setItems(appointments);
-        //this.appointmentsSearchField.setText("");
 
         if(appointments.size() == 0) {
             Alert alert = new Alert(Alert.AlertType.WARNING);
@@ -549,12 +490,7 @@ public class MainViewController implements Initializable {
      * @throws IOException
      */
     public void onAddAppointment(ActionEvent actionEvent) throws IOException {
-        Parent root = FXMLLoader.load(getClass().getResource("/View/add-appointment.fxml"));
-        Stage stage = (Stage)((Node)actionEvent.getSource()).getScene().getWindow();
-        Scene scene = new Scene(root, 400, 700);
-        stage.setTitle("Add Appointment");
-        stage.setScene(scene);
-        stage.show();
+        SceneLoader.goToAddAppointmentView(actionEvent);
     }
 
     /**
@@ -574,12 +510,7 @@ public class MainViewController implements Initializable {
             alert.showAndWait();
         } else {
             ModifyAppointmentController.setAppointment(appointment);
-            Parent root = FXMLLoader.load(getClass().getResource("/View/modify-appointment.fxml"));
-            Stage stage = (Stage)((Node)actionEvent.getSource()).getScene().getWindow();
-            Scene scene = new Scene(root, 400, 700);
-            stage.setTitle("Modify Appointment");
-            stage.setScene(scene);
-            stage.show();
+            SceneLoader.goToModifyAppointmentView(actionEvent);
         }
     }
     /**

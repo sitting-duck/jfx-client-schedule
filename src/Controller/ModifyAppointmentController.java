@@ -2,18 +2,13 @@ package Controller;
 
 import DBAccess.DBAppointment;
 import Model.Appointment;
+import Utils.SceneLoader;
 import Utils.TimeUtils;
 import Utils.UXUtil;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.paint.Color;
-import javafx.stage.Stage;
-
 import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
@@ -197,12 +192,7 @@ public class ModifyAppointmentController extends AppointmentController  {
             int contactId = UXUtil.getIdNumberFromComboBox(contactIdComboBox);
             DBAppointment.updateAppointment(appointment.getId(), title, description, location, type, start, end, customerId, userId, contactId);
 
-            Parent root = FXMLLoader.load(getClass().getResource("/View/main.fxml"));
-            Stage stage = (Stage)((Node)actionEvent.getSource()).getScene().getWindow();
-            Scene scene = new Scene(root, 1400, 400);
-            stage.setTitle("Appointment Manager");
-            stage.setScene(scene);
-            stage.show();
+            SceneLoader.goToMainView(actionEvent);
         }
 
         return good;
