@@ -1,16 +1,23 @@
 package Controller;
 
 import Utils.SceneLoader;
+import Utils.TimeUtils;
+import Utils.UXUtil;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.paint.Color;
 
 import java.io.IOException;
+import java.net.URL;
+import java.sql.SQLException;
+import java.util.ResourceBundle;
 
-public class AppointmentController {
+public class AppointmentController implements Initializable {
 
     /**
      * The label for the text field where the user enters the Title of the Appointment. eg. "Planning Meeting"
@@ -197,6 +204,152 @@ public class AppointmentController {
      */
     @FXML
     protected ComboBox contactIdComboBox;
+
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+        titleLabel.setText("Title");
+        descriptionLabel.setText("Description");
+        locationLabel.setText("Location");
+        typeLabel.setText("Type");
+        startLabel.setText("Start");
+        endLabel.setText("End");
+        customerIdLabel.setText("Customer ID");
+        userIdLabel.setText("User ID");
+        contactIdLabel.setText("Contact ID");
+
+        // Init UI
+        UXUtil.initAppointmentWidget(startDatePicker, startHourComboBox, startMinuteComboBox, startAMPMComboBox);
+        UXUtil.initAppointmentWidget(endDatePicker, endHourComboBox, endMinuteComboBox, endAMPMComboBox);
+        UXUtil.initCustomerIDComboBox(customerIdComboBox);
+        UXUtil.initUserIDComboBox(userIdComboBox);
+        UXUtil.initContactIDComboBox(contactIdComboBox);
+        localTimeLabel.setText(TimeUtils.getNowLocalTimeString());
+        easternTimeLabel.setText(TimeUtils.getNowEasternTimeString());
+    }
+
+    /**
+     * This function runs when the user clicks the OK button in the modify-appointment.fxml view to indicate that they are done
+     * editing the appointment, and they would like it added to the database now. This function runs many checks on the
+     * data entered by the user into various fields and will display an appropriate warning if needed. For example, the
+     * database is checked to make sure that the appointment the user is trying to create does not overlap with any other
+     * appointments already created in the database. This is called Collision Detection. The function will not insert into
+     * the database any appointments or edits that create collisions and will show red text above any text fields and combo boxes
+     * that need to be corrected by the user.
+     * @param actionEvent
+     * @throws IOException
+     * @throws SQLException
+     */
+    public boolean onOkButton(ActionEvent actionEvent) throws IOException, SQLException {
+        boolean good = true;
+        String title = titleTextField.getText();
+        String description = descriptionTextField.getText();
+        String location = locationTextField.getText();
+        String type = typeTextField.getText();
+
+        good = UXUtil.getSelectionFromComboBox(customerIdComboBox, customerIdLabel, "Customer");
+        good = UXUtil.getSelectionFromComboBox(userIdComboBox, userIdLabel, "User");
+        good = UXUtil.getSelectionFromComboBox(contactIdComboBox, contactIdLabel, "Contact");
+
+        if(description.compareTo("") == 0) {
+            descriptionLabel.setTextFill(Color.color(1, 0, 0));
+            descriptionLabel.setText("Description Cannot Be Empty");
+            good = false;
+        } else {
+            descriptionLabel.setTextFill(Color.color(0, 0, 0));
+            descriptionLabel.setText("Decsription");
+        }
+        if(title.compareTo("") == 0) {
+            titleLabel.setTextFill(Color.color(1, 0, 0));
+            titleLabel.setText("Title Cannot Be Empty");
+            good = false;
+        } else {
+            titleLabel.setTextFill(Color.color(0, 0, 0));
+            titleLabel.setText("Title");
+        }
+        if(location.compareTo("") == 0) {
+            locationLabel.setTextFill(Color.color(1, 0, 0));
+            locationLabel.setText("Location Cannot Be Empty");
+            good = false;
+        } else {
+            locationLabel.setTextFill(Color.color(0, 0, 0));
+            locationLabel.setText("Location");
+        }
+        if(type.compareTo("") == 0) {
+            typeLabel.setTextFill(Color.color(1, 0, 0));
+            typeLabel.setText("Type Cannot Be Empty");
+            good = false;
+        } else {
+            typeLabel.setTextFill(Color.color(0, 0, 0));
+            typeLabel.setText("Type");
+        }
+
+        if(startDatePicker.getValue() == null) {
+            startLabel.setTextFill(Color.color(1, 0, 0));
+            startLabel.setText("Start Date Cannot Be Empty");
+            good = false;
+        } else {
+            startLabel.setTextFill(Color.color(0, 0, 0));
+            startLabel.setText("Start");
+        }
+        if(startHourComboBox.getValue() == null) {
+            startLabel.setTextFill(Color.color(1, 0, 0));
+            startLabel.setText("Start Hour Cannot Be Empty");
+            good = false;
+        } else {
+            startLabel.setTextFill(Color.color(0, 0, 0));
+            startLabel.setText("Start");
+        }
+        if(startMinuteComboBox.getValue() == null) {
+            startLabel.setTextFill(Color.color(1, 0, 0));
+            startLabel.setText("Start Minute Cannot Be Empty");
+            good = false;
+        } else {
+            startLabel.setTextFill(Color.color(0, 0, 0));
+            startLabel.setText("Start");
+        }
+        if(startAMPMComboBox.getValue() == null) {
+            startLabel.setTextFill(Color.color(1, 0, 0));
+            startLabel.setText("Start AM/PM Cannot Be Empty");
+            good = false;
+        } else {
+            startLabel.setTextFill(Color.color(0, 0, 0));
+            startLabel.setText("Start");
+        }
+
+        if(endDatePicker.getValue() == null) {
+            endLabel.setTextFill(Color.color(1, 0, 0));
+            endLabel.setText("End Date Cannot Be Empty");
+            good = false;
+        } else {
+            endLabel.setTextFill(Color.color(0, 0, 0));
+            endLabel.setText("End");
+        }
+        if(endHourComboBox.getValue() == null) {
+            endLabel.setTextFill(Color.color(1, 0, 0));
+            endLabel.setText("End Hour Cannot Be Empty");
+            good = false;
+        } else {
+            endLabel.setTextFill(Color.color(0, 0, 0));
+            endLabel.setText("End");
+        }
+        if(endMinuteComboBox.getValue() == null) {
+            endLabel.setTextFill(Color.color(1, 0, 0));
+            endLabel.setText("End Minute Cannot Be Empty");
+            good = false;
+        } else {
+            endLabel.setTextFill(Color.color(0, 0, 0));
+            endLabel.setText("End");
+        }
+        if(endAMPMComboBox.getValue() == null) {
+            endLabel.setTextFill(Color.color(1, 0, 0));
+            endLabel.setText("End AM/PM Cannot Be Empty");
+            good = false;
+        } else {
+            endLabel.setTextFill(Color.color(0, 0, 0));
+            endLabel.setText("End");
+        }
+        return good;
+    }
 
     /**
      * This function runs when the user selects the cancel button in the modify-appointment.fxml view. This function will return
