@@ -166,6 +166,11 @@ public class AppointmentReportController implements Initializable {
         reportTextAreaContact.setText(s);
     }
 
+    /**
+     * loads the main view
+     * @param actionEvent - passed to FXMLLoader
+     * @throws IOException - throws if fxml file not found
+     */
     public void onHomeButtonClicked(ActionEvent actionEvent) throws IOException {
         SceneLoader.goToMainView(actionEvent);
     }

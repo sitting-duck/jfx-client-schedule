@@ -7,6 +7,9 @@ import javafx.collections.ObservableList;
 
 import java.sql.*;
 
+/**
+ * A class for CRUD Contacts from the database
+ */
 public class DBContact {
 
     /**
@@ -43,8 +46,8 @@ public class DBContact {
      *           Contact found is returned without regard to if this is desired. If multiple Contacts in the database
      *           have the same name you may wish to narrow your search even more with other Contact attributes using
      *           another search function.
-     * @throws Exception
-     * @throws SQLException
+     * @throws Exception - throws on bad data returned from database
+     * @throws SQLException - throws on poorly formed SQL
      */
     public static Contact getContactByContactName(String name) throws Exception, SQLException {
         try {

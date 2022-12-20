@@ -11,6 +11,9 @@ import javafx.scene.control.TextField;
 import java.io.IOException;
 import java.sql.SQLException;
 
+/**
+ * Generic controller class for add customer and modify customer views
+ */
 public class CustomerController {
 
     /**
@@ -90,7 +93,9 @@ public class CustomerController {
     /**
      * Called when the user selects a country from the Country ComboBox. This will reset the provinces or states in the
      * Province Division combo box such that they are all within the selected country.
-     * @param actionEvent
+     * @param actionEvent - not used
+     * @throws IOException - throws if there is an issue with a string in a ComboBox
+     * @throws SQLException - throws if there is an issue pulling countries from the database
      */
     public void onCountrySelected(ActionEvent actionEvent) throws IOException, SQLException {
         String countryString = null;
@@ -106,9 +111,10 @@ public class CustomerController {
     /**
      * Called after the user clicks the Ok. On click the function checks all the fields in Add Customer view to make
      * sure that they are valid and that they are not empty.
-     * @param actionEvent
+     * @param actionEvent - not used
      * @throws IOException - throws an exception is main.fxml cannot be found or loaded when returning to the main view
      * @throws SQLException - throws an exception if there is an error inserting the new Customer into the database
+     * @return true if user input is good, false if user input was invalid
      */
     public boolean onOkButton(ActionEvent actionEvent) throws IOException, SQLException {
         boolean good = true;

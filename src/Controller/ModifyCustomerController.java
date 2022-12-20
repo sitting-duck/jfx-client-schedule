@@ -19,6 +19,11 @@ import java.net.URL;
 import java.sql.SQLException;
 import java.util.ResourceBundle;
 
+/**
+ * Controller class attached to the modify-customer.fxml view. Performs logic attached to loading a Customer from the
+ * database and allowing the user to interact with some text fields, comboboxes and other widgets to modify the Customer
+ * data and update the database on clicking the Ok Button.
+ */
 public class ModifyCustomerController extends CustomerController implements Initializable {
 
     /**
@@ -38,8 +43,8 @@ public class ModifyCustomerController extends CustomerController implements Init
 
     /**
      * Called when the Modify Customer view is loaded. It is meant to pass the selected Customer from the Customer table
-     * in the main view to this Modify Customer view. It is set in the variable named "customer" defined in this class.
-     * @param _customer
+     * in the main view to this M - the customer passed into this view for editing by the user
+     * @param _customer - the Customer object to be edited in the Modify Customer view by the user
      */
     public static void setCustomer(Customer _customer) {
         customer = _customer;
@@ -48,8 +53,8 @@ public class ModifyCustomerController extends CustomerController implements Init
     /**
      * Called when the modify-customer.fxml file for the Add Customer view is loaded. This function initializes any GUI
      * elements necessary and pulls items from the database if needed.
-     * @param url
-     * @param resourceBundle
+     * @param url - not used
+     * @param resourceBundle - not used
      */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -92,7 +97,7 @@ public class ModifyCustomerController extends CustomerController implements Init
     /**
      * Called when the user selects a country from the Country ComboBox. This will reset the provinces or states in the
      * Province Division combo box such that they are all within the selected country.
-     * @param actionEvent
+     * @param actionEvent - for navigating scenes
      */
     public void onCountrySelected(ActionEvent actionEvent) throws IOException, SQLException {
         super.onCountrySelected(actionEvent);
@@ -101,7 +106,7 @@ public class ModifyCustomerController extends CustomerController implements Init
     /**
      * Called after the user clicks the Ok. On click the function checks all the fields in Add Customer view to make
      * sure that they are valid and that they are not empty.
-     * @param actionEvent
+     * @param actionEvent - for navigating back to the main we pass this to FXMLLoader in SceneLoader class
      * @throws IOException - throws an exception is main.fxml cannot be found or loaded when returning to the main view
      * @throws SQLException - throws an exception if there is an error inserting the new Customer into the database
      */

@@ -112,6 +112,15 @@ public abstract class DBCustomer {
     public static ObservableList<Customer> lookupCustomer(String string) {
         ObservableList<Customer> allCustomers = getAllCustomers();
         final ObservableList<Customer> matchingCustomers = FXCollections.observableArrayList();
+
+        /**
+         * Lambda: checking customer names for a match
+         *
+         * we use a foreach() function and we pass a lambda definition with a small snippet of logic for
+         * checking customer name and adding it to a list of matching names we found. It is convenient and readable
+         * to define quick snippets of logic in a small lambda like this instead of defining a separate function and
+         * thus cluttering the API for such a simple task.
+         */
         allCustomers.forEach((customer) -> {
             //boolean contains = Pattern.compile(Pattern.quote(string), Pattern.CASE_INSENSITIVE).matcher(customer.getName()).find();;
             if(customer.getName().contains(string)) {
@@ -191,7 +200,7 @@ public abstract class DBCustomer {
      * @param phone - phone number string
      * @param divisionId - division id string. eg. "Texas" "New Jersey" etc.
      * @return returns rows affected. Will always be zero or one since Customer ids are all unique.
-     * @throws SQLException
+     * @throws SQLException - throws on poorly formed sql
      */
     public static int updateCustomer(int id, String name, String address, String postalCode, String phone, int divisionId) throws SQLException {
         String sql = "UPDATE client_schedule.customers SET Customer_Name = ?, Address = ?, Postal_Code = ?, Phone = ?, Division_ID = ?  WHERE Customer_ID = ?";

@@ -184,8 +184,10 @@ public class UXUtil {
      *
      * Takes a reference to the customer id combo box itself and the customer id combobox label as well.
      * When something is bad, we also set the text for the label as well as return false.
-     * @param cb
-     * @return
+     * @param cb - combobox we are getting the selection from
+     * @param lbl - label attached to that combobox we can update with error messages
+     * @param lblText - text string to set the label to if value is invalid and we need to show red error message
+     * @return - true if combobox was not empty and had valid input, false if combobox was empty or had invalid input
      */
     public static Boolean getSelectionFromComboBox(ComboBox cb, Label lbl, String lblText) {
         int valid = -1;

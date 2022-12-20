@@ -47,9 +47,9 @@ public class AddAppointmentController extends AppointmentController implements I
      * appointments already created in the database. This is called Collision Detection. The function will not insert into
      * the database any appointments that create collisions and will show red text above any text fields and combo boxes
      * that need to be corrected by the user.
-     * @param actionEvent
-     * @throws IOException
-     * @throws SQLException
+     * @param actionEvent - used for navigating scenes such as returning to the main when the user clicks ok
+     * @throws IOException - throws on view fxml not being found
+     * @throws SQLException - throws on poorly formed sql or bad data being returned from the database
      */
     public boolean onOkButton(ActionEvent actionEvent) throws IOException, SQLException {
         boolean good = super.onOkButton(actionEvent);

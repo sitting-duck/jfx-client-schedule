@@ -163,7 +163,7 @@ public class Appointment {
 
     /**
      * Sets the appointment location
-     * @param location
+     * @param location - location string
      */
     public void setLocation(String location) {
         this.location = location;

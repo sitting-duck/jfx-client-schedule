@@ -14,6 +14,7 @@ import java.time.format.FormatStyle;
 public class TimeUtils {
 
     /**
+     * Checks if a Timestamp is within a given month represented by a string. eg. "January"
      *
      * @param time: A Timestamp containing a date and time.
      * @param month: String for what month to test the timestamp is in. For example: "January", "February" etc. This
@@ -36,7 +37,7 @@ public class TimeUtils {
      * @param hour - int specifying the number of hours from midnight. 8 is 8am and 13 is 1pm and so on.
      * @param minute - int specifying the number of minutes from the beginning of the hour.
      * @param amPm - String indicating AM or PM. Case Insensitive.
-     * @return
+     * @return - a Timestamp object built from time data in integers and strings passed in to this function
      */
     public static Timestamp buildTimeStamp(Timestamp day, int hour, int minute, String amPm) {
         LocalDateTime time = day.toLocalDateTime();

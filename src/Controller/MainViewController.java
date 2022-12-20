@@ -103,14 +103,25 @@ public class MainViewController implements Initializable {
     private DatePicker appointmentDatePicker;
 
     /**
-     *
-     * @param url
-     * @param resourceBundle
-     *
-     * Description: this function is called every time the MainView itself is loaded. The main view is defined in the
+     * This function is called every time the MainView itself is loaded. The main view is defined in the
      * main.fxml file. In this function we initialize the Customers table and the appointments table by getting all
      * Customers and all Appointments from the Database. The default statue of the table is to show all items, and then
      * the user can enter a search string into the text field above each table to narrow the results if they desire.
+     *
+     *
+     *          * Lambda: appointment search
+     *          * // when the user clicks a Customer in the customer table, the search field for appointments at the top of the
+     *          * // on the right side column will auto-populate with the name of the customer that has been clicked. The
+     *          * // search field has a listener on it defined below such that when a customer name is entered, all appointments
+     *          * // with a matching customer name will show in the table.
+     *          *
+     *          * We pass a lambda here for the listener instead of passing a predefined function because it's more readable
+     *          * to define this function in place since this is the only place in code where we do this.
+     *          *
+     *
+     *
+     * @param url - not used
+     * @param resourceBundle - not used
      */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -128,10 +139,6 @@ public class MainViewController implements Initializable {
             throw new RuntimeException(e);
         }
 
-        // when the user clicks a Customer in the customer table, the search field for appointments at the top of the
-        // on the right side column will auto-populate with the name of the customer that has been clicked. The
-        // search field has a listener on it defined below such that when a customer name is entered, all appointments
-        // with a matching customer name will show in the table.
         appointmentsSearchField.textProperty().addListener((observable, oldValue, newValue) -> {
             String searchString = appointmentsSearchField.getText();
             System.out.println("Appointment search field text changed: " + searchString);
@@ -164,8 +171,8 @@ public class MainViewController implements Initializable {
     /**
      * When the customer reports button is clicked a new view will appear that allows the user to select a customer and
      * see in a text format a report that shows all the appointments in the database for that customer.
-     * @param actionEvent
-     * @throws IOException
+     * @param actionEvent - for loading the next scene
+     * @throws IOException - throws if fxml file cannot be found
      */
     public void onCustomerReportsButtonClicked(ActionEvent actionEvent) throws IOException {
         SceneLoader.goToCustomerReportsView(actionEvent);
@@ -173,8 +180,8 @@ public class MainViewController implements Initializable {
 
     /**
      * Called when the user clicks the "Reports" button underneath the appointments table
-     * @param actionEvent
-     * @throws IOException
+     * @param actionEvent - for loading the next scene
+     * @throws IOException - throws exception if fxml file cannot be found
      */
     public void onAppointmentReportsButtonClicked(ActionEvent actionEvent) throws IOException {
         SceneLoader.goToAppointmentReportsView(actionEvent);
@@ -182,10 +189,9 @@ public class MainViewController implements Initializable {
 
     /**
      * Called when a user selects a date from the Calendar widget.
-     * @param actionEvent
-     * @throws IOException
+     * @param actionEvent - not used
      */
-    public void onDateSelected(ActionEvent actionEvent) throws IOException {
+    public void onDateSelected(ActionEvent actionEvent) {
 
         LocalDate ld =  appointmentDatePicker.getValue();
         if(weekRadioButton.isSelected()) {
@@ -209,8 +215,8 @@ public class MainViewController implements Initializable {
      * refresh and display all the Appointments available in the database regardless of date. If "Month" is selected, the
      * table will only show Appointments within a chosen month, and likewise if the "Week" radio button is selected, a
      * chosen weeks worth of Appointments will be shown in the Appointments table.
-     * @param actionEvent
-     * @throws Exception
+     * @param actionEvent - passed to search appointment function
+     * @throws Exception - thrown if there is an issue returning the set of all appointments from the database
      */
     public void onAllTimeClicked(ActionEvent actionEvent) throws Exception {
         appointmentDatePicker.hide();
@@ -225,8 +231,8 @@ public class MainViewController implements Initializable {
      * refresh and display all the Appointments available in the database regardless of date. If "Month" is selected, the
      * table will only show Appointments within a chosen month, and likewise if the "Week" radio button is selected, a
      * chosen weeks worth of Appointments will be shown in the Appointments table.
-     * @param actionEvent
-     * @throws Exception
+     * @param actionEvent - not used
+     * @throws IOException - throws IOException if there is an issue fetching from the database
      */
     public void onWeekClicked(ActionEvent actionEvent) throws IOException {
         appointmentDatePicker.setVisible(true);
@@ -241,8 +247,8 @@ public class MainViewController implements Initializable {
      * refresh and display all the Appointments available in the database regardless of date. If "Month" is selected, the
      * table will only show Appointments within a chosen month, and likewise if the "Week" radio button is selected, a
      * chosen weeks worth of Appointments will be shown in the Appointments table.
-     * @param actionEvent
-     * @throws Exception
+     * @param actionEvent - not used
+     * @throws IOException - throws if there is an issue fetching from the database
      */
     public void onMonthClicked(ActionEvent actionEvent) throws IOException {
         appointmentDatePicker.setVisible(true);
@@ -254,10 +260,9 @@ public class MainViewController implements Initializable {
      * This function is called when the user enters a search string into the text field above the Customers table.
      * Every time a character is entered into that text field the Customers table will refresh displaying the set of
      * Customers that either have a matching Customer Name or Customer id.
-     * @param actionEvent
-     * @throws IOException
+     * @param actionEvent - not used
      */
-    public void onSearchCustomer(ActionEvent actionEvent) throws IOException {
+    public void onSearchCustomer(ActionEvent actionEvent) {
         String queryText = this.customersSearchField.getText();
         System.out.println("getCustomerSearchResultsHandler: " + queryText);
 
@@ -287,8 +292,8 @@ public class MainViewController implements Initializable {
     /**
      * This function is called after the user clicks the "Add" button underneath the Customers table and open a view
      * where the user can add all necessary information to create their new Customer to add to the database.
-     * @param actionEvent
-     * @throws IOException
+     * @param actionEvent - for loading the next scene
+     * @throws IOException - throws if fxml file can't be found
      */
     public void onAddCustomer(ActionEvent actionEvent) throws IOException {
         SceneLoader.goToAddCustomerView(actionEvent);
@@ -298,8 +303,8 @@ public class MainViewController implements Initializable {
      * Called after the user clicks the "Modify" button underneath the Customers table. If a Customer is selected it will
      * open a new view where the user can edit the selected Customer. If no Customer is selected the app will display a
      * warning dialog indicating that the user needs to select a Customer to modify.
-     * @param actionEvent
-     * @throws IOException
+     * @param actionEvent - for loading the next scene
+     * @throws IOException - throws if fxml file not found
      */
     public void onModifyCustomer(ActionEvent actionEvent) throws IOException {
         Customer customer = (Customer)customerTable.getSelectionModel().getSelectedItem();
@@ -317,11 +322,10 @@ public class MainViewController implements Initializable {
      * the app will display a warning. If a Customer is selected the app will delete all the Appointments for that Customer
      * in the database and then delete the Customer object itself in the MySQL database and then display a dialog box
      * informing the user as to what has been deleted.
-     * @param actionEvent
-     * @throws IOException
-     * @throws SQLException
+     * @param actionEvent - not used
+     * @throws SQLException - throws on database failure to delete customer
      */
-    public void onDeleteCustomer(ActionEvent actionEvent) throws IOException, SQLException {
+    public void onDeleteCustomer(ActionEvent actionEvent) throws SQLException {
         System.out.println("onDeleteCustomer()");
         Customer customer = (Customer)customerTable.getSelectionModel().getSelectedItem();
 
@@ -340,13 +344,22 @@ public class MainViewController implements Initializable {
      * This function is called when the user enters a search string into the text field above the Appointments table.
      * Every time a character is entered the Appointments table will update with the set of Appointments with names
      * containing the search string or with a matching ID number.
-     * @param actionEvent
-     * @throws Exception
+     * @param actionEvent - not used
+     * @throws Exception - throws exception if there is an issue pulling appointments from the database
      */
     public void onSearchAppointment(ActionEvent actionEvent) throws Exception {
         String queryText = this.appointmentsSearchField.getText();
         this.searchAppointment(queryText);
     }
+
+    /**
+     * Called when the user enters input into the search field above the appointments table. Queries the database for
+     * Customers with a matching or partial match for Customer name associated with the appointment,
+     * also checks appointment title and description for the search string and returns the set of matches.
+     * @param queryText - search string
+     * @return - an ObservableList of the appointments returned from the database
+     * @throws Exception - throws exception on poorly formed sql or bad data returned from the database
+     */
     public ObservableList<Appointment> searchAppointment(String queryText) throws Exception {
 
         if(queryText.isEmpty()) {
@@ -357,7 +370,7 @@ public class MainViewController implements Initializable {
         ObservableList<Appointment> appointments = null;
         try {
             int idNum = Integer.parseInt(queryText);
-            appointments = DBAppointment.lookupAppointmentById(idNum);
+            appointments = DBAppointment.lookupAppointmentByTitleString(idNum);
         } catch(NumberFormatException exception) {
 
             // Search for appointment by customer name
@@ -365,7 +378,7 @@ public class MainViewController implements Initializable {
                 int customerId = DBCustomer.getCustomerByName(queryText).getId();
                 appointments = DBAppointment.lookupAppointmentsForCustomerWithID(customerId);
             } else { // if no customer by this name we search by appointment title
-                appointments = DBAppointment.lookupAppointmentById(queryText);
+                appointments = DBAppointment.lookupAppointmentByTitleString(queryText);
             }
             System.out.println("Got " + appointments.size() + " matching appointments for customer with customer name: " + queryText);
         }
@@ -383,8 +396,8 @@ public class MainViewController implements Initializable {
     /**
      * Called when the user selects a date from the Calendar widget and the "Month" radio button is selected. Causes the
      * Appointments table to refresh and show the set of Appointments within the specified month.
-     * @param queryText
-     * @return
+     * @param queryText - search string
+     * @return - an ObservableList of the appointments returned from the database
      */
     public ObservableList<Appointment> searchAppointmentByMonth(String queryText) {
         System.out.println("searchAppointmentByMonth(): " + queryText);
@@ -417,6 +430,11 @@ public class MainViewController implements Initializable {
         return appointments;
     }
 
+    /**
+     * Returns the set of appointments within the chosen week of the day selected in the date picker
+     * @param ld - the date selected in the date picker
+     * @return - the set of appointments inside the same week that that day is in
+     */
     public ObservableList<Appointment> searchAppointmentByWeek(LocalDate ld) {
         System.out.println("searchAppointmentByWeek(): ");
         //Now, get the date for the beginning of the week
@@ -456,8 +474,8 @@ public class MainViewController implements Initializable {
     /**
      * Called after the user clicks the "Add" button underneath the Appointments table. It opens a new view where the
      * user can enter all the information needed to create a new Appointment.
-     * @param actionEvent
-     * @throws IOException
+     * @param actionEvent - for loading the next scene
+     * @throws IOException - throws if fxml file not found
      */
     public void onAddAppointment(ActionEvent actionEvent) throws IOException {
         SceneLoader.goToAddAppointmentView(actionEvent);
@@ -465,8 +483,8 @@ public class MainViewController implements Initializable {
 
     /**
      * Called when the user clicks the "Modify" button under the Appointments table.
-     * @param actionEvent
-     * @throws IOException
+     * @param actionEvent - passed to FXMLLoader to load the next scene
+     * @throws IOException - throws if there is an issue loading the modify appointment scene from fxml
      */
     public void onModifyAppointment(ActionEvent actionEvent) throws IOException {
         Appointment appointment = (Appointment)appointmentTable.getSelectionModel().getSelectedItem();
@@ -482,8 +500,10 @@ public class MainViewController implements Initializable {
      * On pressing the Delete button under the appointments table the user will see a confirmation asking if they are sure they wish to delete
      * the selected appointment in the appointment table. If there is no appointment selected then the user will see a warning saying that
      * there is no appointment selected.
+     * @param actionEvent - not used
+     * @throws SQLException - throws is there is an issue deleting the appointment from the database
      */
-    public void onDeleteAppointment(ActionEvent actionEvent) throws IOException, SQLException {
+    public void onDeleteAppointment(ActionEvent actionEvent) throws SQLException {
         Appointment appointment = (Appointment)appointmentTable.getSelectionModel().getSelectedItem();
 
         if(appointment == null) {
@@ -500,7 +520,7 @@ public class MainViewController implements Initializable {
 
     /**
      * Initializes the Customer table with all Customers from database.
-     * @throws IOException
+     * @throws IOException - throws exception if there is an issue with converting Customer data
      */
     public void initCustomerTable() throws IOException {
         System.out.println("initCustomerTable()");
@@ -529,6 +549,16 @@ public class MainViewController implements Initializable {
 
         customerTable.setItems(DBCustomer.getAllCustomers());
 
+        /**
+         * Lamda: Customer selected updates the text field for searching for appointments
+         * When a user selects a Customer from the Customer table, the search field over the appoinments table is
+         * filled in with the customer's name. This triggers the appointments table to refresh with all of the
+         * appointments assigned to that Customer.
+         *
+         * We use a lambda here since defining the function in place is more readable and puts the relevant logic
+         * right where it is called. It is convenient to use lambdas for one off functions that do not need to be
+         * reused.
+         */
         this.customerTable.getSelectionModel().selectedItemProperty().addListener((observable, oldSelection, newSelection) -> {
            if(newSelection != null) {
                System.out.println("new select: " + newSelection.toString());
@@ -544,7 +574,20 @@ public class MainViewController implements Initializable {
 
     /**
      * Initializes the Appointment table with all Appointments from database
-     * @throws IOException
+     * @throws IOException - throws IO exception on database returning bad data or no data, or missing a column
+     *
+     *  * Lambda: converting a UTC Timestamp to something more readable round1
+     *          *
+     *          * Although we implement this logic more than once, for a simple one-liner type of thing such as a quick
+     *          * conversion of some data, throwing this logic into a lambda is convenient and readable, and keeps the relevant
+     *          * logic near where it is used.
+     *
+     *  * Lambda: converting a UTC Timestamp to something more readable round2
+     *          *
+     *          * Although we implement this logic more than once, for a simple one-liner type of thing such as a quick
+     *          * conversion of some data, throwing this logic into a lambda is convenient and readable, and keeps the relevant
+     *          * logic near where it is used.
+     *
      */
     public void initAppointmentTable() throws IOException {
         System.out.println("initAppointmentTable()");
@@ -570,6 +613,7 @@ public class MainViewController implements Initializable {
 
         TableColumn startCol = new TableColumn("Start");
         startCol.setCellValueFactory(new PropertyValueFactory<Appointment, LocalDateTime>("start"));
+
         startCol.setCellFactory(col -> new TableCell<Appointment, Timestamp>() {
             @Override
             protected void updateItem(Timestamp item, boolean empty) {
@@ -585,6 +629,7 @@ public class MainViewController implements Initializable {
 
         TableColumn endCol = new TableColumn("End");
         endCol.setCellValueFactory(new PropertyValueFactory<Appointment, LocalDateTime>("end"));
+
         endCol.setCellFactory(col -> new TableCell<Appointment, Timestamp>() {
             @Override
             protected void updateItem(Timestamp item, boolean empty) {

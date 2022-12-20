@@ -4,7 +4,16 @@ import java.util.Locale;
 import java.util.ResourceBundle;
 import java.util.StringTokenizer;
 
+/**
+ * A class for conveniently translating strings into different languages
+ */
 public class Translate {
+
+    /**
+     * Returns a translated string in the language set by the operating system.
+     * @param string - string to translate
+     * @return - translated string
+     */
     public static String str(String string) {
         // Resource Bundle is a bundle of translations.
         // We detect the language based on timezone, locality etc.

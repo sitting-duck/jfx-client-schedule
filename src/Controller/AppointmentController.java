@@ -17,6 +17,9 @@ import java.net.URL;
 import java.sql.SQLException;
 import java.util.ResourceBundle;
 
+/**
+ * Generic controller for adding and modifying appoinments
+ */
 public class AppointmentController implements Initializable {
 
     /**
@@ -235,9 +238,10 @@ public class AppointmentController implements Initializable {
      * appointments already created in the database. This is called Collision Detection. The function will not insert into
      * the database any appointments or edits that create collisions and will show red text above any text fields and combo boxes
      * that need to be corrected by the user.
-     * @param actionEvent
-     * @throws IOException
-     * @throws SQLException
+     * @param actionEvent - not used
+     * @throws IOException - called if ComboBoxes being checked contain an invalid string
+     * @throws SQLException - called on poorly formed sql or bad results returned from the database
+     * @return - a boolean indicating if the input in all widgets entered by the user was valid
      */
     public boolean onOkButton(ActionEvent actionEvent) throws IOException, SQLException {
         boolean good = true;

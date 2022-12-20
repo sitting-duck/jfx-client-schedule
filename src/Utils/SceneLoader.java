@@ -9,6 +9,9 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
+/**
+ * A class for conveniently navigating between views.
+ */
 public class SceneLoader {
 
     /**
@@ -50,8 +53,8 @@ public class SceneLoader {
      * Appointments from the database and below that table is a set of buttons for manipulating Appointments from that
      * table.
      *
-     * @param actionEvent
-     * @throws IOException
+     * @param actionEvent - passed to FXML Loader
+     * @throws IOException - throws if fxml file not found
      */
     public static void goToMainView(ActionEvent actionEvent) throws IOException {
         goToView(actionEvent, "/View/main.fxml", 1400, 400, "Customer Appointment Manager");
@@ -60,8 +63,8 @@ public class SceneLoader {
     /**
      * This function is called after the user clicks the "Add" button underneath the Customers table and open a view
      * where the user can add all necessary information to create their new Customer to add to the database.
-     * @param actionEvent
-     * @throws IOException
+     * @param actionEvent - passed to FXML Loader
+     * @throws IOException - throws if fxml file not found
      */
     public static void goToAddCustomerView(ActionEvent actionEvent) throws IOException {
         goToView(actionEvent, "/View/add-customer.fxml", 400, 600, "Add Customer");
@@ -71,8 +74,8 @@ public class SceneLoader {
      * Called after the user clicks the "Modify" button underneath the Customers table. If a Customer is selected it will
      * open a new view where the user can edit the selected Customer. If no Customer is selected the app will display a
      * warning dialog indicating that the user needs to select a Customer to modify.
-     * @param actionEvent
-     * @throws IOException
+     * @param actionEvent - passed to FXML Loader
+     * @throws IOException - throws if fxml file not found
      */
     public static void goToModifyCustomerView(ActionEvent actionEvent) throws IOException {
         goToView(actionEvent, "/View/modify-customer.fxml", 400, 600, "Modify Customer");
@@ -81,8 +84,8 @@ public class SceneLoader {
     /**
      * Called after the user clicks the "Add" button underneath the Appointments table. It opens a new view where the
      * user can enter all the information needed to create a new Appointment.
-     * @param actionEvent
-     * @throws IOException
+     * @param actionEvent - passed to FXML Loader
+     * @throws IOException - throws if fxml file not found
      */
     public static void goToAddAppointmentView(ActionEvent actionEvent) throws IOException {
         goToView(actionEvent, "/View/add-appointment.fxml", 400, 700, "Add Appointment");
@@ -90,8 +93,8 @@ public class SceneLoader {
 
     /**
      * Called when the user clicks the "Modify" button under the Appointments table.
-     * @param actionEvent
-     * @throws IOException
+     * @param actionEvent - passed to FXML Loader
+     * @throws IOException - throws if fxml file not found
      */
     public static void goToModifyAppointmentView(ActionEvent actionEvent) throws IOException {
         goToView(actionEvent, "/View/modify-appointment.fxml", 400, 700, "Modify Appointment");
@@ -100,8 +103,8 @@ public class SceneLoader {
     /**
      * When the customer reports button is clicked a new view will appear that allows the user to select a customer and
      * see in a text format a report that shows all the appointments in the database for that customer.
-     * @param actionEvent
-     * @throws IOException
+     * @param actionEvent - passed to FXML Loader
+     * @throws IOException - throws if fxml file not found
      */
     public static void goToCustomerReportsView(ActionEvent actionEvent) throws IOException {
         goToView(actionEvent, "/View/customer-report.fxml", 600, 400, "Customer Reports");
@@ -109,8 +112,8 @@ public class SceneLoader {
 
     /**
      * Called when the user clicks the "Reports" button underneath the appointments table
-     * @param actionEvent
-     * @throws IOException
+     * @param actionEvent - passed to FXML Loader
+     * @throws IOException - throws if fxml file not found
      */
     public static void goToAppointmentReportsView(ActionEvent actionEvent) throws IOException {
         goToView(actionEvent, "/View/appt-reports.fxml", 600, 400, "Appointment Reports");

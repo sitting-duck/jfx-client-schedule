@@ -2,6 +2,9 @@ package Utils;
 
 import javafx.scene.control.Alert;
 
+/**
+ * Class for showing Warning Dialogs to the user
+ */
 public class AlertUtil {
 
     /**

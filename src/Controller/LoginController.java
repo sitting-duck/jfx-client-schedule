@@ -89,7 +89,7 @@ public class LoginController implements Initializable {
      * On successful login the application redirects to the user the main view and loads main.fxml. As well, the
      * application checks the database to see if there are any appointments starting within the next 15 minutes.
      * @param actionEvent - not used
-     * @throws IOException
+     * @throws IOException - throws if file can't be created for logging login activity
      */
     public void onLoginButton(ActionEvent actionEvent) throws IOException {
 

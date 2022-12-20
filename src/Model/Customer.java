@@ -88,7 +88,7 @@ public class Customer {
 
     /**
      * Gets the customer address
-     * @return
+     * @return the customer address
      */
     public String getAddress() {
         return address;

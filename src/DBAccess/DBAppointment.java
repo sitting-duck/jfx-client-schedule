@@ -51,10 +51,10 @@ public abstract class DBAppointment {
 
     /**
      * Returns the set of appointments with matching Title string.
-     * @param string
+     * @param string - search string for appointment id
      * @return - ObservableList array of Appointments with matching Title String.
      */
-    public static ObservableList<Appointment> lookupAppointmentById(String string) {
+    public static ObservableList<Appointment> lookupAppointmentByTitleString(String string) {
         System.out.println("lookupAppointmentByTitle(): " + string);
         ObservableList<Appointment> allAppointments = getAllAppointments();
         final ObservableList<Appointment> matchingAppointments = FXCollections.observableArrayList();
@@ -72,7 +72,7 @@ public abstract class DBAppointment {
      * @param id - Appointment id
      * @return - ObservableList of Appointment objects. Will only ever return 1 appointment since appointment ids are unique.
      */
-    public static ObservableList<Appointment> lookupAppointmentById(int id) {
+    public static ObservableList<Appointment> lookupAppointmentByTitleString(int id) {
         ObservableList<Appointment> allAppointments = getAllAppointments();
         final ObservableList<Appointment> matchingAppointments = FXCollections.observableArrayList();
         allAppointments.stream().filter(appointment -> Integer.compare(appointment.getId(), id) == 0).forEach(matchingAppointments::add);
@@ -85,10 +85,16 @@ public abstract class DBAppointment {
      * @param id - Customer id
      * @return - ObservableList of Appointment objects. Since Customers can have as many appointments as they want, this
      * can return zero or more appointments.
+     *
+     *  * Lambda: We define a lambda here for quick comparison of Integers within a loop to create and return a list
+     *  * in a convenient one-line instead of going through all the boiler-plate of making a for loop, we use the
+     *  * stream() and filter() functions for convenience.
+     *
      */
     public static ObservableList<Appointment> lookupAppointmentsForCustomerWithID(int id) {
         ObservableList<Appointment> allAppointments = getAllAppointments();
         final ObservableList<Appointment> matchingAppointments = FXCollections.observableArrayList();
+
         allAppointments.stream().filter(appointment -> Integer.compare(appointment.getCustomerId(), id) == 0).forEach(matchingAppointments::add);
         return matchingAppointments;
     }
@@ -185,7 +191,7 @@ public abstract class DBAppointment {
     /***
      * Updates an appointment in the database with matching id. All appointment ids are unique so there can only ever
      * be a single matching appointment using this method.
-     *
+     * @param id - appointment id
      * @param title - Appointment title
      * @param description - Appointment description
      * @param location - Appointment location
@@ -218,7 +224,7 @@ public abstract class DBAppointment {
 
     /**
      * Deletes an appointment with matching appointment id from the database.
-     * @param appointmentId
+     * @param appointmentId - id of the appointment to delete
      * @return - the number of rows affected. Will always be either zero or one.
      * @throws SQLException - throws exception when appointment cannot be found in the database because there is no
      * matching id. This can happen if the appointment was never created or has already been deleted.
@@ -234,7 +240,7 @@ public abstract class DBAppointment {
     /**
      * Returns the set of all appointments with matching type. String must match exactly.
      * @param type - String for Appointment type eg. "Meeting", "Interview" etc.
-     * @return - ArrayList<Appointment> - an array list of appointments with matching type string.
+     * @return - an array list of appointments with matching type string.
      * @throws SQLException - throws exception if bad values such as null values are passed in. Will not throw an exception
      * if no appointments are found however, will just return an empty list.
      */
@@ -265,7 +271,7 @@ public abstract class DBAppointment {
     /**
      * Returns the set of all appointments with matching Contact id.
      * @param contactId - The id number for the contact
-     * @return - ArrayList<Appointment> - an array list of appointments with matching contact id.
+     * @return - an array list of appointments with matching contact id.
      * @throws SQLException - throws exception if bad values such as null values are passed in. Will not throw an exception
      * if no appointments are found however, will just return an empty list.
      */
@@ -296,11 +302,10 @@ public abstract class DBAppointment {
     /**
      * Returns the set of all appointments with matching month. Search is case insensitive, but month names cannot be shortened.
      * @param month - A string value representing the month. eg. "January", "JANUARY" and "january" are all valid.
-     * @return - ArrayList<Appointment> - an array list of appointments with matching month for the start date.
+     * @return - an array list of appointments with matching month for the start date.
      * If an appointment starts in January and ends in February true is still returned for an appointment with start date
      * in January. Only start dates are checked. We assume no appointments run over a day anyway, but with different time
      * zones this could be relevant.
-     * @throws SQLException - throws exception if bad values such as null values are passed in. Will not throw an exception
      * if no appointments are found however, will just return an empty list.
      */
     public static ArrayList<Appointment> getAllAppointmentsInMonth(String month) {

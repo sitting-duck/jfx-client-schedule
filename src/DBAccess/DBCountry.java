@@ -40,8 +40,7 @@ public abstract class DBCountry {
     /**
      * Returns the set of all appointments with matching type. String must match exactly.
      * @param name - String for Country name eg. "Scotland", "Canada" etc.
-     * @return - ArrayList<Appointment> - an array list of appointments with matching name string.
-     * @throws SQLException - throws exception if bad values such as null values are passed in. Will not throw an exception
+     * @return - an array list of appointments with matching name string.
      * if no appointments are found however, will just return an empty list.
      */
     public static ObservableList<Country> getAllCountriesWithName(String name) {

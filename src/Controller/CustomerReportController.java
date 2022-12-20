@@ -77,6 +77,11 @@ public class CustomerReportController  implements Initializable {
         reportTextAreaCustomer.setText(s);
     }
 
+    /**
+     * loads the main view
+     * @param actionEvent - passed to the FXMLLoader
+     * @throws IOException - throws if main.fxml cannot be found
+     */
     public void onHomeButtonClicked(ActionEvent actionEvent) throws IOException {
         SceneLoader.goToMainView(actionEvent);
     }

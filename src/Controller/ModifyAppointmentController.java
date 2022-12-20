@@ -117,10 +117,10 @@ public class ModifyAppointmentController extends AppointmentController  {
      * the database any appointments or edits that create collisions and will show red text above any text fields and combo boxes
      * that need to be corrected by the user.
      *
-     * @param actionEvent
-     * @return
-     * @throws IOException
-     * @throws SQLException
+     * @param actionEvent - for SceneLoader to load a new fxml file to switch to a new view
+     * @return - true if input is good, false if user input in any field is bad
+     * @throws IOException - throws on missing fxml file
+     * @throws SQLException - throws on poorly formed sql or bad data being returned from the database
      */
     public boolean onOkButton(ActionEvent actionEvent) throws IOException, SQLException {
         boolean good = super.onOkButton(actionEvent);
