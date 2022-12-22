@@ -1,4 +1,5 @@
 # Title: jfx-client-schedule
+Note: more documentation coming soon. Just been busy with the holidays. This is a final project for CRUD apps with mySQL and Java at WGU. It Basically mimics something like what a business app would be like for making appointments, checking to see if two appointments overlap, adding people and their contact info and all kinds of stuff like that into a database. The SQL in here isn't super complicated and we don't even go into merging tables or any advanced concepts, but I do like how they approached teaching the JDBC database connection stuff, also some code conventions and good project structure and things like this. 
 
 # Purpose
 CRUD app for creating Customers and Appointments.
